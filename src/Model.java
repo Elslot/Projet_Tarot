@@ -19,7 +19,6 @@ public class Model {
 				paquet.add(new Carte(TypeCarte.PIQUE, j));
 			for(int j = 1; j <= 14; j++)
 				paquet.add(new Carte(TypeCarte.TREFLE, j));
-            string bite;
 		}
 		
 		chien = new ArrayList<>();
