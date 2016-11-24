@@ -8,4 +8,14 @@ public class Carte {
 		this.type = type;
 		this.numero = numero;
 	}
+
+	public TypeCarte getType()
+	{
+		return type;
+	}
+
+	public int getNumero()
+    {
+        return numero;
+    }
 }
