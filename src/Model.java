@@ -96,6 +96,7 @@ public class Model {
             }
         });
 
+        int i = 0;
         //Indices pour compter les cartes de chaque type
         int iPique = 0;
         int iCoeur = 0;
@@ -103,7 +104,7 @@ public class Model {
         int iCarreau = 0;
         int iTrefle = 0;
 
-        for(int i = 0; i < cartes.size(); i++)
+        while(i < cartes.size())
         {
             if(cartes.get(i).getType() == TypeCarte.PIQUE)
             {
@@ -113,6 +114,10 @@ public class Model {
                 {
                     cartes.add(cartes.set(iPique, cartes.get(i))); //on remplace donc en fonction de l'indice
                 }
+                else
+                {
+                    i++;
+                }
             }
             else if(cartes.get(i).getType() == TypeCarte.COEUR)
             {
@@ -121,6 +126,10 @@ public class Model {
                                        //donc cela veut dire qu'il y a une carte (ou plusieurs) d'un autre type entre deux piques,
                 {
                     cartes.add(cartes.set(iPique + iCoeur, cartes.get(i)));//on remplace donc en fonction de l'indice
+                }
+                else
+                {
+                    i++;
                 }
             }
             else if(cartes.get(i).getType() == TypeCarte.ATOUT)
@@ -132,6 +141,10 @@ public class Model {
                 {
                     cartes.add(cartes.set(iPique + iCoeur + iAtout, cartes.get(i)));//on remplace donc en fonction de l'indice
                 }
+                else
+                {
+                    i++;
+                }
             }
             else if(cartes.get(i).getType() == TypeCarte.CARREAU)
             {
@@ -142,6 +155,10 @@ public class Model {
                 {
                     cartes.add(cartes.set(iPique + iCoeur + iAtout + iCarreau, cartes.get(i)));//on remplace donc en fonction de l'indice
                 }
+                else
+                {
+                    i++;
+                }
             }
             else if(cartes.get(i).getType() == TypeCarte.TREFLE)
             {
@@ -151,6 +168,10 @@ public class Model {
                                                                     //(ou plusieurs) d'un autre type entre deux trèfles,
                 {
                     cartes.add(cartes.set(iPique + iCoeur + iAtout + iCarreau + iTrefle, cartes.get(i)));//on remplace donc en fonction de l'indice
+                }
+                else
+                {
+                    i++;
                 }
             }
         }
