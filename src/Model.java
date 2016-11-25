@@ -29,9 +29,13 @@ public class Model {
             paquet.add(new Carte(TypeCarte.ATOUT, i));
         }
         paquet.add(new Carte(TypeCarte.EXCUSE, 0)); //Insertion de l'excuse
-		
+
+        paquetMelange = new Stack<>();
 		chien = new ArrayList<>();
 		joueur = new ArrayList<>();
+        autreJoueur1 = new ArrayList<>();
+        autreJoueur2 = new ArrayList<>();
+        autreJoueur3 = new ArrayList<>();
 	}
 
 	public void distribution()
@@ -79,7 +83,14 @@ public class Model {
         Random rand  = new Random();
         for(int i = 1; i <= 78; i++)
         {
-            iAlea = rand.nextInt(iMax) + 1;
+            if(iMax > 0)
+            {
+                iAlea = rand.nextInt(iMax) + 1;
+            }
+            else
+            {
+                iAlea = rand.nextInt(iMax);
+            }
             paquetMelange.push(paquet.get(iAlea));
             paquet.remove(iAlea);
             iMax--;
