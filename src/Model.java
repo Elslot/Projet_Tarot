@@ -176,4 +176,9 @@ public class Model {
             }
         }
     }
+
+    public ArrayList<Carte> getCarteJoueur ()
+	{
+		return joueur;
+	}
 }

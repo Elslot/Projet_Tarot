@@ -6,7 +6,16 @@ import javafx.stage.Stage;
  */
 public class Main extends Application{
 
-    public void main(String[] args) {
+    static public void main(String[] args) {
+
+        Model modeltest = new Model();
+        modeltest.distribution();
+        for (Carte c : modeltest.getCarteJoueur())
+        {
+            System.out.println(c.getNumero() + " / " + c.getType());
+        }
+
+
         launch(args);
     }
 
