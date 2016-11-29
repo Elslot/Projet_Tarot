@@ -11,7 +11,6 @@ public class View extends Stage implements Observer {
 
     protected Stage Fenetre;
 
-    protected Controller c;
 
     public View(){
 

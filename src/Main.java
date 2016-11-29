@@ -15,6 +15,11 @@ public class Main extends Application{
         Model modeltest = new Model();
         modeltest.melanger();
         modeltest.distribution();
+        for (Carte c : modeltest.getCarteJoueur()) {
+            System.out.println(c.getNumero() + " / " + c.getType());
+        }
+        modeltest.trier(modeltest.getCarteJoueur());
+        System.out.println("---------------------------------------");
         for (Carte c : modeltest.getCarteJoueur())
         {
             System.out.println(c.getNumero() + " / " + c.getType());

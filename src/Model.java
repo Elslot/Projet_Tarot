@@ -83,14 +83,7 @@ public class Model {
         Random rand  = new Random();
         for(int i = 1; i <= 78; i++)
         {
-            if(iMax > 0)
-            {
-                iAlea = rand.nextInt(iMax) + 1;
-            }
-            else
-            {
-                iAlea = rand.nextInt(iMax);
-            }
+            iAlea = rand.nextInt(iMax);
             paquetMelange.push(paquet.get(iAlea));
             paquet.remove(iAlea);
             iMax--;
