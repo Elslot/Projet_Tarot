@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Random;
-import java.util.Stack;
+import java.util.*;
 
 public class Model {
 	private ArrayList<Carte> paquet;
@@ -49,30 +46,29 @@ public class Model {
             }
 			if(indiceDistrib < 3)
             {
-                autreJoueur1.add(paquetMelange.peek());
+                autreJoueur1.add(paquetMelange.pop());
                 indiceDistrib++;
             }
             else if(indiceDistrib >= 3 && indiceDistrib < 6)
             {
-                autreJoueur2.add(paquetMelange.peek());
+                autreJoueur2.add(paquetMelange.pop());
                 indiceDistrib++;
             }
             else if(indiceDistrib >= 6 && indiceDistrib < 9)
             {
-                autreJoueur3.add(paquetMelange.peek());
+                autreJoueur3.add(paquetMelange.pop());
                 indiceDistrib++;
             }
             else if(indiceDistrib == 9)
             {
-                chien.add(paquetMelange.peek());
+                chien.add(paquetMelange.pop());
                 indiceDistrib++;
             }
             else if(indiceDistrib >= 10 && indiceDistrib < 13)
             {
-                joueur.add(paquetMelange.peek());
+                joueur.add(paquetMelange.pop());
                 indiceDistrib++;
             }
-            paquetMelange.pop();
         }
     }
 
@@ -81,8 +77,7 @@ public class Model {
         int iAlea;
         int iMax = 78;
         Random rand  = new Random();
-        for(int i = 1; i <= 78; i++)
-        {
+        for(int i = 1; i <= 78; i++) {
             iAlea = rand.nextInt(iMax);
             paquetMelange.push(paquet.get(iAlea));
             paquet.remove(iAlea);
@@ -92,6 +87,15 @@ public class Model {
 
     public void trier(ArrayList<Carte> cartes)
     {
+        ArrayList<Carte> piques = new ArrayList<>();
+        ArrayList<Carte> coeurs = new ArrayList<>();
+        ArrayList<Carte> atouts = new ArrayList<>();
+        ArrayList<Carte> carreaux = new ArrayList<>();
+        ArrayList<Carte> trefles = new ArrayList<>();
+
+        boolean excuse = false;
+        int iExcuse = 0;
+
         //Tri en premier les cartes par leur numéro
         cartes.sort(new Comparator<Carte>() {
             @Override
@@ -100,86 +104,47 @@ public class Model {
             }
         });
 
-        int i = 0;
-        //Indices pour compter les cartes de chaque type
-        int iPique = 0;
-        int iCoeur = 0;
-        int iAtout = 0;
-        int iCarreau = 0;
-        int iTrefle = 0;
-
-        while(i < cartes.size())
+        for(int i = 0; i < cartes.size(); i++)
         {
             if(cartes.get(i).getType() == TypeCarte.PIQUE)
             {
-                if(i > iPique) //Si l'indice général est supérieur à l'indice des piques, donc cela veut dire qu'il y a une (ou plusieurs)
-                              //carte d'un autre type entre deux piques,
-                {
-                    cartes.add(cartes.set(iPique, cartes.get(i))); //on remplace donc en fonction de l'indice
-                }
-                else
-                {
-                    i++;
-                }
-                iPique++; //Incrémente l'indice correspondant au type que l'on a trouvé (ici pique)
+                piques.add(cartes.get(i));
             }
             else if(cartes.get(i).getType() == TypeCarte.COEUR)
             {
-                if
-                (i > iCoeur + iPique) //Si l'indice général est supérieur à l'indice des piques + coeurs (on compte les piques car ils doivent être en premiers),
-                                       //donc cela veut dire qu'il y a une carte (ou plusieurs) d'un autre type entre deux piques,
-                {
-                    cartes.add(cartes.set(iPique + iCoeur, cartes.get(i)));//on remplace donc en fonction de l'indice
-                }
-                else
-                {
-                    i++;
-                }
-                iCoeur++; //Incrémente l'indice correspondant au type que l'on a trouvé (ici coeur)
+                coeurs.add(cartes.get(i));
             }
             else if(cartes.get(i).getType() == TypeCarte.ATOUT)
             {
-                if(i > iAtout + iCoeur + iPique) //Si l'indice général est supérieur à l'indice des piques + coeurs + atout (on compte les piques et les coeurs car
-                                                //ils doivent être en premiers), donc cela veut dire qu'il y a une carte (ou plusieurs) d'un autre type
-                                                //entre deux atouts,
-                {
-                    cartes.add(cartes.set(iPique + iCoeur + iAtout, cartes.get(i)));//on remplace donc en fonction de l'indice
-                }
-                else
-                {
-                    i++;
-                }
-                iAtout++; //Incrémente l'indice correspondant au type que l'on a trouvé (ici coeur)
+                atouts.add(cartes.get(i));
             }
             else if(cartes.get(i).getType() == TypeCarte.CARREAU)
             {
-                if(i > iCarreau + iAtout + iCoeur + iPique) //Si l'indice général est supérieur à l'indice des piques + coeurs + ...
-                                                            //(on compte ces cartes car elles doivent être en premières), donc cela veut dire qu'il y a une carte
-                                                            //(ou plusieurs) d'un autre type entre deux carreaux,
-                {
-                    cartes.add(cartes.set(iPique + iCoeur + iAtout + iCarreau, cartes.get(i)));//on remplace donc en fonction de l'indice
-                }
-                else
-                {
-                    i++;
-                }
-                iCarreau++; //Incrémente l'indice correspondant au type que l'on a trouvé (ici coeur)
+                carreaux.add(cartes.get(i));
             }
             else if(cartes.get(i).getType() == TypeCarte.TREFLE)
             {
-                if(i > iTrefle + iCarreau + iAtout + iCoeur + iPique) //Si l'indice général est supérieur à l'indice des piques + coeurs + ...
-                                                                     //(on compte ces cartes car elles doivent être devant), donc cela veut dire qu'il y a une carte
-                                                                    //(ou plusieurs) d'un autre type entre deux trèfles,
-                {
-                    cartes.add(cartes.set(iPique + iCoeur + iAtout + iCarreau + iTrefle, cartes.get(i)));//on remplace donc en fonction de l'indice
-                }
-                else
-                {
-                    i++;
-                }
-                iTrefle++; //Incrémente l'indice correspondant au type que l'on a trouvé (ici coeur)
+                trefles.add(cartes.get(i));
+            }
+            else
+            {
+                excuse = true;
+                iExcuse = i;
             }
         }
+
+        if(excuse)
+        {
+            trefles.add(cartes.get(iExcuse));
+        }
+
+        cartes.clear();
+
+        cartes.addAll(piques);
+        cartes.addAll(coeurs);
+        cartes.addAll(atouts);
+        cartes.addAll(carreaux);
+        cartes.addAll(trefles);
     }
 
     public ArrayList<Carte> getCarteJoueur ()
