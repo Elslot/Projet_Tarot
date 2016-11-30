@@ -112,7 +112,6 @@ public class Model {
         {
             if(cartes.get(i).getType() == TypeCarte.PIQUE)
             {
-                iPique++; //Incrémente l'indice correspondant au type que l'on a trouvé (ici pique)
                 if(i > iPique) //Si l'indice général est supérieur à l'indice des piques, donc cela veut dire qu'il y a une (ou plusieurs)
                               //carte d'un autre type entre deux piques,
                 {
@@ -122,11 +121,12 @@ public class Model {
                 {
                     i++;
                 }
+                iPique++; //Incrémente l'indice correspondant au type que l'on a trouvé (ici pique)
             }
             else if(cartes.get(i).getType() == TypeCarte.COEUR)
             {
-                iCoeur++; //Incrémente l'indice correspondant au type que l'on a trouvé (ici coeur)
-                if(i > iCoeur + iPique) //Si l'indice général est supérieur à l'indice des piques + coeurs (on compte les piques car ils doivent être en premiers),
+                if
+                (i > iCoeur + iPique) //Si l'indice général est supérieur à l'indice des piques + coeurs (on compte les piques car ils doivent être en premiers),
                                        //donc cela veut dire qu'il y a une carte (ou plusieurs) d'un autre type entre deux piques,
                 {
                     cartes.add(cartes.set(iPique + iCoeur, cartes.get(i)));//on remplace donc en fonction de l'indice
@@ -135,10 +135,10 @@ public class Model {
                 {
                     i++;
                 }
+                iCoeur++; //Incrémente l'indice correspondant au type que l'on a trouvé (ici coeur)
             }
             else if(cartes.get(i).getType() == TypeCarte.ATOUT)
             {
-                iAtout++; //Incrémente l'indice correspondant au type que l'on a trouvé (ici coeur)
                 if(i > iAtout + iCoeur + iPique) //Si l'indice général est supérieur à l'indice des piques + coeurs + atout (on compte les piques et les coeurs car
                                                 //ils doivent être en premiers), donc cela veut dire qu'il y a une carte (ou plusieurs) d'un autre type
                                                 //entre deux atouts,
@@ -149,10 +149,10 @@ public class Model {
                 {
                     i++;
                 }
+                iAtout++; //Incrémente l'indice correspondant au type que l'on a trouvé (ici coeur)
             }
             else if(cartes.get(i).getType() == TypeCarte.CARREAU)
             {
-                iCarreau++; //Incrémente l'indice correspondant au type que l'on a trouvé (ici coeur)
                 if(i > iCarreau + iAtout + iCoeur + iPique) //Si l'indice général est supérieur à l'indice des piques + coeurs + ...
                                                             //(on compte ces cartes car elles doivent être en premières), donc cela veut dire qu'il y a une carte
                                                             //(ou plusieurs) d'un autre type entre deux carreaux,
@@ -163,10 +163,10 @@ public class Model {
                 {
                     i++;
                 }
+                iCarreau++; //Incrémente l'indice correspondant au type que l'on a trouvé (ici coeur)
             }
             else if(cartes.get(i).getType() == TypeCarte.TREFLE)
             {
-                iTrefle++; //Incrémente l'indice correspondant au type que l'on a trouvé (ici coeur)
                 if(i > iTrefle + iCarreau + iAtout + iCoeur + iPique) //Si l'indice général est supérieur à l'indice des piques + coeurs + ...
                                                                      //(on compte ces cartes car elles doivent être devant), donc cela veut dire qu'il y a une carte
                                                                     //(ou plusieurs) d'un autre type entre deux trèfles,
@@ -177,6 +177,7 @@ public class Model {
                 {
                     i++;
                 }
+                iTrefle++; //Incrémente l'indice correspondant au type que l'on a trouvé (ici coeur)
             }
         }
     }
