@@ -25,7 +25,7 @@ public class Main extends Application{
             System.out.println(c.getNumero() + " / " + c.getType());
         }
 
-        Controller control = new Controller();
+        Controller control = new Controller(modeltest);
         View viewtest = new View(control);
 
     }
