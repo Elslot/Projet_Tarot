@@ -19,4 +19,18 @@ public class Carte {
     {
         return numero;
     }
+
+    public int getIDType()
+	{
+		switch(this.getType()){
+			case PIQUE :
+				return 1;
+			case CARREAU:
+				return 2;
+			case ATOUT:
+				return 3;
+			default:
+				return -1;
+		}
+	}
 }
