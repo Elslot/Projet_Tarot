@@ -1,4 +1,6 @@
-import javafx.scene.input.KeyCombination;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.Observable;
@@ -11,13 +13,22 @@ public class View extends Stage implements Observer {
 
     protected Stage Fenetre;
 
+    private Controller c;
 
-    public View(){
 
+
+    public View(Controller control){
+
+
+        c = control;
         Fenetre = new Stage();
-        Fenetre.setFullScreen(true);
-        Fenetre.setFullScreenExitHint("Press ESC to exit FullScreen Mode");
-
+        Fenetre.setTitle("Projet Tarot");
+  //      Fenetre.setFullScreen(true);
+  //      Fenetre.setFullScreenExitHint("Press ESC to exit FullScreen Mode");
+        Group root = new Group();
+        Scene scene = new Scene(root, 800, 600, Color.DARKSEAGREEN);
+        Fenetre.setScene(scene);
+        Fenetre.show();
 
     }
 

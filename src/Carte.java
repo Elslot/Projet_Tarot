@@ -1,4 +1,5 @@
 
+
 public class Carte {
 	private TypeCarte type;
 	private int numero;

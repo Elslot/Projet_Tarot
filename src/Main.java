@@ -7,11 +7,11 @@ import javafx.stage.Stage;
 public class Main extends Application{
 
     static public void main(String[] args) {
-        launch(args);
+        Application.launch(Main.class, args);
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage viewTest) throws Exception {
         Model modeltest = new Model();
         modeltest.melanger();
         modeltest.distribution();
@@ -24,5 +24,9 @@ public class Main extends Application{
         {
             System.out.println(c.getNumero() + " / " + c.getType());
         }
+
+        Controller control = new Controller();
+        View viewtest = new View(control);
+
     }
 }
