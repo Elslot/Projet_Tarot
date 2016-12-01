@@ -3,8 +3,6 @@
 public class Carte {
 	private TypeCarte type;
 	private int numero;
-	private int pos_x;
-	private int pos_y;
 
 	public Carte(TypeCarte type, int numero)
 	{
@@ -23,7 +21,7 @@ public class Carte {
         return numero;
     }
 
-    public int getIDType()
+    public int getRankType()
 	{
 		switch(this.getType()){
 			case PIQUE :
@@ -31,24 +29,19 @@ public class Carte {
 			case COEUR:
 				return 2;
 			case ATOUT:
-				return 3;
+				if (numero<=14)
+					return 3;
+				else
+					return 4;
 			case CARREAU:
-				return 4;
-			case TREFLE:
 				return 5;
-			case EXCUSE:
+			case TREFLE:
 				return 6;
+			case EXCUSE:
+				return 7;
 			default:
 				return -1;
 		}
 	}
 
-	public void setX(int x)
-	{
-		pos_x = x;
-	}
-	public void setY(int y)
-	{
-		pos_y = y;
-	}
 }
