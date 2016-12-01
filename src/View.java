@@ -39,12 +39,17 @@ public class View extends Stage implements Observer {
         Fenetre.setScene(scene);
         Group cards = new Group();
         root.getChildren().add(cards);
+
+
+        //A mettre dans une autre fonction
         int k=0;
 
-        for (int j = 1; j<=9; j++)
-        {
+
             for (int i=1; i<=2; i++)
             {
+                for (int j = 1; j<=9; j++)
+                {
+
                 CarteView cartetest = new CarteView(c.getModel().getCarteJoueur().get(k));
                 cartetest.setX((j-1)*(150+20)+(150+20));
                 cartetest.setY((i-1)*(200+20)+(200+20));

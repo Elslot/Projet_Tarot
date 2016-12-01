@@ -3,13 +3,16 @@
 public class Carte {
 	private TypeCarte type;
 	private int numero;
+	private boolean turned;
 
 	public Carte(TypeCarte type, int numero)
 	{
 		this.type = type;
 		this.numero = numero;
+		turned = false;
 
 	}
+	public boolean getTurned() {return turned; }
 
 	public TypeCarte getType()
 	{
