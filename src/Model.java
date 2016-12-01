@@ -1,3 +1,4 @@
+import java.lang.reflect.Type;
 import java.util.*;
 
 public class Model {
@@ -8,6 +9,8 @@ public class Model {
     private ArrayList<Carte> autreJoueur1;
     private ArrayList<Carte> autreJoueur2;
     private ArrayList<Carte> autreJoueur3;
+
+    boolean distributionFini;
 
     Model()
 	{
@@ -33,6 +36,8 @@ public class Model {
         autreJoueur1 = new ArrayList<>();
         autreJoueur2 = new ArrayList<>();
         autreJoueur3 = new ArrayList<>();
+
+        distributionFini = false;
 	}
 
 	public void distribution()
@@ -145,6 +150,62 @@ public class Model {
         cartes.addAll(atouts);
         cartes.addAll(carreaux);
         cartes.addAll(trefles);
+    }
+
+    public boolean aPetitSec(ArrayList<Carte> cartes)
+    {
+        int i = 0;
+        boolean fini = false;
+        boolean aExcuse = false;
+        boolean aPetit = false;
+        boolean aAtout = false;
+
+        while(!fini && i < cartes.size()) {
+            if(cartes.get(i).getType() == TypeCarte.CARREAU || cartes.get(i).getType() == TypeCarte.TREFLE)
+            {
+                fini = true;
+            }
+            else if (cartes.get(i).getType() == TypeCarte.EXCUSE)
+            {
+                aExcuse = true;
+            }
+            else if(cartes.get(i).getType() == TypeCarte.ATOUT && cartes.get(i).getNumero() == 1)
+            {
+                aPetit = true;
+            }
+            else if(cartes.get(i).getType() == TypeCarte.ATOUT)
+            {
+                aAtout = true;
+                fini = true;
+            }
+            i++;
+        }
+
+        if(!aAtout && !aExcuse && aPetit)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void trouverPetitSec()
+    {
+        if(aPetitSec(joueur))
+        {
+
+        }
+        else if(aPetitSec(autreJoueur1))
+        {
+
+        }
+        else if(aPetitSec(autreJoueur2))
+        {
+
+        }
+        else if(aPetitSec(autreJoueur3))
+        {
+
+        }
     }
 
     public ArrayList<Carte> getCarteJoueur ()
