@@ -1,3 +1,4 @@
+import java.lang.reflect.Type;
 import java.util.*;
 
 public class Model {
@@ -8,6 +9,8 @@ public class Model {
     private ArrayList<Carte> autreJoueur1;
     private ArrayList<Carte> autreJoueur2;
     private ArrayList<Carte> autreJoueur3;
+
+    boolean distributionFini;
 
     Model()
 	{
@@ -33,6 +36,8 @@ public class Model {
         autreJoueur1 = new ArrayList<>();
         autreJoueur2 = new ArrayList<>();
         autreJoueur3 = new ArrayList<>();
+
+        distributionFini = false;
 	}
 
 	public void distribution()
@@ -145,6 +150,54 @@ public class Model {
         cartes.addAll(atouts);
         cartes.addAll(carreaux);
         cartes.addAll(trefles);
+    }
+
+    public boolean PetitSec(ArrayList<Carte> cartes)
+    {
+        int i = 0;
+        boolean aExcuse = false;
+        boolean aPetit = false;
+        boolean aPetitSec = true;
+
+        while(!aExcuse && aPetitSec && i < cartes.size()) {
+            if (cartes.get(i).getType() == TypeCarte.EXCUSE)
+            {
+                aExcuse = true;
+            }
+            else if(cartes.get(i).getType() == TypeCarte.ATOUT && cartes.get(i).getNumero() == 1)
+            {
+                aPetit = true;
+            }
+            else if(cartes.get(i).getType() == TypeCarte.ATOUT)
+            {
+                if(aPetit == true)
+                {
+                    aPetitSec = false;
+                }
+            }
+            i++;
+        }
+        return aPetitSec;
+    }
+
+    public void trouverPetitSec()
+    {
+        if(PetitSec(joueur))
+        {
+
+        }
+        else if(PetitSec(autreJoueur1))
+        {
+
+        }
+        else if(PetitSec(autreJoueur2))
+        {
+
+        }
+        else if(PetitSec(autreJoueur3))
+        {
+
+        }
     }
 
     public ArrayList<Carte> getCarteJoueur ()
