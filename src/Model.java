@@ -152,15 +152,20 @@ public class Model {
         cartes.addAll(trefles);
     }
 
-    public boolean PetitSec(ArrayList<Carte> cartes)
+    public boolean aPetitSec(ArrayList<Carte> cartes)
     {
         int i = 0;
+        boolean fini = false;
         boolean aExcuse = false;
         boolean aPetit = false;
-        boolean aPetitSec = true;
+        boolean aAtout = false;
 
-        while(!aExcuse && aPetitSec && i < cartes.size()) {
-            if (cartes.get(i).getType() == TypeCarte.EXCUSE)
+        while(!fini && i < cartes.size()) {
+            if(cartes.get(i).getType() == TypeCarte.CARREAU || cartes.get(i).getType() == TypeCarte.TREFLE)
+            {
+                fini = true;
+            }
+            else if (cartes.get(i).getType() == TypeCarte.EXCUSE)
             {
                 aExcuse = true;
             }
@@ -170,31 +175,34 @@ public class Model {
             }
             else if(cartes.get(i).getType() == TypeCarte.ATOUT)
             {
-                if(aPetit == true)
-                {
-                    aPetitSec = false;
-                }
+                aAtout = true;
+                fini = true;
             }
             i++;
         }
-        return aPetitSec;
+
+        if(!aAtout && !aExcuse && aPetit)
+        {
+            return true;
+        }
+        return false;
     }
 
     public void trouverPetitSec()
     {
-        if(PetitSec(joueur))
+        if(aPetitSec(joueur))
         {
 
         }
-        else if(PetitSec(autreJoueur1))
+        else if(aPetitSec(autreJoueur1))
         {
 
         }
-        else if(PetitSec(autreJoueur2))
+        else if(aPetitSec(autreJoueur2))
         {
 
         }
-        else if(PetitSec(autreJoueur3))
+        else if(aPetitSec(autreJoueur3))
         {
 
         }
