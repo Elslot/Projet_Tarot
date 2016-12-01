@@ -15,9 +15,9 @@ public class View extends Stage implements Observer {
     protected static final int windowSizeW = 400;
     protected static final int windowSizeH = 100;
 
-    Dimension dimension = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-    int SCREEN_H = (int)dimension.getHeight();
-    int SCREEN_W  = (int)dimension.getWidth();
+    static Dimension DIMENSION_VIEW = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+    static int SCREEN_H_VIEW = (int)DIMENSION_VIEW.getHeight();
+    static int SCREEN_W_VIEW  = (int)DIMENSION_VIEW.getWidth();
 
     protected Stage Fenetre;
     private Scene scene;
