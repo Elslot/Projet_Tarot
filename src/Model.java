@@ -9,6 +9,7 @@ public class Model {
     private ArrayList<Carte> autreJoueur1;
     private ArrayList<Carte> autreJoueur2;
     private ArrayList<Carte> autreJoueur3;
+    private ArrayList<Carte> ecart;
 
     boolean distributionFini;
 
@@ -208,7 +209,18 @@ public class Model {
         }
     }
 
-
+    public boolean depotEcart(Carte depot)
+    {
+        if(depot.getType() != TypeCarte.ATOUT && depot.getNumero() == 14)
+        {
+            return false;
+        }
+        else
+        {
+            ecart.add(depot);
+            return true;
+        }
+    }
 
     public ArrayList<Carte> getCarteJoueur ()
 	{
