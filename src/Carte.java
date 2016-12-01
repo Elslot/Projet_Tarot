@@ -4,8 +4,8 @@ public class Carte {
 	private TypeCarte type;
 	private int numero;
 	private boolean turned;
-    private int x;
-    private int y;
+    private double x;
+    private double y;
 
     static Dimension DIMENSION_MODEL = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
     static int SCREEN_H_MODEL = (int)DIMENSION_MODEL.getHeight();
@@ -52,6 +52,27 @@ public class Carte {
 			default:
 				return -1;
 		}
+	}
+
+	public double getPosX()
+	{
+		return x;
+	}
+
+	public double getPosY()
+	{
+		return y;
+	}
+
+
+	public void setPosX(double new_x)
+	{
+		this.x = new_x;
+	}
+
+	public void setPosY(double new_y)
+	{
+		this.y = new_y;
 	}
 
 }

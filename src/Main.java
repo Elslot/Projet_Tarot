@@ -12,7 +12,12 @@ public class Main extends Application{
 
     @Override
     public void start(Stage viewTest) throws Exception {
+
         Model modeltest = new Model();
+        Controller control = new Controller(modeltest);
+        View viewtest = new View(control);
+
+
         modeltest.melanger();
         modeltest.distribution();
         for (Carte c : modeltest.getCarteJoueur()) {
@@ -25,8 +30,6 @@ public class Main extends Application{
             System.out.println(c.getNumero() + " / " + c.getType());
         }
 
-        Controller control = new Controller(modeltest);
-        View viewtest = new View(control);
 
     }
 }

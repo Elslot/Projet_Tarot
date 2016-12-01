@@ -214,4 +214,9 @@ public class Model {
 	{
 		return joueur;
 	}
+
+    public ArrayList<Carte> getPaquet ()
+    {
+        return paquet;
+    }
 }

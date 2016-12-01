@@ -16,8 +16,8 @@ public class CarteView extends ImageView{
     static int CARD_W= 150;
     static int CARD_H= 200;
 
-
-
+    private int dx;
+    private int dy;
 
     private Carte CardModel;
 
@@ -27,6 +27,8 @@ public class CarteView extends ImageView{
 
         CardModel = card;
 
+        this.setX(CardModel.getPosX());
+        this.setY(CardModel.getPosY());
 
         if (CardModel.getTurned()==true) {
             this.setImage(global);
@@ -41,6 +43,12 @@ public class CarteView extends ImageView{
         {
             this.setImage(imagedos);
         }
+    }
+
+    public void move(){
+
+        this.setX(this.getX()+dx);
+        this.setY(this.getY()+dy);
     }
 
 }
