@@ -21,12 +21,12 @@ public class View extends Stage implements Observer {
     protected Stage Fenetre;
     private Scene scene;
 
-    private Controller c;
+    private Model modele;
 
 
-    public View(Controller control) {
+    public View(Model modele) {
 
-        c = control;
+        this.modele = modele;
         Fenetre = new Stage();
         Fenetre.setTitle("Projet Tarot");
 
@@ -39,10 +39,9 @@ public class View extends Stage implements Observer {
         root.getChildren().add(cards);
 
         for (int i = 0; i < 78; i++) {
-
-            c.getModel().getPaquet().get(i).setPosX(c.getModel().getPaquet().get(i).getPosX()-(0.3*i));
-            c.getModel().getPaquet().get(i).setPosY(c.getModel().getPaquet().get(i).getPosY()-(0.3*i));
-            CarteView cartePaquet = new CarteView(c.getModel().getPaquet().get(i));
+            modele.getPaquet().get(i).setPosX(modele.getPaquet().get(i).getPosX()-(0.3*i)); //Afin de donner de la perspective aux cartes déjà placées
+            modele.getPaquet().get(i).setPosY(modele.getPaquet().get(i).getPosY()-(0.3*i)); //
+            CarteView cartePaquet = new CarteView(modele.getPaquet().get(i));
             root.getChildren().add(cartePaquet);
         }
         Fenetre.show();
@@ -56,7 +55,7 @@ public class View extends Stage implements Observer {
         for (int i = 1; i <= 2; i++) {
             for (int j = 1; j <= 9; j++) {
 
-                CarteView cartetest = new CarteView(c.getModel().getCarteJoueur().get(k));
+                CarteView cartetest = new CarteView(modele.getCarteJoueur().get(k));
                 cartetest.setX((j - 1) * (150 + 20) + (150 + 20));
                 cartetest.setY((i - 1) * (200 + 20) + (200 + 20));
 
@@ -66,6 +65,7 @@ public class View extends Stage implements Observer {
             }
         }
     }
+
 
 
     @Override

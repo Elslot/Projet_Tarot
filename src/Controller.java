@@ -1,14 +1,16 @@
 
 public class Controller {
 
-    private Model m;
+    private Model modele;
 
     public Controller(Model mod){
 
-        m=mod;
+        modele=mod;
     }
 
-    public Model getModel(){
-        return m;
+    public void lancerDistribution()
+    {
+
+        modele.distribution();
     }
 }

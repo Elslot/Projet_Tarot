@@ -15,7 +15,7 @@ public class Main extends Application{
 
         Model modeltest = new Model();
         Controller control = new Controller(modeltest);
-        View viewtest = new View(control);
+        View viewtest = new View(modeltest);
 
 
         modeltest.melanger();

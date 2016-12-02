@@ -1,7 +1,7 @@
 import java.lang.reflect.Type;
 import java.util.*;
 
-public class Model {
+public class Model extends Observable{
 	private ArrayList<Carte> paquet;
     private Stack<Carte> paquetMelange;
 	private ArrayList<Carte> chien;
@@ -75,6 +75,7 @@ public class Model {
                 joueur.add(paquetMelange.pop());
                 indiceDistrib++;
             }
+            notifyObservers();
         }
     }
 
