@@ -16,7 +16,7 @@ public class Main extends Application{
         Model modeltest = new Model();
         View viewtest = new View(modeltest);
         Controller control = new Controller(modeltest, viewtest);
-        viewtest.distributionRotation(viewtest.getCardViews());
+        viewtest.distribution(viewtest.getCardsViews());
 
         control.lancerDistribution();
        /* modeltest.melanger();
