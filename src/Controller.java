@@ -23,7 +23,7 @@ public class Controller {
             public void handle(MouseEvent event) {
                 modele.melanger();
                 modele.distribution();
-                view.distributionRotation(view.getCardViews());
+                view.distribution(view.getCardsViews());
 
                 for (Carte c : modele.getCarteJoueur()) {
                     System.out.println(c.getNumero() + " / " + c.getType());
