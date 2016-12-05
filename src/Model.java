@@ -201,7 +201,8 @@ public class Model extends Observable{
 
     public boolean depotEcart(Carte depot)
     {
-        if(depot.getType() != TypeCarte.ATOUT && depot.getNumero() == 14)
+        if((depot.getType() != TypeCarte.ATOUT && depot.getType() != TypeCarte.EXCUSE && depot.getNumero() == 14) ||
+                (depot.getType() == TypeCarte.ATOUT && (depot.getNumero() == 21 || depot.getNumero() == 1)))
         {
             return false;
         }

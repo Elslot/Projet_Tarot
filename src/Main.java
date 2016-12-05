@@ -16,21 +16,7 @@ public class Main extends Application{
         Model modeltest = new Model();
         View viewtest = new View(modeltest);
         Controller control = new Controller(modeltest, viewtest);
-        viewtest.distribution(viewtest.getCardsViews());
 
-        control.lancerDistribution();
-       /* modeltest.melanger();
-
-        for (Carte c : modeltest.getCarteJoueur()) {
-            System.out.println(c.getNumero() + " / " + c.getType());
-        }
-        modeltest.trier(modeltest.getCarteJoueur());
-        System.out.println("---------------------------------------");
-        for (Carte c : modeltest.getCarteJoueur())
-        {
-            System.out.println(c.getNumero() + " / " + c.getType());
-        }*/
-
-
+       control.lancerDistribution();
     }
 }

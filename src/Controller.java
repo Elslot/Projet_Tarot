@@ -14,30 +14,29 @@ public class Controller {
     public Controller(Model mod, View view){
         modele=mod;
         this.view = view;
-
-        view.getBoutonDistribuer().addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(event.isControlDown()) {
-                    modele.melanger();
-                    modele.distribution();
-
-                    for (Carte c : modele.getCarteJoueur()) {
-                        System.out.println(c.getNumero() + " / " + c.getType());
-                    }
-                    modele.trier(modele.getCarteJoueur());
-                    System.out.println("---------------------------------------");
-                    for (Carte c : modele.getCarteJoueur()) {
-                        System.out.println(c.getNumero() + " / " + c.getType());
-                    }
-                    event.consume();
-                }
-            }
-        });
     }
 
     public void lancerDistribution()
     {
+        view.getBoutonDistribuer().setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                modele.melanger();
+                modele.distribution();
+                view.distributionRotation(view.getCardViews());
+
+                for (Carte c : modele.getCarteJoueur()) {
+                    System.out.println(c.getNumero() + " / " + c.getType());
+                }
+                modele.trier(modele.getCarteJoueur());
+                System.out.println("---------------------------------------");
+                for (Carte c : modele.getCarteJoueur()) {
+                    System.out.println(c.getNumero() + " / " + c.getType());
+                }
+                view.getBoutonDistribuer().setDisable(true);
+                view.getBoutonDistribuer().setOpacity(0);
+            }
+        });
 
     }
 

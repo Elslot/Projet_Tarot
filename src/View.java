@@ -57,8 +57,6 @@ public class View extends Stage implements Observer {
         bDistribution.setLayoutX(SCREEN_W_VIEW/2 - bDistribution.getPrefWidth()/2);
         bDistribution.setLayoutY(3*SCREEN_H_VIEW/4 - bDistribution.getPrefHeight()/2);
         bDistribution.setFont((Font.font(20)));
-        //bDistribution.setDisable(true);
-        //bDistribution.setOpacity(0);
 
         root.getChildren().add(bDistribution);
 
