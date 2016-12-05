@@ -14,13 +14,13 @@ public class Main extends Application{
     public void start(Stage viewTest) throws Exception {
 
         Model modeltest = new Model();
-        Controller control = new Controller(modeltest);
         View viewtest = new View(modeltest);
+        Controller control = new Controller(modeltest, viewtest);
         viewtest.distributionRotation(viewtest.getCardViews());
 
+        control.lancerDistribution();
+       /* modeltest.melanger();
 
-        modeltest.melanger();
-        modeltest.distribution();
         for (Carte c : modeltest.getCarteJoueur()) {
             System.out.println(c.getNumero() + " / " + c.getType());
         }
@@ -29,7 +29,7 @@ public class Main extends Application{
         for (Carte c : modeltest.getCarteJoueur())
         {
             System.out.println(c.getNumero() + " / " + c.getType());
-        }
+        }*/
 
 
     }

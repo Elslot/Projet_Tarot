@@ -14,7 +14,7 @@ public class Model extends Observable{
     boolean distributionFini;
 
     Model()
-	{
+    {
 		paquet = new ArrayList<>();
 		//Insertion de toutes les cartes
 		//Insertion des cartes de couleurs
@@ -46,36 +46,25 @@ public class Model extends Observable{
     	int indiceDistrib = 0;
         for(int i = 1; i <= 78; i++)
         {
-            if(indiceDistrib >= 13)
-            {
+            if (indiceDistrib >= 13) {
                 indiceDistrib = 0;
             }
-			if(indiceDistrib < 3)
-            {
+            if (indiceDistrib < 3) {
                 autreJoueur1.add(paquetMelange.pop());
                 indiceDistrib++;
-            }
-            else if(indiceDistrib >= 3 && indiceDistrib < 6)
-            {
+            } else if (indiceDistrib >= 3 && indiceDistrib < 6) {
                 autreJoueur2.add(paquetMelange.pop());
                 indiceDistrib++;
-            }
-            else if(indiceDistrib >= 6 && indiceDistrib < 9)
-            {
+            } else if (indiceDistrib >= 6 && indiceDistrib < 9) {
                 autreJoueur3.add(paquetMelange.pop());
                 indiceDistrib++;
-            }
-            else if(indiceDistrib == 9)
-            {
+            } else if (indiceDistrib == 9) {
                 chien.add(paquetMelange.pop());
                 indiceDistrib++;
-            }
-            else if(indiceDistrib >= 10 && indiceDistrib < 13)
-            {
+            } else if (indiceDistrib >= 10 && indiceDistrib < 13) {
                 joueur.add(paquetMelange.pop());
                 indiceDistrib++;
             }
-            notifyObservers();
         }
     }
 

@@ -6,10 +6,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -34,6 +36,7 @@ public class View extends Stage implements Observer {
 
     private Model modele;
 
+    private Button bDistribution;
 
     public View(Model modele) {
 
@@ -47,6 +50,16 @@ public class View extends Stage implements Observer {
         //      Fenetre.setFullScreen(true);
         //      Fenetre.setFullScreenExitHint("Press ESC to exit FullScreen Mode");
         Group root = new Group();
+
+        bDistribution = new Button("Distribuer");
+        bDistribution.setPrefSize(150, 50);
+        bDistribution.setLayoutX(SCREEN_W_VIEW/2 - bDistribution.getPrefWidth()/2);
+        bDistribution.setLayoutY(3*SCREEN_H_VIEW/4 - bDistribution.getPrefHeight()/2);
+        bDistribution.setFont((Font.font(20)));
+        //bDistribution.setDisable(true);
+        //bDistribution.setOpacity(0);
+
+        root.getChildren().add(bDistribution);
         scene = new Scene(root, SCREEN_W_VIEW, SCREEN_H_VIEW, Color.DARKSEAGREEN);
         Fenetre.setScene(scene);
         Group cards = new Group();
@@ -254,6 +267,10 @@ public class View extends Stage implements Observer {
     public ArrayList<CarteView> getCardViews ()
     {
         return cardviews;
+    }
+    public Button getBoutonDistribuer()
+    {
+        return bDistribution;
     }
 
     @Override
