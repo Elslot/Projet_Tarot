@@ -13,7 +13,7 @@ public class CarteView extends ImageView{
     final static Image imagedos = new Image("file:./imagedos.png");
     static int SPACE_X_CARDS= 20;
     static int SPACE_Y_CARDS= 20;
-    static int CARD_W= 150;
+    static int CARD_W= 149;
     static int CARD_H= 200;
 
 
@@ -31,9 +31,9 @@ public class CarteView extends ImageView{
         if (CardModel.getTurned()==true) {
             this.setImage(global);
             if (CardModel.getNumero() <= 14) {
-                this.setViewport(new Rectangle2D(((CardModel.getNumero()) % 15) * (SPACE_X_CARDS + CARD_W), CardModel.getRankType() * (SPACE_Y_CARDS + CARD_H), 150, 200));
+                this.setViewport(new Rectangle2D(((CardModel.getNumero()) % 15) * (SPACE_X_CARDS + CARD_W), CardModel.getRankType() * (SPACE_Y_CARDS + CARD_H), CARD_W, 200));
             } else {
-                this.setViewport(new Rectangle2D(((CardModel.getNumero()) % 14) * (SPACE_X_CARDS + CARD_W), CardModel.getRankType() * (SPACE_Y_CARDS + CARD_H), 150, 200));
+                this.setViewport(new Rectangle2D(((CardModel.getNumero()) % 14) * (SPACE_X_CARDS + CARD_W), CardModel.getRankType() * (SPACE_Y_CARDS + CARD_H), CARD_W, 200));
             }
         }
 
