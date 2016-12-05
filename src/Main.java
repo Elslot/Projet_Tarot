@@ -17,7 +17,7 @@ public class Main extends Application{
         View viewtest = new View(modeltest);
         Controller control = new Controller(modeltest, viewtest);
 
-        control.lancerDistribution();
-
+       control.lancerDistribution();
+        control.enchere();
     }
 }

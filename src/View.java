@@ -38,6 +38,10 @@ public class View extends Stage implements Observer {
     private Model modele;
 
     private Button bDistribution;
+    private Button bGarde;
+    private Button bPrise;
+    private Button bGardeSansChien;
+    private Button bGardeContreChien;
 
     public View(Model modele) {
 
@@ -52,13 +56,52 @@ public class View extends Stage implements Observer {
         //      Fenetre.setFullScreenExitHint("Press ESC to exit FullScreen Mode");
         root = new Group();
 
+        //Inistialisation de chaque bouton
+        //"Distribuer" qui sera affiché dés le début
         bDistribution = new Button("Distribuer");
         bDistribution.setPrefSize(150, 50);
         bDistribution.setLayoutX(SCREEN_W_VIEW/2 - bDistribution.getPrefWidth()/2);
         bDistribution.setLayoutY(3*SCREEN_H_VIEW/4 - bDistribution.getPrefHeight()/2);
         bDistribution.setFont((Font.font(20)));
 
+        //Les boutons de choix des enchères qui seront invisbles et désactivés au début
+        bPrise = new Button("Prise");
+        bPrise.setPrefSize(150, 50);
+        bPrise.setLayoutX(2*SCREEN_W_VIEW/7 - bPrise.getPrefWidth()/2);
+        bPrise.setLayoutY(SCREEN_H_VIEW/12 - bPrise.getPrefHeight()/2);
+        bPrise.setFont((Font.font(12)));
+        bPrise.setDisable(true);
+        bPrise.setOpacity(0);
+
+        bGarde = new Button("Garde");
+        bGarde.setPrefSize(150, 50);
+        bGarde.setLayoutX(2.75*SCREEN_W_VIEW/7 - bGarde.getPrefWidth()/2);
+        bGarde.setLayoutY(SCREEN_H_VIEW/12 - bGarde.getPrefHeight()/2);
+        bGarde.setFont((Font.font(12)));
+        bGarde.setDisable(true);
+        bGarde.setOpacity(0);
+
+        bGardeSansChien = new Button("Garde sans chien");
+        bGardeSansChien.setPrefSize(150, 50);
+        bGardeSansChien.setLayoutX(3.5*SCREEN_W_VIEW/7 - bGardeSansChien.getPrefWidth()/2);
+        bGardeSansChien.setLayoutY(SCREEN_H_VIEW/12 - bGardeSansChien.getPrefHeight()/2);
+        bGardeSansChien.setFont((Font.font(12)));
+        bGardeSansChien.setDisable(true);
+        bGardeSansChien.setOpacity(0);
+
+        bGardeContreChien = new Button("Garde contre chien");
+        bGardeContreChien.setPrefSize(150, 50);
+        bGardeContreChien.setLayoutX(4.25*SCREEN_W_VIEW/7 - bGardeContreChien.getPrefWidth()/2);
+        bGardeContreChien.setLayoutY(SCREEN_H_VIEW/12 - bGardeContreChien.getPrefHeight()/2);
+        bGardeContreChien.setFont((Font.font(12)));
+        bGardeContreChien.setDisable(true);
+        bGardeContreChien.setOpacity(0);
+
         root.getChildren().add(bDistribution);
+        root.getChildren().add(bPrise);
+        root.getChildren().add(bGarde);
+        root.getChildren().add(bGardeSansChien);
+        root.getChildren().add(bGardeContreChien);
 
         scene = new Scene(root, SCREEN_W_VIEW, SCREEN_H_VIEW, Color.DARKSEAGREEN);
         Fenetre.setScene(scene);
@@ -75,16 +118,14 @@ public class View extends Stage implements Observer {
             cardviews.add(cartePaquetView);
             root.getChildren().add(cartePaquetView);
         }
-
         Fenetre.show();
-
     }
 
     public boolean distribution(ArrayList<CarteView> cards) {
 
         int indx = 1;
         int indy = 1;
-        boolean end = true;
+        boolean end = false;
         SequentialTransition sequential = new SequentialTransition();
         sequential.setCycleCount(1);
         sequential.setDelay(Duration.millis(10));
@@ -133,6 +174,44 @@ public class View extends Stage implements Observer {
 
 
 
+    public SequentialTransition TransitionAutreJoueur(CarteView card, double x, double y, double finalx, double finaly, boolean rotate, SequentialTransition sequential){
+        TranslateTransition translateTransition=
+                new TranslateTransition(Duration.millis(100), card);
+        translateTransition.setFromX(x);
+        translateTransition.setToX(finalx);
+        translateTransition.setFromY(y);
+        translateTransition.setToY(finaly);
+        translateTransition.setCycleCount(1);
+        translateTransition.setAutoReverse(true);
+
+
+  /*      ParallelTransition parallelTransition = new ParallelTransition();
+        parallelTransition.getChildren().add(
+                translateTransition); */
+
+        if (rotate) {
+
+            rotate(card, sequential);
+        }
+        sequential.getChildren().add(translateTransition);
+       // parallelTransition.setCycleCount(1);
+        return sequential;
+    }
+
+    public SequentialTransition rotate( CarteView card, SequentialTransition sequential){
+        RotateTransition rotateTransition =
+                new RotateTransition(Duration.millis(50), card);
+        rotateTransition.setByAngle(90f);
+        rotateTransition.setCycleCount(1);
+        sequential.getChildren().add(rotateTransition);
+        return sequential;
+    }
+
+    public void TransitionJoueur(CarteView card, double x, double y, double finalx, double finaly, boolean rotate, SequentialTransition sequential){
+
+
+    }
+
     public void Poubelle() {
 
 
@@ -176,6 +255,38 @@ public class View extends Stage implements Observer {
     public Button getBoutonDistribuer()
     {
         return bDistribution;
+    }
+
+    public Button getBoutonGarde() {
+        return bGarde;
+    }
+
+    public void setBoutonGarde(Button bGarde) {
+        this.bGarde = bGarde;
+    }
+
+    public Button getBoutonPrise() {
+        return bPrise;
+    }
+
+    public void setBoutonPrise(Button bPrise) {
+        this.bPrise = bPrise;
+    }
+
+    public Button getBoutonGardeSansChien() {
+        return bGardeSansChien;
+    }
+
+    public void setBoutonGardeSansChien(Button bGardeSansChien) {
+        this.bGardeSansChien = bGardeSansChien;
+    }
+
+    public Button getBoutonGardeContreChien() {
+        return bGardeContreChien;
+    }
+
+    public void setBoutonGardeContreChien(Button bGardeContreChien) {
+        this.bGardeContreChien = bGardeContreChien;
     }
 
     @Override
