@@ -3,7 +3,7 @@ import java.util.*;
 
 public class Model extends Observable{
 	private ArrayList<Carte> paquet;
-    private Stack<Carte> paquetMelange;
+    private ArrayList<Carte> paquetMelange;
 	private ArrayList<Carte> chien;
 	private ArrayList<Carte> joueur;
     private ArrayList<Carte> autreJoueur1;
@@ -31,7 +31,7 @@ public class Model extends Observable{
         }
         paquet.add(new Carte(TypeCarte.EXCUSE, 0)); //Insertion de l'excuse
 
-        paquetMelange = new Stack<>();
+        paquetMelange = new ArrayList<>();
 		chien = new ArrayList<>();
 		joueur = new ArrayList<>();
         autreJoueur1 = new ArrayList<>();
@@ -44,25 +44,25 @@ public class Model extends Observable{
 	public void distribution()
     {
     	int indiceDistrib = 0;
-        for(int i = 1; i <= 78; i++)
+        for(int i = 0; i <= 77; i++)
         {
             if (indiceDistrib >= 13) {
                 indiceDistrib = 0;
             }
             if (indiceDistrib < 3) {
-                autreJoueur1.add(paquetMelange.pop());
+                autreJoueur1.add(paquetMelange.get(i));
                 indiceDistrib++;
             } else if (indiceDistrib >= 3 && indiceDistrib < 6) {
-                autreJoueur2.add(paquetMelange.pop());
+                autreJoueur2.add(paquetMelange.get(i));
                 indiceDistrib++;
             } else if (indiceDistrib >= 6 && indiceDistrib < 9) {
-                autreJoueur3.add(paquetMelange.pop());
+                autreJoueur3.add(paquetMelange.get(i));
                 indiceDistrib++;
             } else if (indiceDistrib == 9) {
-                chien.add(paquetMelange.pop());
+                chien.add(paquetMelange.get(i));
                 indiceDistrib++;
             } else if (indiceDistrib >= 10 && indiceDistrib < 13) {
-                joueur.add(paquetMelange.pop());
+                joueur.add(paquetMelange.get(i));
                 indiceDistrib++;
             }
         }
@@ -75,7 +75,7 @@ public class Model extends Observable{
         Random rand  = new Random();
         for(int i = 1; i <= 78; i++) {
             iAlea = rand.nextInt(iMax);
-            paquetMelange.push(paquet.get(iAlea));
+            paquetMelange.add(paquet.get(iAlea));
             paquet.remove(iAlea);
             iMax--;
         }
@@ -141,6 +141,12 @@ public class Model extends Observable{
         cartes.addAll(atouts);
         cartes.addAll(carreaux);
         cartes.addAll(trefles);
+    }
+
+    public void trierCartesAffichee()
+    {
+        trier(joueur);
+        trier(chien);
     }
 
     public boolean aPetitSec(ArrayList<Carte> cartes)
@@ -213,13 +219,12 @@ public class Model extends Observable{
         }
     }
 
+    public ArrayList<Carte> getPaquetMelange() {
+        return paquetMelange;
+    }
+
     public ArrayList<Carte> getCarteJoueur ()
 	{
 		return joueur;
 	}
-
-    public ArrayList<Carte> getPaquet ()
-    {
-        return paquet;
-    }
 }

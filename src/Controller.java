@@ -23,7 +23,6 @@ public class Controller {
         view.getBoutonDistribuer().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                modele.melanger();
                 modele.distribution();
                 distributionFini = view.distribution(view.getCardsViews());
                 view.distribution(view.getCardsViews());
@@ -31,7 +30,7 @@ public class Controller {
                 for (Carte c : modele.getCarteJoueur()) {
                     System.out.println(c.getNumero() + " / " + c.getType());
                 }
-                modele.trier(modele.getCarteJoueur());
+                modele.trierCartesAffichee();
                 System.out.println("---------------------------------------");
                 for (Carte c : modele.getCarteJoueur()) {
                     System.out.println(c.getNumero() + " / " + c.getType());

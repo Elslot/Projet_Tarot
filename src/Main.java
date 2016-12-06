@@ -14,6 +14,8 @@ public class Main extends Application{
     public void start(Stage viewTest) throws Exception {
 
         Model modeltest = new Model();
+        modeltest.melanger();
+
         View viewtest = new View(modeltest);
         Controller control = new Controller(modeltest, viewtest);
 
