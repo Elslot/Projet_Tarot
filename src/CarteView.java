@@ -1,16 +1,20 @@
 import javafx.animation.*;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * Created by karnaudeau on 29/11/16.
  */
 
-public class CarteView extends ImageView{
+public class CarteView {
 
     final static Image global = new Image("file:./cartesfinales.png");
     final static Image imagedos = new Image("file:./imagedos.png");
@@ -19,8 +23,9 @@ public class CarteView extends ImageView{
     static int CARD_W= 149;
     static int CARD_H= 200;
 
-    private int z;
+    private double x, y;
     private ImageView face;
+    private ImageView dos;
     private Carte CardModel;
 
 
@@ -30,18 +35,23 @@ public class CarteView extends ImageView{
         CardModel = card;
 
         face = new ImageView();
+        dos = new ImageView();
 
-        face.setTranslateX(this.getX());
-        face.setTranslateY(this.getY());
-        face.setTranslateZ(z);
+        x=CardModel.getPosX()-50;
+        y=CardModel.getPosY();
 
-        this.setImage(imagedos);
-        this.setTranslateX(this.getX());
-        this.setTranslateY(this.getY());
-        this.setTranslateZ(z);
 
-        this.setX(CardModel.getPosX());
-        this.setY(CardModel.getPosY());
+        dos.setTranslateX(x);
+        dos.setTranslateY(y);
+
+        face.setTranslateX(x);
+        face.setTranslateY(y);
+    //    face.setTranslateZ(z);
+
+        dos.setImage(imagedos);
+
+    //    dos.setTranslateZ(z);
+
 
 
         face.setImage(global);
@@ -57,21 +67,34 @@ public class CarteView extends ImageView{
 
     }
 
-    Transition flip() {
-        final RotateTransition rotateOutFront = new RotateTransition(Duration.millis(3000), face);
+    Collection<Node> getNodes(){
+        ArrayList<Node> al = new ArrayList<>();
+        al.add(face);
+        al.add(dos);
+        return al;
+    }
+
+
+    SequentialTransition flip(SequentialTransition sequential) {
+        final RotateTransition rotateOutFront = new RotateTransition(Duration.millis(300), face);
         rotateOutFront.setInterpolator(Interpolator.LINEAR);
         rotateOutFront.setAxis(Rotate.Y_AXIS);
-        rotateOutFront.setFromAngle(0);
-        rotateOutFront.setToAngle(90);
+        rotateOutFront.setFromAngle(90);
+        rotateOutFront.setToAngle(0);
         //
-        final RotateTransition rotateInBack = new RotateTransition(Duration.millis(3000), this);
+
+
+        final RotateTransition rotateInBack = new RotateTransition(Duration.millis(300), dos);
         rotateInBack.setInterpolator(Interpolator.LINEAR);
         rotateInBack.setAxis(Rotate.Y_AXIS);
         rotateInBack.setFromAngle(0);
         rotateInBack.setToAngle(90);
         //
    //     return rotateInBack;
-        return new SequentialTransition( rotateInBack, rotateOutFront);
+        SequentialTransition sequential2 = new SequentialTransition();
+        sequential2.getChildren().addAll(rotateInBack, rotateOutFront);
+        sequential.getChildren().add(sequential2);
+        return sequential;
     }
 
 
@@ -79,8 +102,12 @@ public class CarteView extends ImageView{
 
 
     public SequentialTransition TransitionAutreJoueur(CarteView card, double x, double y, double finalx, double finaly, boolean rotate, SequentialTransition sequential){
+
+        ParallelTransition parallelTransition = new ParallelTransition();
+        parallelTransition.setCycleCount(1);
+
         TranslateTransition translateTransition=
-                new TranslateTransition(Duration.millis(100), card);
+                new TranslateTransition(Duration.millis(100), dos);
         translateTransition.setFromX(x);
         translateTransition.setToX(finalx);
         translateTransition.setFromY(y);
@@ -88,22 +115,71 @@ public class CarteView extends ImageView{
         translateTransition.setCycleCount(1);
         translateTransition.setAutoReverse(true);
 
+        TranslateTransition translateTransition2=
+                new TranslateTransition(Duration.millis(100), face);
+        translateTransition.setFromX(x);
+        translateTransition.setToX(finalx);
+        translateTransition.setFromY(y);
+        translateTransition.setToY(finaly);
+        translateTransition.setCycleCount(1);
+        translateTransition.setAutoReverse(true);
+
+        parallelTransition.getChildren().addAll(translateTransition, translateTransition2);
+
 
         if (rotate) {
 
             rotate(card, sequential);
         }
-        sequential.getChildren().add(translateTransition);
+        sequential.getChildren().add(parallelTransition);
+
+        face.setTranslateX(finalx);
+        face.setTranslateY(finaly);
+
         return sequential;
     }
 
     public SequentialTransition rotate( CarteView card, SequentialTransition sequential){
+
+        ParallelTransition parallelTransition = new ParallelTransition();
+        parallelTransition.setCycleCount(1);
+
         RotateTransition rotateTransition =
-                new RotateTransition(Duration.millis(50), card);
+                new RotateTransition(Duration.millis(50), dos);
         rotateTransition.setByAngle(90f);
         rotateTransition.setCycleCount(1);
-        sequential.getChildren().add(rotateTransition);
+
+        RotateTransition rotateTransition2 =
+                new RotateTransition(Duration.millis(50
+                ), face);
+        rotateTransition.setByAngle(90f);
+        rotateTransition.setCycleCount(1);
+
+        parallelTransition.getChildren().addAll(rotateTransition, rotateTransition2);
+        sequential.getChildren().add(parallelTransition);
+
         return sequential;
     }
+
+
+    public void positionFace()
+    {
+        face.setTranslateX(dos.getTranslateX());
+        face.setTranslateY(dos.getTranslateY());
+
+    }
+
+    public ImageView getDos()
+    {
+        return dos;
+    }
+
+    public ImageView getFace()
+    {
+        return face;
+    }
+
+    public double getX(){return x;}
+    public double getY(){return y;}
 
 }

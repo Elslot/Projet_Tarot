@@ -46,7 +46,7 @@ public class Controller {
 
     public void enchere()
     {
-        if(distributionFini) {
+        if(view.getEnd()) {
             view.getBoutonPrise().setDisable(false);
             view.getBoutonGarde().setDisable(false);
             view.getBoutonGardeSansChien().setDisable(false);

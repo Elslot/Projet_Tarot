@@ -22,6 +22,7 @@ public class Carte {
         y = SCREEN_H_MODEL/10;
 	}
 	public boolean getTurned() {return turned; }
+	public void setTurned() { turned=true; }
 
 	public TypeCarte getType()
 	{
