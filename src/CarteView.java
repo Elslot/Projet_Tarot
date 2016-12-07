@@ -102,7 +102,55 @@ public class CarteView  {
     public Carte getModel(){ return CardModel; }
 
 
-    public SequentialTransition TransitionAutreJoueur(CarteView card, double x, double y, double finalx, double finaly, boolean rotate, SequentialTransition sequential){
+    public SequentialTransition TransitionAutreJoueur( double x, double y, double finalx, double finaly, boolean rotate, SequentialTransition sequential){
+
+        ParallelTransition parallelTransition = new ParallelTransition();
+        parallelTransition.setCycleCount(1);
+
+        TranslateTransition translateTransition=
+                new TranslateTransition(Duration.millis(100), dos);
+        translateTransition.setFromX(x);
+        translateTransition.setToX(finalx);
+        translateTransition.setFromY(y);
+        translateTransition.setToY(finaly);
+        translateTransition.setCycleCount(1);
+        translateTransition.setAutoReverse(true);
+
+
+        parallelTransition.getChildren().add(translateTransition);//, translateTransition2);
+
+
+        if (rotate) {
+
+            rotate( sequential);
+        }
+        sequential.getChildren().add(parallelTransition);
+
+
+        face.setTranslateX(finalx);
+        face.setTranslateY(finaly);
+
+        return sequential;
+    }
+
+    public SequentialTransition rotate( SequentialTransition sequential){
+
+        ParallelTransition parallelTransition = new ParallelTransition();
+        parallelTransition.setCycleCount(1);
+
+        RotateTransition rotateTransition =
+                new RotateTransition(Duration.millis(50), dos);
+        rotateTransition.setByAngle(90f);
+        rotateTransition.setCycleCount(1);
+
+        parallelTransition.getChildren().addAll(rotateTransition);
+        sequential.getChildren().add(parallelTransition);
+
+        return sequential;
+    }
+
+    public SequentialTransition triGraphique( double x, double y, double finalx, double finaly, SequentialTransition sequential){
+
 
         ParallelTransition parallelTransition = new ParallelTransition();
         parallelTransition.setCycleCount(1);
@@ -127,37 +175,7 @@ public class CarteView  {
 
         parallelTransition.getChildren().addAll(translateTransition, translateTransition2);
 
-
-        if (rotate) {
-
-            rotate( sequential);
-        }
-        sequential.getChildren().add(parallelTransition);
-
-        face.setTranslateX(finalx);
-        face.setTranslateY(finaly);
-
-        return sequential;
-    }
-
-    public SequentialTransition rotate( SequentialTransition sequential){
-
-        ParallelTransition parallelTransition = new ParallelTransition();
-        parallelTransition.setCycleCount(1);
-
-        RotateTransition rotateTransition =
-                new RotateTransition(Duration.millis(50), dos);
-        rotateTransition.setByAngle(90f);
-        rotateTransition.setCycleCount(1);
-
-        RotateTransition rotateTransition2 =
-                new RotateTransition(Duration.millis(50
-                ), face);
-        rotateTransition.setByAngle(90f);
-        rotateTransition.setCycleCount(1);
-
-        parallelTransition.getChildren().addAll(rotateTransition, rotateTransition2);
-        sequential.getChildren().add(parallelTransition);
+        sequential.getChildren().addAll(parallelTransition);
 
         return sequential;
     }

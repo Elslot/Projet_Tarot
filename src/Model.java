@@ -100,6 +100,9 @@ public class Model extends Observable{
             }
         });
 
+        int ind_x = 1;
+        int ind_y = 1;
+
         for(int i = 0; i < cartes.size(); i++)
         {
             if(cartes.get(i).getType() == TypeCarte.PIQUE)
@@ -126,6 +129,17 @@ public class Model extends Observable{
             {
                 excuse = true;
                 iExcuse = i;
+            }
+            cartes.get(i).setPlaceX(ind_x);
+            cartes.get(i).setPlaceY(ind_y);
+            if(ind_x >= 10 && (ind_y!=2))
+            {
+                ind_y++;
+                ind_x = 0;
+            }
+            else
+            {
+                ind_x++;
             }
         }
 

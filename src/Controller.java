@@ -24,7 +24,6 @@ public class Controller {
             @Override
             public void handle(MouseEvent event) {
                 modele.distribution();
-                distributionFini = view.distribution(view.getCardsViews());
                 view.distribution(view.getCardsViews());
 
                 for (Carte c : modele.getCarteJoueur()) {

@@ -53,6 +53,8 @@ public class Carte {
 		}
 	}
 
+	public double getPlaceX(){ return ind_place_x;}
+	public double getPlaceY(){ return ind_place_y;}
 	public void setPlaceX(int x){ ind_place_x=x;}
 	public void setPlaceY(int y){ ind_place_y=y;}
 
