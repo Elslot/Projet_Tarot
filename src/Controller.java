@@ -2,6 +2,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 import java.util.Collections;
@@ -26,14 +28,14 @@ public class Controller {
 
                 modele.distribution();
                 view.distribution(view.getCardsViews());
-                tri();
 
-                if(true)
+                if(modele.trouverPetitSec())
                 {
-                    view.petitSec(modele.getJoueurPetitSec());
+                    petitSec();
                 }
                 else
                 {
+                    tri();
                     modele.trouverPetitSec();
 
                     for (Carte c : modele.getCarteJoueur()) {
@@ -91,5 +93,17 @@ public class Controller {
         });
     }
 
+    public void petitSec()
+    {
+        view.getRoot().setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if(event.getCode() == KeyCode.SPACE)
+                {
+                    view.getStage().close();
+                }
+            }
+        });
+    }
 
 }

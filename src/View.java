@@ -205,11 +205,18 @@ public class View implements Observer {
 
         sequential.setOnFinished(event ->  {
 
-            cacherBouton(bTrier, false);
-            end = true;
-            GcardsFace.setOpacity(1);
+            if (!modele.getPetitSec()) {
+                cacherBouton(bTrier, false);
+            }
+            else
+            {
+                petitSec(modele.getJoueurPetitSec());
+            }
+                end = true;
+                GcardsFace.setOpacity(1);
 
-        });
+
+                });
 
         total.getChildren().addAll(sequential, sequential2);
         total.play();
@@ -337,7 +344,12 @@ public class View implements Observer {
 
             }
 
-            public Stage getStage() {
+            public Group getRoot() {
+                return root;
+            }
+
+            public Stage getStage()
+            {
                 return Fenetre;
             }
         }
