@@ -63,60 +63,25 @@ public class View implements Observer {
 
         //Inistialisation de chaque bouton
         //"Distribuer" qui sera affiché dés le début
-        bDistribution = new Button("Distribuer");
-        bDistribution.setPrefSize(150, 50);
-        bDistribution.setLayoutX(SCREEN_W_VIEW/2 - bDistribution.getPrefWidth()/2);
-        bDistribution.setLayoutY(3*SCREEN_H_VIEW/4 - bDistribution.getPrefHeight()/2);
-        bDistribution.setFont((Font.font(20)));
+        bDistribution = new Button();
+        createButton(bDistribution, "Distribuer", SCREEN_W_VIEW/2 - bDistribution.getPrefWidth()/2, 3*SCREEN_H_VIEW/4 - bDistribution.getPrefHeight()/2, 20, false);
 
         //"Trier" qui sera invisibles et désactivé avant la distribution
-        bTrier = new Button("Trier");
-        bTrier.setPrefSize(150, 50);
-        bTrier.setLayoutX(SCREEN_W_VIEW/2 - bTrier.getPrefWidth()/2);
-        bTrier.setLayoutY(6*SCREEN_H_VIEW/7 - bTrier.getPrefHeight()/2);
-        bTrier.setFont((Font.font(20)));
-        bTrier.setDisable(true);
-        bTrier.setOpacity(0);
+        bTrier = new Button();
+        createButton(bTrier, "Trier", SCREEN_W_VIEW/2 - bDistribution.getPrefWidth()/2, 6*SCREEN_H_VIEW/7 - bTrier.getPrefHeight()/2, 20, true);
 
         //Les boutons de choix des enchères qui seront invisbles et désactivés au début
-        bPrise = new Button("Prise");
-        bPrise.setPrefSize(150, 50);
-        bPrise.setLayoutX(2*SCREEN_W_VIEW/7 - bPrise.getPrefWidth()/2);
-        bPrise.setLayoutY(SCREEN_H_VIEW/12 - bPrise.getPrefHeight()/2);
-        bPrise.setFont((Font.font(12)));
-        bPrise.setDisable(true);
-        bPrise.setOpacity(0);
+        bPrise = new Button();
+        createButton(bPrise, "Prise", 2*SCREEN_W_VIEW/7 - bPrise.getPrefWidth()/2, SCREEN_H_VIEW/12 - bPrise.getPrefHeight()/2, 12, true);
 
-        bGarde = new Button("Garde");
-        bGarde.setPrefSize(150, 50);
-        bGarde.setLayoutX(2.75*SCREEN_W_VIEW/7 - bGarde.getPrefWidth()/2);
-        bGarde.setLayoutY(SCREEN_H_VIEW/12 - bGarde.getPrefHeight()/2);
-        bGarde.setFont((Font.font(12)));
-        bGarde.setDisable(true);
-        bGarde.setOpacity(0);
+        bGarde = new Button();
+        createButton(bGarde, "Garde", 2.75*SCREEN_W_VIEW/7 - bGarde.getPrefWidth()/2, SCREEN_H_VIEW/12 - bGarde.getPrefHeight()/2, 12, true);
 
-        bGardeSansChien = new Button("Garde sans chien");
-        bGardeSansChien.setPrefSize(150, 50);
-        bGardeSansChien.setLayoutX(3.5*SCREEN_W_VIEW/7 - bGardeSansChien.getPrefWidth()/2);
-        bGardeSansChien.setLayoutY(SCREEN_H_VIEW/12 - bGardeSansChien.getPrefHeight()/2);
-        bGardeSansChien.setFont((Font.font(12)));
-        bGardeSansChien.setDisable(true);
-        bGardeSansChien.setOpacity(0);
+        bGardeSansChien = new Button();
+        createButton(bGardeSansChien, "Garde sans chien", 3.5*SCREEN_W_VIEW/7 - bGardeSansChien.getPrefWidth()/2, SCREEN_H_VIEW/12 - bGardeSansChien.getPrefHeight()/2, 12, true);
 
-        bGardeContreChien = new Button("Garde contre chien");
-        bGardeContreChien.setPrefSize(150, 50);
-        bGardeContreChien.setLayoutX(4.25*SCREEN_W_VIEW/7 - bGardeContreChien.getPrefWidth()/2);
-        bGardeContreChien.setLayoutY(SCREEN_H_VIEW/12 - bGardeContreChien.getPrefHeight()/2);
-        bGardeContreChien.setFont((Font.font(12)));
-        bGardeContreChien.setDisable(true);
-        bGardeContreChien.setOpacity(0);
-
-        root.getChildren().add(bDistribution);
-        root.getChildren().add(bTrier);
-        root.getChildren().add(bPrise);
-        root.getChildren().add(bGarde);
-        root.getChildren().add(bGardeSansChien);
-        root.getChildren().add(bGardeContreChien);
+        bGardeContreChien = new Button();
+        createButton(bGardeContreChien, "Garde sans chien", 4.25*SCREEN_W_VIEW/7 - bGardeContreChien.getPrefWidth()/2, SCREEN_H_VIEW/12 - bGardeContreChien.getPrefHeight()/2, 12, true);
 
         scene = new Scene(root, SCREEN_W_VIEW, SCREEN_H_VIEW, Color.DARKSEAGREEN);
         Fenetre.setScene(scene);
@@ -309,6 +274,22 @@ public class View implements Observer {
                 affichage_petitSec.setFont(Font.font(50));
                 affichage_petitSec.setTextAlignment(TextAlignment.CENTER);
                 root.getChildren().add(affichage_petitSec);
+            }
+
+            public void createButton(Button buttonCreated, String title, double x, double y,int font, boolean disable)
+            {
+                buttonCreated.setText(title);
+                buttonCreated.setPrefSize(150, 50);
+                buttonCreated.setLayoutX(x);
+                buttonCreated.setLayoutY(y);
+                buttonCreated.setFont((Font.font(font)));
+
+                if(disable) {
+                    buttonCreated.setDisable(disable);
+                    buttonCreated.setOpacity(0);
+                }
+
+                root.getChildren().add(buttonCreated);
             }
 
             public ArrayList<CarteView> getCardsViews() {
