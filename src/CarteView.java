@@ -15,7 +15,7 @@ import java.util.Collection;
  * Created by karnaudeau on 29/11/16.
  */
 
-public class CarteView  {
+public class CarteView extends Group {
 
     final static Image global = new Image("file:./cartesfinales2.png");
     final static Image imagedos = new Image("file:./imagedos.png");
@@ -174,6 +174,7 @@ public class CarteView  {
         translateTransition.setAutoReverse(true);
 
         parallelTransition.getChildren().addAll(translateTransition, translateTransition2);
+        parallelTransition.play();
 
         sequential.getChildren().addAll(parallelTransition);
 

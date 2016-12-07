@@ -186,7 +186,6 @@ public class View implements Observer {
 
             if (i%13 >=10)
             {
-
                 sequential = cards.get(i).TransitionAutreJoueur( startx, starty, startx-100+160*indx, 250+220*indy, false, sequential);
                 cartesJoueur.add(cards.get(i));
                 indx ++;
@@ -206,31 +205,41 @@ public class View implements Observer {
 
         sequential.setOnFinished(event ->  {
 
-                    cacherBouton(bTrier, false);
-                    end = true;
-                    GcardsFace.setOpacity(1);
+            cacherBouton(bTrier, false);
+            end = true;
+            GcardsFace.setOpacity(1);
 
-                });
+        });
 
-                total.getChildren().addAll(sequential, sequential2);
-                total.play();
-
-
-                end = true;
+        total.getChildren().addAll(sequential, sequential2);
+        total.play();
 
 
-            }
+        end = true;
+
+
+    }
 
 
 
             public void AppelTri() {
                 SequentialTransition sequential = new SequentialTransition();
+                double startx;
+                double starty;
                 for (int i = 0; i < 18; i++) {
-                    double startx = cartesJoueur.get(i).getDos().getTranslateX();
-                    double starty = cartesJoueur.get(i).getDos().getTranslateY();
-                    sequential = cartesJoueur.get(i).triGraphique(startx, starty, startx - 100 + 160 * cartesJoueur.get(i).getModel().getPlaceX(), 250 + 220 * cartesJoueur.get(i).getModel().getPlaceY(), sequential);
-                }
+                    startx = cartesJoueur.get(i).getDos().getTranslateX();
+                    starty = cartesJoueur.get(i).getDos().getTranslateY();
+                    System.out.println(startx);
+                    System.out.println(starty+"\n --------------\n");
+                    sequential = cartesJoueur.get(i).triGraphique(startx, starty, startx - 100 + 160*cartesJoueur.get(i).getModel().getPlaceX(), 250 + 220 * cartesJoueur.get(i).getModel().getPlaceY(), sequential);
+            }
                 sequential.play();
+                for (int i= 0; i<18; i++){
+                    startx = cartesJoueur.get(i).getDos().getTranslateX();
+                    starty = cartesJoueur.get(i).getDos().getTranslateY();
+                    System.out.println(startx);
+                    System.out.println(starty+"\n --------------\n");
+                }
             }
 
             public void Poubelle() {
