@@ -112,6 +112,9 @@ public class View extends Stage implements Observer {
 
         for (int i = 0; i < 78; i++) {
 
+
+
+
             CarteView cartePaquetView = new CarteView(modele.getPaquetMelange().get(i));
             cardviews.add(cartePaquetView);
             cardviews.get(i).setXY(cardviews.get(i).getX()-(0.1*i), cardviews.get(i).getY()-(0.1*i));
