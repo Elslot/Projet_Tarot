@@ -10,12 +10,10 @@ public class Controller {
 
     private Model modele;
     private View view;
-    private boolean distributionFini;
 
     public Controller(Model mod, View view){
         modele=mod;
         this.view = view;
-        distributionFini = false;
     }
 
     public void lancerDistribution()
@@ -23,19 +21,25 @@ public class Controller {
         view.getBoutonDistribuer().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                modele.distribution();
-                view.distribution(view.getCardsViews());
-
-                for (Carte c : modele.getCarteJoueur()) {
-                    System.out.println(c.getNumero() + " / " + c.getType());
-                }
-                modele.trierCartesAffichee();
-                System.out.println("---------------------------------------");
-                for (Carte c : modele.getCarteJoueur()) {
-                    System.out.println(c.getNumero() + " / " + c.getType());
-                }
                 view.getBoutonDistribuer().setDisable(true);
                 view.getBoutonDistribuer().setOpacity(0);
+
+                modele.distribution();
+                view.distribution(view.getCardsViews());
+                tri();
+
+                if(true)
+                {
+                    view.petitSec(modele.getJoueurPetitSec());
+                }
+                else
+                {
+                    modele.trouverPetitSec();
+
+                    for (Carte c : modele.getCarteJoueur()) {
+                        System.out.println(c.getNumero() + " / " + c.getType());
+                    }
+                }
             }
         });
 
@@ -44,26 +48,48 @@ public class Controller {
 
     public void enchere()
     {
-        if(view.getEnd()) {
-            view.getBoutonPrise().setDisable(false);
-            view.getBoutonGarde().setDisable(false);
-            view.getBoutonGardeSansChien().setDisable(false);
-            view.getBoutonGardeContreChien().setDisable(false);
-            view.getBoutonPrise().setOpacity(1);
-            view.getBoutonGarde().setOpacity(1);
-            view.getBoutonGardeSansChien().setOpacity(1);
-            view.getBoutonGardeContreChien().setOpacity(1);
-        }
-
         view.getBoutonPrise().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                view.cacherBoutonEnchere(true);
                 //Enchere
-
+            }
+        });
+        view.getBoutonGarde().setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                view.cacherBoutonEnchere(true);
+                //Enchere
+            }
+        });
+        view.getBoutonGardeSansChien().setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                view.cacherBoutonEnchere(true);
+                //Enchere
+            }
+        });
+        view.getBoutonGardeContreChien().setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                view.cacherBoutonEnchere(true);
+                //Enchere
             }
         });
     }
 
+    public void tri()
+    {
+        modele.trierCartesAffichee();
+        view.getBoutonTrier().setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                view.AppelTri();
+                view.cacherBoutonEnchere(false);
+                view.cacherBouton(view.getBoutonTrier(), true);
+            }
+        });
+    }
 
 
 }

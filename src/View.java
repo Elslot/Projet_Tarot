@@ -5,8 +5,10 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -16,7 +18,7 @@ import java.awt.Dimension;
 import java.lang.reflect.Array;
 import java.util.*;
 
-public class View extends Stage implements Observer {
+public class View implements Observer {
 
     protected static final int windowSizeW = 400;
     protected static final int windowSizeH = 100;
@@ -42,6 +44,7 @@ public class View extends Stage implements Observer {
     private Button bPrise;
     private Button bGardeSansChien;
     private Button bGardeContreChien;
+    private Button bTrier;
 
     public View(Model modele) {
 
@@ -65,6 +68,15 @@ public class View extends Stage implements Observer {
         bDistribution.setLayoutX(SCREEN_W_VIEW/2 - bDistribution.getPrefWidth()/2);
         bDistribution.setLayoutY(3*SCREEN_H_VIEW/4 - bDistribution.getPrefHeight()/2);
         bDistribution.setFont((Font.font(20)));
+
+        //"Trier" qui sera invisibles et désactivé avant la distribution
+        bTrier = new Button("Trier");
+        bTrier.setPrefSize(150, 50);
+        bTrier.setLayoutX(SCREEN_W_VIEW/2 - bTrier.getPrefWidth()/2);
+        bTrier.setLayoutY(6*SCREEN_H_VIEW/7 - bTrier.getPrefHeight()/2);
+        bTrier.setFont((Font.font(20)));
+        bTrier.setDisable(true);
+        bTrier.setOpacity(0);
 
         //Les boutons de choix des enchères qui seront invisbles et désactivés au début
         bPrise = new Button("Prise");
@@ -100,6 +112,7 @@ public class View extends Stage implements Observer {
         bGardeContreChien.setOpacity(0);
 
         root.getChildren().add(bDistribution);
+        root.getChildren().add(bTrier);
         root.getChildren().add(bPrise);
         root.getChildren().add(bGarde);
         root.getChildren().add(bGardeSansChien);
@@ -191,33 +204,36 @@ public class View extends Stage implements Observer {
             sequential2= cartesJoueur.get(i).flip(sequential2);
         }
 
+        sequential.setOnFinished(event ->  {
 
-        sequential.setOnFinished(event -> {
-            end = true;
-            GcardsFace.setOpacity(1);
+                    cacherBouton(bTrier, false);
+                    end = true;
+                    GcardsFace.setOpacity(1);
 
-        });
+                });
 
-        total.getChildren().addAll(sequential, sequential2);
-        total.play();
-
-
-        end = true;
+                total.getChildren().addAll(sequential, sequential2);
+                total.play();
 
 
-    }
+                end = true;
 
-    public void AppelTri(){
-        SequentialTransition sequential = new SequentialTransition();
-        for (int i = 0; i<18; i++) {
-            double startx = cartesJoueur.get(i).getDos().getTranslateX();
-            double starty = cartesJoueur.get(i).getDos().getTranslateY();
-            sequential = cartesJoueur.get(i).triGraphique(startx, starty, startx-100+160*cartesJoueur.get(i).getModel().getPlaceX(), 250+220*cartesJoueur.get(i).getModel().getPlaceY(), sequential);
-        }
-        sequential.play();
-    }
 
-    public void Poubelle() {
+            }
+
+
+
+            public void AppelTri() {
+                SequentialTransition sequential = new SequentialTransition();
+                for (int i = 0; i < 18; i++) {
+                    double startx = cartesJoueur.get(i).getDos().getTranslateX();
+                    double starty = cartesJoueur.get(i).getDos().getTranslateY();
+                    sequential = cartesJoueur.get(i).triGraphique(startx, starty, startx - 100 + 160 * cartesJoueur.get(i).getModel().getPlaceX(), 250 + 220 * cartesJoueur.get(i).getModel().getPlaceY(), sequential);
+                }
+                sequential.play();
+            }
+
+            public void Poubelle() {
 
 
         /*
@@ -235,71 +251,88 @@ public class View extends Stage implements Observer {
         pathTransition.play();
        // pathTransition.stop(); */
 
-        //A mettre dans une autre fonction
-        int k = 0;
+                //A mettre dans une autre fonction
+                int k = 0;
 
 
-        for (int i = 1; i <= 2; i++) {
-            for (int j = 1; j <= 9; j++) {
+                for (int i = 1; i <= 2; i++) {
+                    for (int j = 1; j <= 9; j++) {
 
-                CarteView cartetest = new CarteView(modele.getCarteJoueur().get(k));
-             //   cartetest.setX((j - 1) * (150 + 20) + (150 + 20));
-             //   cartetest.setY((i - 1) * (200 + 20) + (200 + 20));
+                        CarteView cartetest = new CarteView(modele.getCarteJoueur().get(k));
+                        //   cartetest.setX((j - 1) * (150 + 20) + (150 + 20));
+                        //   cartetest.setY((i - 1) * (200 + 20) + (200 + 20));
 
-                // root.getChildren().add(cartetest);
-                k++;
+                        // root.getChildren().add(cartetest);
+                        k++;
+
+                    }
+                }
+            }
+
+            public void cacherBouton(Button bouton, boolean disable) {
+                int opacity = 1;
+                if (disable) {
+                    opacity = 0;
+                }
+
+                bouton.setDisable(disable);
+                bouton.setOpacity(opacity);
+            }
+
+            public void cacherBoutonEnchere(boolean disable) {
+                cacherBouton(bPrise, disable);
+                cacherBouton(bGarde, disable);
+                cacherBouton(bGardeSansChien, disable);
+                cacherBouton(bGardeContreChien, disable);
+            }
+
+            public void petitSec(int joueur) {
+                Label affichage_petitSec = new Label("Le joueur " + joueur + " a le petit sec, donne annulée.\n Veuillez relancer l'application. Appuyer sur espace pour quitter");
+                affichage_petitSec.setTranslateX(SCREEN_W_VIEW / 10);
+                affichage_petitSec.setTranslateY(0);
+                affichage_petitSec.setFont(Font.font(50));
+                affichage_petitSec.setTextAlignment(TextAlignment.CENTER);
+                root.getChildren().add(affichage_petitSec);
+            }
+
+            public ArrayList<CarteView> getCardsViews() {
+                return cardviews;
+            }
+
+            public Button getBoutonDistribuer() {
+                return bDistribution;
+            }
+
+            public Button getBoutonTrier() {
+                return bTrier;
+            }
+
+            public Button getBoutonGarde() {
+                return bGarde;
+            }
+
+            public Button getBoutonPrise() {
+                return bPrise;
+            }
+
+            public Button getBoutonGardeSansChien() {
+                return bGardeSansChien;
+            }
+
+            public Button getBoutonGardeContreChien() {
+                return bGardeContreChien;
+            }
+
+            @Override
+            public void update(Observable o, Object arg) {
 
             }
+
+            public Stage getStage() {
+                return Fenetre;
+            }
         }
-    }
 
-    public ArrayList<CarteView> getCardsViews ()
-    {
-        return cardviews;
-    }
-    public Button getBoutonDistribuer()
-    {
-        return bDistribution;
-    }
 
-    public Button getBoutonGarde() {
-        return bGarde;
-    }
-
-    public void setBoutonGarde(Button bGarde) {
-        this.bGarde = bGarde;
-    }
-
-    public Button getBoutonPrise() {
-        return bPrise;
-    }
-
-    public void setBoutonPrise(Button bPrise) {
-        this.bPrise = bPrise;
-    }
-
-    public Button getBoutonGardeSansChien() {
-        return bGardeSansChien;
-    }
-
-    public void setBoutonGardeSansChien(Button bGardeSansChien) {
-        this.bGardeSansChien = bGardeSansChien;
-    }
-
-    public Button getBoutonGardeContreChien() {
-        return bGardeContreChien;
-    }
-
-    public void setBoutonGardeContreChien(Button bGardeContreChien) {
-        this.bGardeContreChien = bGardeContreChien;
-    }
-
-    @Override
-    public void update (Observable o, Object arg){
-
-    }
-
-    public boolean getEnd(){return end;}
-}
 
 

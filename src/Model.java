@@ -11,7 +11,7 @@ public class Model extends Observable{
     private ArrayList<Carte> autreJoueur3;
     private ArrayList<Carte> ecart;
 
-    boolean distributionFini;
+    private int joueurPetitSec;
 
     Model()
     {
@@ -38,7 +38,7 @@ public class Model extends Observable{
         autreJoueur2 = new ArrayList<>();
         autreJoueur3 = new ArrayList<>();
 
-        distributionFini = false;
+        joueurPetitSec = -1;
 	}
 
 	public void distribution()
@@ -172,11 +172,7 @@ public class Model extends Observable{
         boolean aAtout = false;
 
         while(!fini && i < cartes.size()) {
-            if(cartes.get(i).getType() == TypeCarte.CARREAU || cartes.get(i).getType() == TypeCarte.TREFLE)
-            {
-                fini = true;
-            }
-            else if (cartes.get(i).getType() == TypeCarte.EXCUSE)
+            if (cartes.get(i).getType() == TypeCarte.EXCUSE)
             {
                 aExcuse = true;
             }
@@ -199,24 +195,31 @@ public class Model extends Observable{
         return false;
     }
 
-    public void trouverPetitSec()
+    public boolean trouverPetitSec()
     {
+        boolean petitSec = false;
         if(aPetitSec(joueur))
         {
-
+            joueurPetitSec = 0;
+            petitSec = true;
         }
         else if(aPetitSec(autreJoueur1))
         {
-
+            joueurPetitSec = 1;
+            petitSec = true;
         }
         else if(aPetitSec(autreJoueur2))
         {
-
+            joueurPetitSec = 2;
+            petitSec = true;
         }
         else if(aPetitSec(autreJoueur3))
         {
-
+            joueurPetitSec = 3;
+            petitSec = true;
         }
+
+        return petitSec;
     }
 
     public boolean depotEcart(Carte depot)
@@ -241,4 +244,6 @@ public class Model extends Observable{
 	{
 		return joueur;
 	}
+
+	public int getJoueurPetitSec () { return joueurPetitSec; }
 }
