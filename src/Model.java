@@ -29,7 +29,7 @@ public class Model extends Observable{
         {
             paquet.add(new Carte(TypeCarte.ATOUT, i));
         }
-        paquet.add(new Carte(TypeCarte.EXCUSE, 0)); //Insertion de l'excuse
+        paquet.add(new Carte(TypeCarte.EXCUSE, 1)); //Insertion de l'excuse
 
         paquetMelange = new ArrayList<>();
 		chien = new ArrayList<>();

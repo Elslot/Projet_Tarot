@@ -4,10 +4,8 @@ public class Carte {
 	private TypeCarte type;
 	private int numero;
 	private boolean turned;
-    private double x;
-    private double y;
-	private int dx;
-	private int dy;
+	private int ind_place_x;
+	private int ind_place_y;
 
     static Dimension DIMENSION_MODEL = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
     static int SCREEN_H_MODEL = (int)DIMENSION_MODEL.getHeight();
@@ -18,8 +16,6 @@ public class Carte {
 		this.type = type;
 		this.numero = numero;
 		turned = false;
-        x = SCREEN_W_MODEL/10;
-        y = SCREEN_H_MODEL/10;
 	}
 	public boolean getTurned() {return turned; }
 	public void setTurned() { turned=true; }
@@ -57,44 +53,10 @@ public class Carte {
 		}
 	}
 
-	public void move(){
-		x += dx;
-		y += dy;
-	}
+	public void setPlaceX(int x){ ind_place_x=x;}
+	public void setPlaceY(int y){ ind_place_y=y;}
 
-	public double getPosX()
-	{
-		return x;
-	}
 
-	public double getPosY()
-	{
-		return y;
-	}
-
-	public void setPosX(double x) {
-	    this.x = x;
-    }
-
-    public void setPosY(double y){
-        this.y = y;
-    }
-
-	public int getDx() {
-		return dx;
-	}
-
-	public int getDy() {
-		return dy;
-	}
-
-	public void setDx(int dx){
-		this.dx = dx;
-	}
-
-	public void setDy(int dy){
-		this.dy = dy;
-	}
 
 
 

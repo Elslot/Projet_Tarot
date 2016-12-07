@@ -1,16 +1,11 @@
 
 import javafx.animation.*;
-import javafx.beans.binding.MapBinding;
-import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.CubicCurveTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -33,6 +28,8 @@ public class View extends Stage implements Observer {
     protected Stage Fenetre;
     private Scene scene;
     private ArrayList<CarteView> cardviews;
+    private ArrayList<CarteView> cartesJoueur;
+
     private Group root;
     private Group Gcards;
     private boolean end;
@@ -114,17 +111,16 @@ public class View extends Stage implements Observer {
         root.getChildren().add(Gcards);
 
         for (int i = 0; i < 78; i++) {
-            modele.getPaquet().get(i).setPosX(modele.getPaquet().get(i).getPosX()-(0.1*i)); //Afin de donner de la perspective aux cartes déjà placées
-            modele.getPaquet().get(i).setPosY(modele.getPaquet().get(i).getPosY()-(0.1*i)); //
-            CarteView cartePaquetView = new CarteView(modele.getPaquet().get(i));
-          //  Scale Sprite
-       //     cartePaquetView.setScaleX(0.5);
-       //     cartePaquetView.setScaleY(0.5);
+
+            CarteView cartePaquetView = new CarteView(modele.getPaquetMelange().get(i));
             cardviews.add(cartePaquetView);
+            cardviews.get(i).setXY(cardviews.get(i).getX()-(0.1*i), cardviews.get(i).getY()-(0.1*i));
+            cardviews.get(i).setY(cardviews.get(i).getY()-(0.1*i));
 
             root.getChildren().add(cartePaquetView.getDos());
             Gcards.getChildren().add(cartePaquetView.getFace());
             Gcards.setOpacity(0.f);
+
 
 
         }
@@ -145,12 +141,13 @@ public class View extends Stage implements Observer {
         sequential.setCycleCount(1);
         sequential.setDelay(Duration.millis(10));
 
-        for (int i = 0; i <= 77; i++) {
+        for (int i = 77; i >= 0; i--) {
             double startx = cards.get(i).getX();
             double starty = cards.get(i).getY();
 
             if (i % 13 >= 0 && i % 13 <= 2) {
-                sequential = cards.get(i).TransitionAutreJoueur(cards.get(i), startx, starty, -400, cards.get(i).getModel().SCREEN_H_MODEL / 2 - cards.get(i).CARD_H, true, sequential);
+
+                sequential = cards.get(i).TransitionAutreJoueur(cards.get(i), startx, starty, cards.get(i).getModel().SCREEN_W_MODEL + cards.get(i).CARD_W, cards.get(i).getModel().SCREEN_H_MODEL / 2 - cards.get(i).CARD_H, true, sequential);
 
                 // root.getChildren().remove(cards.get(i));
             }
@@ -159,18 +156,19 @@ public class View extends Stage implements Observer {
                    // root.getChildren().remove(cards.get(i));
             }
             if (i % 13 >= 6 && i % 13 <= 8) {
-                    sequential = cards.get(i).TransitionAutreJoueur(cards.get(i), startx, starty, cards.get(i).getModel().SCREEN_W_MODEL + cards.get(i).CARD_W, cards.get(i).getModel().SCREEN_H_MODEL / 2 - cards.get(i).CARD_H, true, sequential);
-                   // root.getChildren().remove(cards.get(i));
+
+                sequential = cards.get(i).TransitionAutreJoueur(cards.get(i), startx, starty, -400, cards.get(i).getModel().SCREEN_H_MODEL / 2 - cards.get(i).CARD_H, true, sequential);// root.getChildren().remove(cards.get(i));
             }
 
             if (i%13 == 9)
             {
-                sequential = cards.get(i).TransitionAutreJoueur(cards.get(i), startx, starty, startx+200+12*i, 100, false, sequential);
-                cards.get(i).getModel().setTurned();
+                sequential = cards.get(i).TransitionAutreJoueur(cards.get(i), startx, starty, startx+200+12*(78-i), 100, false, sequential);
+
             }
 
             if (i%13 >=10)
             {
+
                 sequential = cards.get(i).TransitionAutreJoueur(cards.get(i), startx, starty, startx-100+160*indx, 250+220*indy, false, sequential);
                 cards.get(i).getModel().setTurned();
                 indx ++;
@@ -182,12 +180,17 @@ public class View extends Stage implements Observer {
             }
             //cards.get(i).positionFace();
 
+
         }
 
+        for( int i = 0; i<78; i++)
+        {
+            if (cards.get(i).getModel().getTurned())
+            {
+                sequential2= cards.get(i).flip(sequential2);
+            }
+        }
 
-        sequential2 = cards.get(11).flip(sequential2);
-        sequential2 = cards.get(12).flip(sequential2);
-        sequential2 = cards.get(10).flip(sequential2);
         sequential.setOnFinished(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

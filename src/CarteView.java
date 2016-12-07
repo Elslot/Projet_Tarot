@@ -1,5 +1,6 @@
 import javafx.animation.*;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,9 +15,9 @@ import java.util.Collection;
  * Created by karnaudeau on 29/11/16.
  */
 
-public class CarteView {
+public class CarteView  {
 
-    final static Image global = new Image("file:./cartesfinales.png");
+    final static Image global = new Image("file:./cartesfinales2.png");
     final static Image imagedos = new Image("file:./imagedos.png");
     static int SPACE_X_CARDS= 20;
     static int SPACE_Y_CARDS= 20;
@@ -37,8 +38,8 @@ public class CarteView {
         face = new ImageView();
         dos = new ImageView();
 
-        x=CardModel.getPosX()-50;
-        y=CardModel.getPosY();
+        x=CardModel.SCREEN_W_MODEL/10;
+        y=CardModel.SCREEN_H_MODEL/10;
 
 
         dos.setTranslateX(x);
@@ -76,7 +77,7 @@ public class CarteView {
 
 
     SequentialTransition flip(SequentialTransition sequential) {
-        final RotateTransition rotateOutFront = new RotateTransition(Duration.millis(300), face);
+        final RotateTransition rotateOutFront = new RotateTransition(Duration.millis(100), face);
         rotateOutFront.setInterpolator(Interpolator.LINEAR);
         rotateOutFront.setAxis(Rotate.Y_AXIS);
         rotateOutFront.setFromAngle(90);
@@ -84,7 +85,7 @@ public class CarteView {
         //
 
 
-        final RotateTransition rotateInBack = new RotateTransition(Duration.millis(300), dos);
+        final RotateTransition rotateInBack = new RotateTransition(Duration.millis(100), dos);
         rotateInBack.setInterpolator(Interpolator.LINEAR);
         rotateInBack.setAxis(Rotate.Y_AXIS);
         rotateInBack.setFromAngle(0);
@@ -129,7 +130,7 @@ public class CarteView {
 
         if (rotate) {
 
-            rotate(card, sequential);
+            rotate( sequential);
         }
         sequential.getChildren().add(parallelTransition);
 
@@ -139,7 +140,7 @@ public class CarteView {
         return sequential;
     }
 
-    public SequentialTransition rotate( CarteView card, SequentialTransition sequential){
+    public SequentialTransition rotate( SequentialTransition sequential){
 
         ParallelTransition parallelTransition = new ParallelTransition();
         parallelTransition.setCycleCount(1);
@@ -180,6 +181,13 @@ public class CarteView {
     }
 
     public double getX(){return x;}
+    public void setXY(double new_x, double new_y){
+        dos.setTranslateX(new_x);
+        dos.setTranslateY(new_y);
+        face.setTranslateX(new_x);
+        face.setTranslateY(new_y);
+    }
     public double getY(){return y;}
+    public void setY(double new_y){y= new_y;}
 
 }
