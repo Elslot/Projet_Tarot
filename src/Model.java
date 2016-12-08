@@ -12,6 +12,7 @@ public class Model extends Observable{
     private ArrayList<Carte> ecart;
 
     private int joueurPetitSec;
+    private boolean petitSec;
 
     Model()
     {
@@ -39,6 +40,7 @@ public class Model extends Observable{
         autreJoueur3 = new ArrayList<>();
 
         joueurPetitSec = -1;
+        petitSec = false;
 	}
 
 	public void distribution()
@@ -204,7 +206,6 @@ public class Model extends Observable{
 
     public boolean trouverPetitSec()
     {
-        boolean petitSec = false;
         if(aPetitSec(joueur))
         {
             joueurPetitSec = 0;
@@ -253,4 +254,6 @@ public class Model extends Observable{
 	}
 
 	public int getJoueurPetitSec () { return joueurPetitSec; }
+
+	public boolean getPetitSec () { return petitSec; }
 }
