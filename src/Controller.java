@@ -57,9 +57,12 @@ public class Controller {
 
                 //Enchere
                 final int[] idtest = {0};
-                final int[] finalIdtest = {idtest[0]};
-                    for(int i = 0; i < view.getCartesJoueur().size(); i++) {
-                            int finalI = i;
+                //final int[] finalIdtest = {idtest[0]};
+                final int[] taille_ecart = {0};
+                int i =0;
+                while(i < view.getCartesJoueur().size() && taille_ecart[0] <= 6) {
+                    //for(int i = 0; i < view.getCartesJoueur().size(); i++) {
+                    int finalI = i;
 
                         /*boolean test = modele.depotEcart(view.getCartesJoueur().get(finalI).getModel());
                         System.out.println(test);
@@ -71,9 +74,11 @@ public class Controller {
 
 
                         view.getCartesJoueur().get(i).setOnMouseClicked(event1 -> {
-                                if(modele.depotEcart(view.getCartesJoueur().get(finalI).getModel()))
-                                {
-                                    view.ChoixEcart(view.getCartesJoueur().get(finalI), view.getCartesJoueur().get(finalI).getModel().getAtoujeEcart());
+                            if (!view.getCartesJoueur().get(finalI).getModel().getAjouteEcart()) {
+                                if (modele.depotEcart(view.getCartesJoueur().get(finalI).getModel())) {
+                                    taille_ecart[0]++;
+                                    view.getCartesJoueur().get(finalI).getModel().setAjouteEcart(true);
+                                    view.ChoixEcart(view.getCartesJoueur().get(finalI), true);
 
                                     /*System.out.println(modele.getEcart().get(finalIdtest[0]).getNumero() + "/" + modele.getEcart().get(finalIdtest[0]).getType());
                                     System.out.println("------------");
@@ -84,8 +89,17 @@ public class Controller {
                                     System.out.println(modele.getEcart().get(j).getNumero() + "/" + modele.getEcart().get(j).getType());
                                     System.out.println("++++++++++++");
                                 }*/
-                            });
-                    }
+                            }
+                            else
+                            {
+                                view.getCartesJoueur().get(finalI).getModel().setAjouteEcart(false);
+                                view.ChoixEcart(view.getCartesJoueur().get(finalI), false);
+                                taille_ecart[0]--;
+                            }
+                            view.ChoixEcart(view.getCartesJoueur().get(finalI), view.getCartesJoueur().get(finalI).getModel().getAjouteEcart());
+                        });
+                    i++;
+                }
             }
         });
         view.getBoutonGarde().setOnMouseClicked(new EventHandler<MouseEvent>() {

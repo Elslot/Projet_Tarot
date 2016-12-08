@@ -6,6 +6,7 @@ public class Carte {
 	private boolean turned;
 	private int ind_place_x;
 	private int ind_place_y;
+	private boolean ajouteEcart;
 
     static Dimension DIMENSION_MODEL = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
     static int SCREEN_H_MODEL = (int)DIMENSION_MODEL.getHeight();
@@ -16,6 +17,7 @@ public class Carte {
 		this.type = type;
 		this.numero = numero;
 		turned = false;
+		ajouteEcart = false;
 	}
 	public boolean getTurned() {return turned; }
 	public void setTurned() { turned=true; }
@@ -58,7 +60,8 @@ public class Carte {
 	public void setPlaceX(int x){ ind_place_x=x;}
 	public void setPlaceY(int y){ ind_place_y=y;}
 
-
+	public boolean  getAjouteEcart() { return ajouteEcart; }
+	public void  setAjouteEcart(boolean ajoutee) { ajouteEcart = ajoutee; }
 
 
 
