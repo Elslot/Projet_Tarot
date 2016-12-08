@@ -149,7 +149,7 @@ public class CarteView extends Group {
         parallelTransition.setCycleCount(1);
 
         RotateTransition rotateTransition =
-                new RotateTransition(Duration.millis(1), this);
+                new RotateTransition(Duration.millis(50), this);
         rotateTransition.setByAngle(90f);
         rotateTransition.setCycleCount(1);
 
@@ -166,7 +166,7 @@ public class CarteView extends Group {
         parallelTransition.setCycleCount(1);
 
         TranslateTransition translateTransition=
-                new TranslateTransition(Duration.millis(1100), dos);
+                new TranslateTransition(Duration.millis(100), dos);
         translateTransition.setFromX(x);
         translateTransition.setToX(finalx);
         translateTransition.setFromY(y);
@@ -175,7 +175,7 @@ public class CarteView extends Group {
         translateTransition.setAutoReverse(true);
 
         TranslateTransition translateTransition2=
-                new TranslateTransition(Duration.millis(1100), face);
+                new TranslateTransition(Duration.millis(100), face);
         translateTransition.setFromX(x);
         translateTransition.setToX(finalx);
         translateTransition.setFromY(y);

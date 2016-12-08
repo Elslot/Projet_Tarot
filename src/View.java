@@ -171,22 +171,17 @@ public class View implements Observer {
 
         sequential2.setOnFinished(event ->  {
 
-            cacherBouton(bTrier, false);
-
-                });
-
-        sequential.setOnFinished(event -> {
             if (!modele.getPetitSec()) {
-            cacherBouton(bTrier, false);
-        }
-        else
-        {
-            petitSec(modele.getJoueurPetitSec());
-        }
-            end = true;
-            GcardsFace.setOpacity(1);
+                cacherBouton(bTrier, false);
+            }
+            else
+            {
+                petitSec(modele.getJoueurPetitSec());
+            }
 
         });
+
+
 
         total.getChildren().addAll(sequential, sequential2);
         total.setOnFinished(event -> {AppelTri();});
