@@ -1,19 +1,11 @@
 import javafx.animation.*;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-/**
- * Created by karnaudeau on 29/11/16.
- */
 
 public class CarteView extends Group {
 
@@ -34,29 +26,14 @@ public class CarteView extends Group {
     public CarteView(Carte card) {
 
         CardModel = card;
-
         face = new ImageView();
         dos = new ImageView();
 
         x=CardModel.SCREEN_W_MODEL/10;
         y=CardModel.SCREEN_H_MODEL/10;
 
-
-  /*      dos.setTranslateX(x);
-        dos.setTranslateY(y);
-
-        face.setTranslateX(x);
-        face.setTranslateY(y); */
-    //    face.setTranslateZ(z);
-
         dos.setImage(imagedos);
-
-    //    dos.setTranslateZ(z);
-
-
-
         face.setImage(global);
- //       face.setVisible(false);
         face.setOpacity(0);
 
         if (CardModel.getNumero() <= 14) {
@@ -66,10 +43,7 @@ public class CarteView extends Group {
             face.setViewport(new Rectangle2D(((CardModel.getNumero()) % 14) * (SPACE_X_CARDS + CARD_W), CardModel.getRankType() * (SPACE_Y_CARDS + CARD_H), CARD_W, 200));
             face.setViewport(new Rectangle2D(((CardModel.getNumero()) % 14) * (SPACE_X_CARDS + CARD_W), CardModel.getRankType() * (SPACE_Y_CARDS + CARD_H), CARD_W, 200));
         }
-
         this.getChildren().addAll(dos, face);
-
-
     }
 
 
@@ -100,14 +74,12 @@ public class CarteView extends Group {
     public Carte getModel(){ return CardModel; }
 
 
-    public SequentialTransition TransitionAutreJoueur( double finalx, double finaly, boolean rotate, SequentialTransition sequential){
+    public SequentialTransition TransitionJoueur( double finalx, double finaly, boolean rotate, SequentialTransition sequential){
 
-        if (rotate) {
-
+        if (rotate)
             rotate(sequential, 90f, Duration.millis(100));
-        }
-        sequential = Transition( finalx, finaly, sequential);
 
+        sequential = Transition( finalx, finaly, sequential, Duration.millis(100));
         return sequential;
     }
 
@@ -123,35 +95,31 @@ public class CarteView extends Group {
 
         parallelTransition.getChildren().addAll(rotateTransition);
         sequential.getChildren().add(parallelTransition);
-
         return sequential;
     }
 
     public SequentialTransition triGraphique( double finalx, double finaly, SequentialTransition sequential){
 
-        rotate(sequential, 360f, Duration.millis(400));
-
-        sequential = Transition( finalx, finaly, sequential);
+        sequential = rotate(sequential, 360f, Duration.millis(1));
+        sequential = Transition( finalx, finaly, sequential,Duration.millis(100));
 
         return sequential;
     }
 
-    public SequentialTransition Transition( double finalx, double finaly, SequentialTransition sequential){
+    public SequentialTransition Transition( double finalx, double finaly, SequentialTransition sequential, Duration duration){
 
         ParallelTransition parallelTransition = new ParallelTransition();
         parallelTransition.setCycleCount(1);
 
         TranslateTransition translateTransition=
-                new TranslateTransition(Duration.millis(100), this);
+                new TranslateTransition(duration, this);
         translateTransition.setToX(finalx);
         translateTransition.setToY(finaly);
         translateTransition.setCycleCount(1);
         translateTransition.setAutoReverse(true);
 
         parallelTransition.getChildren().addAll(translateTransition);
-
         sequential.getChildren().addAll(parallelTransition);
-
         return sequential;
     }
 

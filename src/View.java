@@ -23,6 +23,8 @@ public class View implements Observer {
     private ArrayList<CarteView> cartesJoueur;
     private ArrayList<CarteView> cartesChien;
 
+    private ArrayList<CarteView> cartesEcart;
+
     private Group root;
 
     private double PositionXPaquet;
@@ -46,6 +48,7 @@ public class View implements Observer {
         cardviews= new ArrayList<>();
         cartesJoueur = new ArrayList<>();
         cartesChien = new ArrayList<>();
+        cartesEcart = new ArrayList<>();
 
         Fenetre = new Stage();
         Fenetre.setTitle("Projet Tarot");
@@ -125,21 +128,21 @@ public class View implements Observer {
         for (int i = 77; i >= 0; i--) {
 
             if (i % 13 >= 0 && i % 13 <= 2)
-                sequential = cards.get(i).TransitionAutreJoueur(cards.get(i).getModel().SCREEN_W_MODEL + cards.get(i).CARD_W, cards.get(i).getModel().SCREEN_H_MODEL / 2 - cards.get(i).CARD_H, true, sequential);
+                sequential = cards.get(i).TransitionJoueur(cards.get(i).getModel().SCREEN_W_MODEL + cards.get(i).CARD_W, cards.get(i).getModel().SCREEN_H_MODEL / 2 - cards.get(i).CARD_H, true, sequential);
 
             if (i % 13 >= 3 && i % 13 <= 5)
-                sequential = cards.get(i).TransitionAutreJoueur(cards.get(i).getModel().SCREEN_W_MODEL / 2 - cards.get(i).CARD_H, -400, false, sequential);
+                sequential = cards.get(i).TransitionJoueur(cards.get(i).getModel().SCREEN_W_MODEL / 2 - cards.get(i).CARD_H, -400, false, sequential);
 
             if (i % 13 >= 6 && i % 13 <= 8)
-                sequential = cards.get(i).TransitionAutreJoueur(-400, cards.get(i).getModel().SCREEN_H_MODEL / 2 - cards.get(i).CARD_H, true, sequential);
+                sequential = cards.get(i).TransitionJoueur(-400, cards.get(i).getModel().SCREEN_H_MODEL / 2 - cards.get(i).CARD_H, true, sequential);
 
             if (i % 13 == 9){
-                sequential = cards.get(i).TransitionAutreJoueur(PositionXPaquet + 149 + 12 * (78 - i), 100 + (0.1 * i), false, sequential);
+                sequential = cards.get(i).TransitionJoueur(PositionXPaquet + 149 + 12 * (78 - i), 100 + (0.1 * i), false, sequential);
                 cartesChien.add(cards.get(i));
             }
             if (i%13 >=10)
             {
-                sequential = cards.get(i).TransitionAutreJoueur(PositionXPaquet-150+160*indx+(0.1*i), PositionYPaquet+100+220*indy+(0.1*i), false, sequential);
+                sequential = cards.get(i).TransitionJoueur(PositionXPaquet-150+160*indx+(0.1*i), PositionYPaquet+100+220*indy+(0.1*i), false, sequential);
                 cartesJoueur.add(cards.get(i));
                 indx ++;
                 if ((indx==9) &&(indy!=2))
@@ -182,9 +185,9 @@ public class View implements Observer {
 
     public void AppelTri() {
 
-        SequentialTransition sequential = new SequentialTransition();
-        sequential.setCycleCount(1);
-        sequential.setDelay(Duration.millis(10));
+        SequentialTransition tri = new SequentialTransition();
+        tri.setCycleCount(1);
+        tri.setDelay(Duration.millis(10));
 
         int alignementXY = 0;
 
@@ -194,13 +197,16 @@ public class View implements Observer {
             finalx = cartesJoueur.get(i).getModel().getPlaceX();
             finaly = cartesJoueur.get(i).getModel().getPlaceY();
 
-            sequential = cartesJoueur.get(i).triGraphique(PositionXPaquet-150+169*finalx -( 0.1*alignementXY),PositionYPaquet+100+220*finaly - (0.1*alignementXY), sequential);
+            tri = cartesJoueur.get(i).triGraphique(PositionXPaquet-150+169*finalx ,PositionYPaquet+100+220*finaly - (0.1*alignementXY), tri);
             alignementXY++;
             if (alignementXY %13 <= 10)
             {alignementXY += 10;}
 
         }
-        sequential.play();
+        tri.setOnFinished(event -> {
+            cacherBoutonEnchere(false);
+        });
+        tri.play();
     }
 
     public void ChoixEcart(CarteView carte, boolean test)
@@ -209,13 +215,52 @@ public class View implements Observer {
         sequential.setCycleCount(1);
         sequential.setDelay(Duration.millis(10));
 
-        if (test)
-            sequential = carte.Transition(carte.getTranslateX(), carte.getTranslateY()-50, sequential);
+        if (test){
+            sequential = carte.Transition(carte.getTranslateX(), carte.getTranslateY()-50, sequential, Duration.millis(100));
+            if (!cartesEcart.contains(carte)) {
+                cartesEcart.add(carte);
+            }
+        }
 
-        else
-            sequential = carte.Transition(carte.getTranslateX(), carte.getTranslateY()+50, sequential);
-
+        else {
+            sequential = carte.Transition(carte.getTranslateX(), carte.getTranslateY() + 50, sequential, Duration.millis(100));
+            cartesEcart.remove(carte);
+        }
         sequential.play();
+    }
+
+    public void TransitionEcartChien(){
+        SequentialTransition swap = new SequentialTransition();
+        swap.setCycleCount(1);
+        swap.setDelay(Duration.millis(10));
+
+
+
+        SequentialTransition totale = new SequentialTransition();
+        totale.setCycleCount(1);
+        totale.setDelay(Duration.millis(10));
+
+        for (int i=0; i<6; i++)
+        {
+            swap = cartesChien.get(i).Transition(cartesEcart.get(i).getTranslateX(), cartesEcart.get(i).getTranslateY(), swap, Duration.millis(1100));
+            swap = cartesEcart.get(i).Transition(cartesChien.get(i).getTranslateX(), cartesChien.get(i).getTranslateY(),swap, Duration.millis(1100));
+
+        }
+        swap.setOnFinished(event -> {this.AbaissementChien();});
+        swap.play();
+
+    }
+
+    public void AbaissementChien(){
+        SequentialTransition abaissement = new SequentialTransition();
+        abaissement.setCycleCount(1);
+        abaissement.setDelay(Duration.millis(10));
+
+        for (int i=0; i<6; i++)
+        {
+            abaissement = cartesChien.get(i).Transition(cartesChien.get(i).getTranslateX(), cartesChien.get(i).getTranslateY()+50, abaissement, Duration.millis(100));
+        }
+        abaissement.play();
     }
 
 
@@ -290,6 +335,8 @@ public class View implements Observer {
     public Button getBoutonGardeContreChien() {
         return bGardeContreChien;
     }
+
+    public Button getBoutonOK() { return bOK; }
 
     public Button getBoutonQuitter() { return bQuitter; }
 

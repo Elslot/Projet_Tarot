@@ -19,8 +19,6 @@ public class Carte {
 		turned = false;
 		ajouteEcart = false;
 	}
-	public boolean getTurned() {return turned; }
-	public void setTurned() { turned=true; }
 
 	public TypeCarte getType()
 	{
@@ -62,8 +60,5 @@ public class Carte {
 
 	public boolean  getAjouteEcart() { return ajouteEcart; }
 	public void  setAjouteEcart(boolean ajoutee) { ajouteEcart = ajoutee; }
-
-
-
 
 }

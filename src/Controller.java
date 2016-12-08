@@ -81,6 +81,9 @@ public class Controller {
 
                     i++;
                 }
+                view.getBoutonOK().setOnMouseClicked(event1 -> {
+                    view.TransitionEcartChien();
+                });
             }
         });
         view.getBoutonGarde().setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -115,7 +118,6 @@ public class Controller {
             @Override
             public void handle(MouseEvent event) {
                 view.AppelTri();
-                view.cacherBoutonEnchere(false);
                 view.cacherBouton(view.getBoutonTrier(), true);
             }
         });
