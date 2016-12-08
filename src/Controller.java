@@ -32,7 +32,7 @@ public class Controller {
 
                 if(modele.getPetitSec())
                 {
-                    petitSec();
+                    quitter();
                 }
                 else
                 {
@@ -56,6 +56,35 @@ public class Controller {
                 view.AffichageChien();
 
                 //Enchere
+                final int[] idtest = {0};
+                final int[] finalIdtest = {idtest[0]};
+                    for(int i = 0; i < view.getCartesJoueur().size(); i++) {
+                            int finalI = i;
+
+                        /*boolean test = modele.depotEcart(view.getCartesJoueur().get(finalI).getModel());
+                        System.out.println(test);
+                        if(test) {
+                            System.out.println(modele.getEcart().get(idtest).getNumero() + "/" + modele.getEcart().get(idtest).getType());
+                            System.out.println("------------");
+                            idtest++;
+                        }*/
+
+
+                        view.getCartesJoueur().get(i).setOnMouseClicked(event1 -> {
+                                if(modele.depotEcart(view.getCartesJoueur().get(finalI).getModel()))
+                                {
+
+                                    /*System.out.println(modele.getEcart().get(finalIdtest[0]).getNumero() + "/" + modele.getEcart().get(finalIdtest[0]).getType());
+                                    System.out.println("------------");
+                                    finalIdtest[0]++;*/
+                                }
+                                /*for(int j = 0; j < modele.getEcart().size(); j++)
+                                {
+                                    System.out.println(modele.getEcart().get(j).getNumero() + "/" + modele.getEcart().get(j).getType());
+                                    System.out.println("++++++++++++");
+                                }*/
+                            });
+                    }
             }
         });
         view.getBoutonGarde().setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -69,14 +98,16 @@ public class Controller {
             @Override
             public void handle(MouseEvent event) {
                 view.cacherBoutonEnchere(true);
-                //Enchere
+                view.cacherBouton(view.getBoutonQuitter(), false);
+                quitter();
             }
         });
         view.getBoutonGardeContreChien().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 view.cacherBoutonEnchere(true);
-                //Enchere
+                view.cacherBouton(view.getBoutonQuitter(), false);
+                quitter();
             }
         });
     }
@@ -94,7 +125,7 @@ public class Controller {
         });
     }
 
-    public void petitSec()
+    public void quitter()
     {
         view.getBoutonQuitter().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override

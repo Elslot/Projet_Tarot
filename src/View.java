@@ -36,6 +36,7 @@ public class View implements Observer {
     private Button bGardeSansChien;
     private Button bGardeContreChien;
     private Button bTrier;
+    private Button bOK;
     private Button bQuitter;
 
     public View(Model modele) {
@@ -75,6 +76,9 @@ public class View implements Observer {
 
         bGardeContreChien = new Button();
         createButton(bGardeContreChien, "Garde sans chien", 4.25*SCREEN_W_VIEW/7 - bGardeContreChien.getPrefWidth()/2, SCREEN_H_VIEW/12 - bGardeContreChien.getPrefHeight()/2, 12, true);
+
+        bOK = new Button();
+        createButton(bOK, "OK", 6*SCREEN_W_VIEW/7 - bOK.getPrefWidth()/2, 5*SCREEN_H_VIEW/6 - bOK.getPrefHeight()/2, 20, true);
 
         bQuitter = new Button();
         createButton(bQuitter, "Quitter", 6*SCREEN_W_VIEW/7 - bQuitter.getPrefWidth()/2, 6*SCREEN_H_VIEW/7 - bQuitter.getPrefHeight()/2, 20, true);
@@ -246,6 +250,8 @@ public class View implements Observer {
     public ArrayList<CarteView> getCardsViews() {
         return cardviews;
     }
+
+    public ArrayList<CarteView> getCartesJoueur() { return cartesJoueur; }
 
     public Button getBoutonDistribuer() {
         return bDistribution;

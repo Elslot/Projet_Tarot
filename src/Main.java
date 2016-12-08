@@ -21,5 +21,6 @@ public class Main extends Application{
 
         control.lancerDistribution();
         control.enchere();
+
     }
 }

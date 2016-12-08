@@ -38,6 +38,7 @@ public class Model extends Observable{
         autreJoueur1 = new ArrayList<>();
         autreJoueur2 = new ArrayList<>();
         autreJoueur3 = new ArrayList<>();
+        ecart = new ArrayList<>();
 
         joueurPetitSec = -1;
         petitSec = false;
@@ -243,6 +244,12 @@ public class Model extends Observable{
         }
     }
 
+    public void Ecart()
+    {
+        joueur.addAll(chien);
+        trier(joueur);
+    }
+
     public ArrayList<Carte> getPaquetMelange() {
         return paquetMelange;
     }
@@ -255,4 +262,6 @@ public class Model extends Observable{
 	public int getJoueurPetitSec () { return joueurPetitSec; }
 
 	public boolean getPetitSec () { return petitSec; }
+
+	public ArrayList<Carte> getEcart () { return ecart; }
 }
