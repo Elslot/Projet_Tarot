@@ -38,7 +38,7 @@ public class Controller {
                 {
                     tri();
                     for (Carte c : modele.getCarteJoueur()) {
-                       // System.out.println(c.getNumero() + " / " + c.getType());
+                        // System.out.println(c.getNumero() + " / " + c.getType());
                     }
                 }
             }
@@ -56,48 +56,29 @@ public class Controller {
                 view.AffichageChien();
 
                 //Enchere
-                final int[] idtest = {0};
-                //final int[] finalIdtest = {idtest[0]};
                 final int[] taille_ecart = {0};
                 int i =0;
-                while(i < view.getCartesJoueur().size() && taille_ecart[0] <= 6) {
-                    //for(int i = 0; i < view.getCartesJoueur().size(); i++) {
+                while(i < view.getCartesJoueur().size()) {
                     int finalI = i;
-
-                        /*boolean test = modele.depotEcart(view.getCartesJoueur().get(finalI).getModel());
-                        System.out.println(test);
-                        if(test) {
-                            System.out.println(modele.getEcart().get(idtest).getNumero() + "/" + modele.getEcart().get(idtest).getType());
-                            System.out.println("------------");
-                            idtest++;
-                        }*/
-
-
-                        view.getCartesJoueur().get(i).setOnMouseClicked(event1 -> {
+                    view.getCartesJoueur().get(i).setOnMouseClicked(event1 -> {
+                        if (modele.licite(view.getCartesJoueur().get(finalI).getModel())) {
                             if (!view.getCartesJoueur().get(finalI).getModel().getAjouteEcart()) {
-                                if (modele.depotEcart(view.getCartesJoueur().get(finalI).getModel())) {
-                                    taille_ecart[0]++;
+                                if(taille_ecart[0] < 6) {
                                     view.getCartesJoueur().get(finalI).getModel().setAjouteEcart(true);
-                                    view.ChoixEcart(view.getCartesJoueur().get(finalI), true);
-
-                                    /*System.out.println(modele.getEcart().get(finalIdtest[0]).getNumero() + "/" + modele.getEcart().get(finalIdtest[0]).getType());
-                                    System.out.println("------------");
-                                    finalIdtest[0]++;*/
+                                    modele.getEcart().add(view.getCartesJoueur().get(finalI).getModel());
+                                    view.ChoixEcart(view.getCartesJoueur().get(finalI), view.getCartesJoueur().get(finalI).getModel().getAjouteEcart());
+                                    taille_ecart[0]++;
                                 }
-                                /*for(int j = 0; j < modele.getEcart().size(); j++)
-                                {
-                                    System.out.println(modele.getEcart().get(j).getNumero() + "/" + modele.getEcart().get(j).getType());
-                                    System.out.println("++++++++++++");
-                                }*/
                             }
-                            else
-                            {
+                            else {
+                                modele.getEcart().remove(view.getCartesJoueur().get(finalI).getModel());
                                 view.getCartesJoueur().get(finalI).getModel().setAjouteEcart(false);
-                                view.ChoixEcart(view.getCartesJoueur().get(finalI), false);
+                                view.ChoixEcart(view.getCartesJoueur().get(finalI), view.getCartesJoueur().get(finalI).getModel().getAjouteEcart());
                                 taille_ecart[0]--;
                             }
-                            view.ChoixEcart(view.getCartesJoueur().get(finalI), view.getCartesJoueur().get(finalI).getModel().getAjouteEcart());
-                        });
+                        }
+                    });
+
                     i++;
                 }
             }

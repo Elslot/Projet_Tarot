@@ -230,7 +230,7 @@ public class Model extends Observable{
         return petitSec;
     }
 
-    public boolean depotEcart(Carte depot)
+    public boolean licite(Carte depot)
     {
         if((depot.getType() != TypeCarte.ATOUT && depot.getType() != TypeCarte.EXCUSE && depot.getNumero() == 14) ||
                 (depot.getType() == TypeCarte.ATOUT && (depot.getNumero() == 21 || depot.getNumero() == 1)))
@@ -239,7 +239,6 @@ public class Model extends Observable{
         }
         else
         {
-            ecart.add(depot);
             return true;
         }
     }
