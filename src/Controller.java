@@ -114,23 +114,15 @@ public class Controller {
     public void tri()
     {
         modele.trierCartesAffichee();
-        view.getBoutonTrier().setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                view.AppelTri();
-                view.cacherBouton(view.getBoutonTrier(), true);
-            }
+        view.getBoutonTrier().setOnMouseClicked(event -> {
+            view.AppelTri();
+            view.cacherBouton(view.getBoutonTrier(), true);
         });
     }
 
     public void quitter()
     {
-        view.getBoutonQuitter().setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                view.getStage().close();
-            }
-        });
+        view.getBoutonQuitter().setOnMouseClicked(event -> view.getStage().close());
     }
 
 }

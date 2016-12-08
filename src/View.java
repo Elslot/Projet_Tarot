@@ -226,6 +226,7 @@ public class View implements Observer {
             sequential = carte.Transition(carte.getTranslateX(), carte.getTranslateY() + 50, sequential, Duration.millis(100));
             cartesEcart.remove(carte);
         }
+
         sequential.play();
     }
 
@@ -260,6 +261,12 @@ public class View implements Observer {
         {
             abaissement = cartesChien.get(i).Transition(cartesChien.get(i).getTranslateX(), cartesChien.get(i).getTranslateY()+50, abaissement, Duration.millis(100));
         }
+
+        abaissement.setOnFinished(event -> {
+            cacherBouton(bTrier, false);
+            cacherBouton(bOK, false);
+
+        });
         abaissement.play();
     }
 
