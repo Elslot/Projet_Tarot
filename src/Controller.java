@@ -30,7 +30,7 @@ public class Controller {
                 view.distribution(view.getCardsViews());
                 modele.trouverPetitSec();
 
-                if(false)
+                if(modele.getPetitSec())
                 {
                     petitSec();
                 }
@@ -82,6 +82,7 @@ public class Controller {
     public void tri()
     {
         modele.trierCartesAffichee();
+        view.cacherBouton(view.getBoutonTrier(), false);
         view.getBoutonTrier().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -94,7 +95,7 @@ public class Controller {
 
     public void petitSec()
     {
-        view.getRoot().setOnMouseClicked(new EventHandler<MouseEvent>() {
+        view.getBoutonQuitter().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 view.getStage().close();

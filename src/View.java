@@ -43,6 +43,7 @@ public class View implements Observer {
     private Button bGardeSansChien;
     private Button bGardeContreChien;
     private Button bTrier;
+    private Button bQuitter;
 
     public View(Model modele) {
 
@@ -79,6 +80,9 @@ public class View implements Observer {
 
         bGardeContreChien = new Button();
         createButton(bGardeContreChien, "Garde sans chien", 4.25*SCREEN_W_VIEW/7 - bGardeContreChien.getPrefWidth()/2, SCREEN_H_VIEW/12 - bGardeContreChien.getPrefHeight()/2, 12, true);
+
+        bQuitter = new Button();
+        createButton(bQuitter, "Quitter", 6*SCREEN_W_VIEW/7 - bQuitter.getPrefWidth()/2, 6*SCREEN_H_VIEW/7 - bQuitter.getPrefHeight()/2, 20, true);
 
         scene = new Scene(root, SCREEN_W_VIEW, SCREEN_H_VIEW, Color.DARKSEAGREEN);
         Fenetre.setScene(scene);
@@ -171,11 +175,12 @@ public class View implements Observer {
 
         sequential2.setOnFinished(event ->  {
 
-            if (true) {
+            if (!modele.getPetitSec()) {
                 cacherBouton(bTrier, false);
             }
             else
             {
+                cacherBouton(bQuitter, false);
                 petitSec(modele.getJoueurPetitSec());
             }
 
@@ -268,7 +273,7 @@ public class View implements Observer {
             public void petitSec(int joueur) {
                 Label affichage_petitSec = new Label("Le joueur " + joueur + " a le petit sec, donne annulée.\n Veuillez relancer l'application. Cliquez sur les cartes pour quitter");
                 affichage_petitSec.setTranslateX(SCREEN_W_VIEW / 12);
-                affichage_petitSec.setTranslateY(50);
+                affichage_petitSec.setTranslateY(25);
                 affichage_petitSec.setFont(Font.font(50));
                 affichage_petitSec.setTextAlignment(TextAlignment.CENTER);
                 root.getChildren().add(affichage_petitSec);
@@ -317,6 +322,8 @@ public class View implements Observer {
             public Button getBoutonGardeContreChien() {
                 return bGardeContreChien;
             }
+
+            public Button getBoutonQuitter() { return bQuitter; }
 
             @Override
             public void update(Observable o, Object arg) {
