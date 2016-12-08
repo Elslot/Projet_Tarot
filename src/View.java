@@ -34,6 +34,8 @@ public class View implements Observer {
 
     private Group root;
 
+    private double PositionXPaquet;
+    private double PositionYPaquet;
 
     private Model modele;
 
@@ -49,8 +51,8 @@ public class View implements Observer {
 
         this.modele = modele;
 
-        cardviews= new ArrayList<CarteView>();
-        cartesJoueur = new ArrayList<CarteView>();
+        cardviews= new ArrayList<>();
+        cartesJoueur = new ArrayList<>();
 
         Fenetre = new Stage();
         Fenetre.setTitle("Projet Tarot");
@@ -58,6 +60,7 @@ public class View implements Observer {
         //      Fenetre.setFullScreen(true);
         //      Fenetre.setFullScreenExitHint("Press ESC to exit FullScreen Mode");
         root = new Group();
+
 
         //Inistialisation de chaque bouton
         //"Distribuer" qui sera affiché dés le début
@@ -91,6 +94,7 @@ public class View implements Observer {
 
             CarteView cartePaquetView = new CarteView(modele.getPaquetMelange().get(i));
 
+
             cartePaquetView.setLayoutX(cartePaquetView.getX()-(0.1*i)-169);
             cartePaquetView.setLayoutY(cartePaquetView.getY()-(0.1*i)-50);
             cartePaquetView.setTranslateX(cartePaquetView.getX()-(0.1*i));
@@ -106,6 +110,9 @@ public class View implements Observer {
 
 
         }
+
+        PositionXPaquet = cardviews.get(1).getX();
+        PositionYPaquet = cardviews.get(1).getY();
         Fenetre.show();
     }
 
@@ -126,6 +133,7 @@ public class View implements Observer {
 
 
         for (int i = 77; i >= 0; i--) {
+
             double startx = cards.get(i).getX();
             double starty = cards.get(i).getY();
 
@@ -146,13 +154,13 @@ public class View implements Observer {
 
             if (i%13 == 9)
             {
-                sequential = cards.get(i).TransitionAutreJoueur( startx, starty, startx+149+12*(78-i), 100, false, sequential);
+                sequential = cards.get(i).TransitionAutreJoueur( startx, starty, startx+149+12*(78-i), 100+(0.1*i), false, sequential);
 
             }
 
             if (i%13 >=10)
             {
-                sequential = cards.get(i).TransitionAutreJoueur( startx, starty, startx-200+160*indx, 149+220*indy, false, sequential);
+                sequential = cards.get(i).TransitionAutreJoueur( startx, starty, PositionXPaquet-200+160*indx+(0.1*i), PositionYPaquet+100+220*indy+(0.1*i), false, sequential);
                 cartesJoueur.add(cards.get(i));
                 indx ++;
                 if ((indx==9) &&(indy!=2))
@@ -166,9 +174,7 @@ public class View implements Observer {
 
         for( int i = 0; i<18; i++)
         {
-
-            sequential2= cartesJoueur.get(i).flip(sequential2);
-
+            sequential2 = cartesJoueur.get(i).flip(sequential2);
         }
 
 
@@ -189,7 +195,6 @@ public class View implements Observer {
 
 
         total.getChildren().addAll(sequential, sequential2);
-        total.setOnFinished(event -> {AppelTri();});
         total.play();
 
 
@@ -198,60 +203,34 @@ public class View implements Observer {
 
 
             public void AppelTri() {
+
                 SequentialTransition sequential = new SequentialTransition();
+                sequential.setCycleCount(1);
+                sequential.setDelay(Duration.millis(10));
+
+                int alignementXY = 0;
+
                 double startx;
                 double starty;
+                double finalx;
+                double finaly;
                 for (int i = 0; i < 18; i++) {
-                    startx = cartesJoueur.get(i).getDos().getTranslateX();
-                    starty = cartesJoueur.get(i).getDos().getTranslateY();
-                    System.out.println(startx);
-                    System.out.println(starty+"\n --------------\n");
-                    sequential = cartesJoueur.get(i).triGraphique(startx, starty, startx - 100 + cartesJoueur.get(i).getModel().getPlaceX(), 200*cartesJoueur.get(i).getModel().getPlaceY(), sequential);
+                    finalx = cartesJoueur.get(i).getModel().getPlaceX();
+                    finaly = cartesJoueur.get(i).getModel().getPlaceY();
+
+                    System.out.println(i);
+                    System.out.println( cartesJoueur.get(i).getTranslateX() + " / " +  cartesJoueur.get(i).getTranslateY());
+                    System.out.println( cartesJoueur.get(i).getModel().getPlaceX());
+                    System.out.println(cartesJoueur.get(i).getModel().getPlaceY()+ "---------\n" );
+                    sequential = cartesJoueur.get(i).triGraphique(PositionXPaquet-200+169*finalx -( 0.1*alignementXY),PositionYPaquet+100+220*finaly - (0.1*alignementXY), sequential);
+                    alignementXY++;
+                    if (alignementXY %13 <= 10)
+                    {alignementXY += 10;}
+
             }
-                sequential.play();
-                for (int i= 0; i<18; i++){
-                    startx = cartesJoueur.get(i).getDos().getTranslateX();
-                    starty = cartesJoueur.get(i).getDos().getTranslateY();
-                    System.out.println(startx);
-                    System.out.println(starty+"\n --------------\n");
-                }
+            sequential.play();
             }
 
-            public void Poubelle() {
-
-
-        /*
-        Path path = new Path();
-        path.getElements().add(new MoveTo(startx, starty));
-
-        path.getElements().add(new CubicCurveTo(0, 0, 0, 0, 0, 0));
-        PathTransition pathTransition = new PathTransition();
-        pathTransition.setDuration(Duration.millis(4000));
-        pathTransition.setPath(path);
-        pathTransition.setNode(card);
-        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-        pathTransition.setCycleCount(Timeline.INDEFINITE);
-        //pathTransition.setAutoReverse(true);
-        pathTransition.play();
-       // pathTransition.stop(); */
-
-                //A mettre dans une autre fonction
-                int k = 0;
-
-
-                for (int i = 1; i <= 2; i++) {
-                    for (int j = 1; j <= 9; j++) {
-
-                        CarteView cartetest = new CarteView(modele.getCarteJoueur().get(k));
-                        //   cartetest.setX((j - 1) * (150 + 20) + (150 + 20));
-                        //   cartetest.setY((i - 1) * (200 + 20) + (200 + 20));
-
-                        // root.getChildren().add(cartetest);
-                        k++;
-
-                    }
-                }
-            }
 
             public void cacherBouton(Button bouton, boolean disable) {
                 int opacity = 1;

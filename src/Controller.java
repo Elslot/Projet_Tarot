@@ -82,7 +82,6 @@ public class Controller {
     public void tri()
     {
         modele.trierCartesAffichee();
-        view.cacherBouton(view.getBoutonTrier(), false);
         view.getBoutonTrier().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
