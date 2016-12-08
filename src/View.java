@@ -110,7 +110,6 @@ public class View implements Observer {
 
         int indx = 1;
         int indy = 1;
-        int ind =0;
         SequentialTransition total = new SequentialTransition();
         total.setCycleCount(1);
 
@@ -201,6 +200,21 @@ public class View implements Observer {
             {alignementXY += 10;}
 
         }
+        sequential.play();
+    }
+
+    public void ChoixEcart(CarteView carte, boolean test)
+    {
+        SequentialTransition sequential = new SequentialTransition();
+        sequential.setCycleCount(1);
+        sequential.setDelay(Duration.millis(10));
+
+        if (test)
+            sequential = carte.Transition(carte.getTranslateX(), carte.getTranslateY()-50, sequential);
+
+        else
+            sequential = carte.Transition(carte.getTranslateX(), carte.getTranslateY()+50, sequential);
+
         sequential.play();
     }
 

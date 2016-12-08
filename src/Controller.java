@@ -73,6 +73,7 @@ public class Controller {
                         view.getCartesJoueur().get(i).setOnMouseClicked(event1 -> {
                                 if(modele.depotEcart(view.getCartesJoueur().get(finalI).getModel()))
                                 {
+                                    view.ChoixEcart(view.getCartesJoueur().get(finalI), view.getCartesJoueur().get(finalI).getModel().getAtoujeEcart());
 
                                     /*System.out.println(modele.getEcart().get(finalIdtest[0]).getNumero() + "/" + modele.getEcart().get(finalIdtest[0]).getType());
                                     System.out.println("------------");
