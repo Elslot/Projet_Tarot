@@ -33,8 +33,6 @@ public class View implements Observer {
     private ArrayList<CarteView> cartesJoueur;
 
     private Group root;
-    private Group GcardsFace;
-    private boolean end;
 
 
     private Model modele;
@@ -49,7 +47,6 @@ public class View implements Observer {
     public View(Model modele) {
 
         this.modele = modele;
-        end = false;
 
         cardviews= new ArrayList<CarteView>();
         cartesJoueur = new ArrayList<CarteView>();
@@ -120,22 +117,22 @@ public class View implements Observer {
 
         scene = new Scene(root, SCREEN_W_VIEW, SCREEN_H_VIEW, Color.DARKSEAGREEN);
         Fenetre.setScene(scene);
-        GcardsFace = new Group();
-        root.getChildren().add(GcardsFace);
 
         for (int i = 0; i < 78; i++) {
 
-
-
-
             CarteView cartePaquetView = new CarteView(modele.getPaquetMelange().get(i));
-            cardviews.add(cartePaquetView);
-            cardviews.get(i).setXY(cardviews.get(i).getX()-(0.1*i), cardviews.get(i).getY()-(0.1*i));
-            cardviews.get(i).setY(cardviews.get(i).getY()-(0.1*i));
 
-            root.getChildren().add(cartePaquetView.getDos());
-            GcardsFace.getChildren().add(cartePaquetView.getFace());
-            GcardsFace.setOpacity(0.f);
+            cartePaquetView.setLayoutX(cartePaquetView.getX()-(0.1*i)-169);
+            cartePaquetView.setLayoutY(cartePaquetView.getY()-(0.1*i)-50);
+            cartePaquetView.setTranslateX(cartePaquetView.getX()-(0.1*i));
+            cartePaquetView.setTranslateY(cartePaquetView.getY()-(0.1*i));
+       /*     cardviews.get(i).setXY(cardviews.get(i).getX()-(0.1*i), cardviews.get(i).getY()-(0.1*i));
+            cardviews.get(i).setY(cardviews.get(i).getY()-(0.1*i));
+*/
+            cardviews.add(cartePaquetView);
+            root.getChildren().add(cartePaquetView/*.getDos()*/);
+           // GcardsFace.getChildren().add(cartePaquetView.getFace());
+            //GcardsFace.setOpacity(0.f);
 
 
 
@@ -167,11 +164,11 @@ public class View implements Observer {
 
                 sequential = cards.get(i).TransitionAutreJoueur( startx, starty, cards.get(i).getModel().SCREEN_W_MODEL + cards.get(i).CARD_W, cards.get(i).getModel().SCREEN_H_MODEL / 2 - cards.get(i).CARD_H, true, sequential);
 
-                 root.getChildren().remove(cards.get(i));
+
             }
             if (i % 13 >= 3 && i % 13 <= 5) {
                 sequential = cards.get(i).TransitionAutreJoueur(  startx, starty, cards.get(i).getModel().SCREEN_W_MODEL / 2 - cards.get(i).CARD_H, -400, false, sequential);
-                root.getChildren().remove(cards.get(i));
+
             }
             if (i % 13 >= 6 && i % 13 <= 8) {
 
@@ -180,13 +177,13 @@ public class View implements Observer {
 
             if (i%13 == 9)
             {
-                sequential = cards.get(i).TransitionAutreJoueur( startx, starty, startx+200+12*(78-i), 200, false, sequential);
+                sequential = cards.get(i).TransitionAutreJoueur( startx, starty, startx+149+12*(78-i), 100, false, sequential);
 
             }
 
             if (i%13 >=10)
             {
-                sequential = cards.get(i).TransitionAutreJoueur( startx, starty, startx-100+160*indx, 250+220*indy, false, sequential);
+                sequential = cards.get(i).TransitionAutreJoueur( startx, starty, startx-200+160*indx, 149+220*indy, false, sequential);
                 cartesJoueur.add(cards.get(i));
                 indx ++;
                 if ((indx==9) &&(indy!=2))
@@ -200,22 +197,22 @@ public class View implements Observer {
 
         for( int i = 0; i<18; i++)
         {
+
             sequential2= cartesJoueur.get(i).flip(sequential2);
+
         }
 
-        sequential.setOnFinished(event ->  {
+
+
+        sequential2.setOnFinished(event ->  {
 
             cacherBouton(bTrier, false);
-            end = true;
-            GcardsFace.setOpacity(1);
 
         });
 
         total.getChildren().addAll(sequential, sequential2);
+        total.setOnFinished(event -> {AppelTri();});
         total.play();
-
-
-        end = true;
 
 
     }
@@ -231,7 +228,7 @@ public class View implements Observer {
                     starty = cartesJoueur.get(i).getDos().getTranslateY();
                     System.out.println(startx);
                     System.out.println(starty+"\n --------------\n");
-                    sequential = cartesJoueur.get(i).triGraphique(startx, starty, startx - 100 + 160*cartesJoueur.get(i).getModel().getPlaceX(), 250 + 220 * cartesJoueur.get(i).getModel().getPlaceY(), sequential);
+                    sequential = cartesJoueur.get(i).triGraphique(startx, starty, startx - 100 + cartesJoueur.get(i).getModel().getPlaceX(), 200*cartesJoueur.get(i).getModel().getPlaceY(), sequential);
             }
                 sequential.play();
                 for (int i= 0; i<18; i++){

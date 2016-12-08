@@ -42,11 +42,11 @@ public class CarteView extends Group {
         y=CardModel.SCREEN_H_MODEL/10;
 
 
-        dos.setTranslateX(x);
+  /*      dos.setTranslateX(x);
         dos.setTranslateY(y);
 
         face.setTranslateX(x);
-        face.setTranslateY(y);
+        face.setTranslateY(y); */
     //    face.setTranslateZ(z);
 
         dos.setImage(imagedos);
@@ -56,6 +56,9 @@ public class CarteView extends Group {
 
 
         face.setImage(global);
+ //       face.setVisible(false);
+        face.setOpacity(0);
+
         if (CardModel.getNumero() <= 14) {
             face.setViewport(new Rectangle2D(((CardModel.getNumero()) % 15) * (SPACE_X_CARDS + CARD_W), CardModel.getRankType() * (SPACE_Y_CARDS + CARD_H), CARD_W, 200));
             face.setViewport(new Rectangle2D(((CardModel.getNumero()) % 15) * (SPACE_X_CARDS + CARD_W), CardModel.getRankType() * (SPACE_Y_CARDS + CARD_H), CARD_W, 200));
@@ -64,6 +67,7 @@ public class CarteView extends Group {
             face.setViewport(new Rectangle2D(((CardModel.getNumero()) % 14) * (SPACE_X_CARDS + CARD_W), CardModel.getRankType() * (SPACE_Y_CARDS + CARD_H), CARD_W, 200));
         }
 
+        this.getChildren().addAll(dos, face);
 
 
     }
@@ -77,6 +81,8 @@ public class CarteView extends Group {
 
 
     SequentialTransition flip(SequentialTransition sequential) {
+
+
         final RotateTransition rotateOutFront = new RotateTransition(Duration.millis(100), face);
         rotateOutFront.setInterpolator(Interpolator.LINEAR);
         rotateOutFront.setAxis(Rotate.Y_AXIS);
@@ -92,6 +98,12 @@ public class CarteView extends Group {
         rotateInBack.setToAngle(90);
         //
    //     return rotateInBack;
+
+        rotateInBack.setOnFinished(event ->  {for (int i=0; i<18; i++) {
+            face.setOpacity(1);
+            dos.setOpacity(0);
+        }});
+
         SequentialTransition sequential2 = new SequentialTransition();
         sequential2.getChildren().addAll(rotateInBack, rotateOutFront);
         sequential.getChildren().add(sequential2);
@@ -108,7 +120,7 @@ public class CarteView extends Group {
         parallelTransition.setCycleCount(1);
 
         TranslateTransition translateTransition=
-                new TranslateTransition(Duration.millis(100), dos);
+                new TranslateTransition(Duration.millis(1), this);
         translateTransition.setFromX(x);
         translateTransition.setToX(finalx);
         translateTransition.setFromY(y);
@@ -117,7 +129,7 @@ public class CarteView extends Group {
         translateTransition.setAutoReverse(true);
 
 
-        parallelTransition.getChildren().add(translateTransition);//, translateTransition2);
+        parallelTransition.getChildren().add(translateTransition);
 
 
         if (rotate) {
@@ -127,8 +139,6 @@ public class CarteView extends Group {
         sequential.getChildren().add(parallelTransition);
 
 
-        face.setTranslateX(finalx);
-        face.setTranslateY(finaly);
 
         return sequential;
     }
@@ -139,7 +149,7 @@ public class CarteView extends Group {
         parallelTransition.setCycleCount(1);
 
         RotateTransition rotateTransition =
-                new RotateTransition(Duration.millis(50), dos);
+                new RotateTransition(Duration.millis(1), this);
         rotateTransition.setByAngle(90f);
         rotateTransition.setCycleCount(1);
 
@@ -156,7 +166,7 @@ public class CarteView extends Group {
         parallelTransition.setCycleCount(1);
 
         TranslateTransition translateTransition=
-                new TranslateTransition(Duration.millis(100), dos);
+                new TranslateTransition(Duration.millis(1100), dos);
         translateTransition.setFromX(x);
         translateTransition.setToX(finalx);
         translateTransition.setFromY(y);
@@ -165,7 +175,7 @@ public class CarteView extends Group {
         translateTransition.setAutoReverse(true);
 
         TranslateTransition translateTransition2=
-                new TranslateTransition(Duration.millis(100), face);
+                new TranslateTransition(Duration.millis(1100), face);
         translateTransition.setFromX(x);
         translateTransition.setToX(finalx);
         translateTransition.setFromY(y);
