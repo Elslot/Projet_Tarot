@@ -72,13 +72,6 @@ public class CarteView extends Group {
 
     }
 
-    Collection<Node> getNodes(){
-        ArrayList<Node> al = new ArrayList<>();
-        al.add(face);
-        al.add(dos);
-        return al;
-    }
-
 
     SequentialTransition flip(SequentialTransition sequential) {
 
@@ -99,11 +92,7 @@ public class CarteView extends Group {
             dos.setOpacity(0);
         }});
 
-
-
-        SequentialTransition sequential2 = new SequentialTransition();
-        sequential2.getChildren().addAll(rotateInBack, rotateOutFront);
-        sequential.getChildren().add(sequential2);
+        sequential.getChildren().addAll(rotateInBack, rotateOutFront);
         return sequential;
     }
 
@@ -111,38 +100,24 @@ public class CarteView extends Group {
     public Carte getModel(){ return CardModel; }
 
 
-    public SequentialTransition TransitionAutreJoueur( double x, double y, double finalx, double finaly, boolean rotate, SequentialTransition sequential){
-
-        ParallelTransition parallelTransition = new ParallelTransition();
-        parallelTransition.setCycleCount(1);
-
-        TranslateTransition translateTransition=
-                new TranslateTransition(Duration.millis(100), this);
-        translateTransition.setToX(finalx);
-        translateTransition.setToY(finaly);
-        translateTransition.setCycleCount(1);
-        translateTransition.setAutoReverse(true);
-
-
-        parallelTransition.getChildren().add(translateTransition);
-
+    public SequentialTransition TransitionAutreJoueur( double finalx, double finaly, boolean rotate, SequentialTransition sequential){
 
         if (rotate) {
 
-            rotate(sequential, 90f);
+            rotate(sequential, 90f, Duration.millis(100));
         }
-        sequential.getChildren().add(parallelTransition);
+        sequential = Transition( finalx, finaly, sequential);
 
         return sequential;
     }
 
-    public SequentialTransition rotate( SequentialTransition sequential, double angle){
+    public SequentialTransition rotate( SequentialTransition sequential, double angle, Duration duration){
 
         ParallelTransition parallelTransition = new ParallelTransition();
         parallelTransition.setCycleCount(1);
 
         RotateTransition rotateTransition =
-                new RotateTransition(Duration.millis(100), this);
+                new RotateTransition(duration, this);
         rotateTransition.setByAngle(angle);
         rotateTransition.setCycleCount(1);
 
@@ -154,21 +129,9 @@ public class CarteView extends Group {
 
     public SequentialTransition triGraphique( double finalx, double finaly, SequentialTransition sequential){
 
-        ParallelTransition parallelTransition = new ParallelTransition();
-        parallelTransition.setCycleCount(1);
+        rotate(sequential, 360f, Duration.millis(400));
 
-        TranslateTransition translateTransition=
-                new TranslateTransition(Duration.millis(100), this);
-        translateTransition.setToX(finalx);
-        translateTransition.setToY(finaly);
-        translateTransition.setCycleCount(1);
-        translateTransition.setAutoReverse(true);
-
-        parallelTransition.getChildren().addAll(translateTransition);
-
-        rotate(sequential, 360f);
-
-        sequential.getChildren().addAll(parallelTransition);
+        sequential = Transition( finalx, finaly, sequential);
 
         return sequential;
     }
@@ -186,8 +149,6 @@ public class CarteView extends Group {
         translateTransition.setAutoReverse(true);
 
         parallelTransition.getChildren().addAll(translateTransition);
-
-        rotate(sequential, 360f);
 
         sequential.getChildren().addAll(parallelTransition);
 

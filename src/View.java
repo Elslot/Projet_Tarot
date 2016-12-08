@@ -1,7 +1,4 @@
-
 import javafx.animation.*;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -11,17 +8,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.awt.Dimension;
-
-
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class View implements Observer {
-
-    protected static final int windowSizeW = 400;
-    protected static final int windowSizeH = 100;
 
     static Dimension DIMENSION_VIEW = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
     static int SCREEN_H_VIEW = (int) DIMENSION_VIEW.getHeight();
@@ -31,6 +21,7 @@ public class View implements Observer {
     private Scene scene;
     private ArrayList<CarteView> cardviews;
     private ArrayList<CarteView> cartesJoueur;
+    private ArrayList<CarteView> cartesChien;
 
     private Group root;
 
@@ -53,6 +44,7 @@ public class View implements Observer {
 
         cardviews= new ArrayList<>();
         cartesJoueur = new ArrayList<>();
+        cartesChien = new ArrayList<>();
 
         Fenetre = new Stage();
         Fenetre.setTitle("Projet Tarot");
@@ -99,15 +91,9 @@ public class View implements Observer {
             cartePaquetView.setLayoutY(cartePaquetView.getY()-(0.1*i)-50);
             cartePaquetView.setTranslateX(cartePaquetView.getX()-(0.1*i));
             cartePaquetView.setTranslateY(cartePaquetView.getY()-(0.1*i));
-       /*     cardviews.get(i).setXY(cardviews.get(i).getX()-(0.1*i), cardviews.get(i).getY()-(0.1*i));
-            cardviews.get(i).setY(cardviews.get(i).getY()-(0.1*i));
-*/
+
             cardviews.add(cartePaquetView);
-            root.getChildren().add(cartePaquetView/*.getDos()*/);
-           // GcardsFace.getChildren().add(cartePaquetView.getFace());
-            //GcardsFace.setOpacity(0.f);
-
-
+            root.getChildren().add(cartePaquetView);
 
         }
 
@@ -120,6 +106,7 @@ public class View implements Observer {
 
         int indx = 1;
         int indy = 1;
+        int ind =0;
         SequentialTransition total = new SequentialTransition();
         total.setCycleCount(1);
 
@@ -134,33 +121,22 @@ public class View implements Observer {
 
         for (int i = 77; i >= 0; i--) {
 
-            double startx = cards.get(i).getX();
-            double starty = cards.get(i).getY();
+            if (i % 13 >= 0 && i % 13 <= 2)
+                sequential = cards.get(i).TransitionAutreJoueur(cards.get(i).getModel().SCREEN_W_MODEL + cards.get(i).CARD_W, cards.get(i).getModel().SCREEN_H_MODEL / 2 - cards.get(i).CARD_H, true, sequential);
 
-            if (i % 13 >= 0 && i % 13 <= 2) {
+            if (i % 13 >= 3 && i % 13 <= 5)
+                sequential = cards.get(i).TransitionAutreJoueur(cards.get(i).getModel().SCREEN_W_MODEL / 2 - cards.get(i).CARD_H, -400, false, sequential);
 
-                sequential = cards.get(i).TransitionAutreJoueur( startx, starty, cards.get(i).getModel().SCREEN_W_MODEL + cards.get(i).CARD_W, cards.get(i).getModel().SCREEN_H_MODEL / 2 - cards.get(i).CARD_H, true, sequential);
+            if (i % 13 >= 6 && i % 13 <= 8)
+                sequential = cards.get(i).TransitionAutreJoueur(-400, cards.get(i).getModel().SCREEN_H_MODEL / 2 - cards.get(i).CARD_H, true, sequential);
 
-
+            if (i % 13 == 9){
+                sequential = cards.get(i).TransitionAutreJoueur(PositionXPaquet + 149 + 12 * (78 - i), 100 + (0.1 * i), false, sequential);
+                cartesChien.add(cards.get(i));
             }
-            if (i % 13 >= 3 && i % 13 <= 5) {
-                sequential = cards.get(i).TransitionAutreJoueur(  startx, starty, cards.get(i).getModel().SCREEN_W_MODEL / 2 - cards.get(i).CARD_H, -400, false, sequential);
-
-            }
-            if (i % 13 >= 6 && i % 13 <= 8) {
-
-                sequential = cards.get(i).TransitionAutreJoueur( startx, starty, -400, cards.get(i).getModel().SCREEN_H_MODEL / 2 - cards.get(i).CARD_H, true, sequential);// root.getChildren().remove(cards.get(i));
-            }
-
-            if (i%13 == 9)
-            {
-                sequential = cards.get(i).TransitionAutreJoueur( startx, starty, startx+149+12*(78-i), 100+(0.1*i), false, sequential);
-
-            }
-
             if (i%13 >=10)
             {
-                sequential = cards.get(i).TransitionAutreJoueur( startx, starty, PositionXPaquet-200+160*indx+(0.1*i), PositionYPaquet+100+220*indy+(0.1*i), false, sequential);
+                sequential = cards.get(i).TransitionAutreJoueur(PositionXPaquet-150+160*indx+(0.1*i), PositionYPaquet+100+220*indy+(0.1*i), false, sequential);
                 cartesJoueur.add(cards.get(i));
                 indx ++;
                 if ((indx==9) &&(indy!=2))
@@ -171,153 +147,140 @@ public class View implements Observer {
             }
         }
 
-
         for( int i = 0; i<18; i++)
-        {
             sequential2 = cartesJoueur.get(i).flip(sequential2);
-        }
 
-
-
-        sequential2.setOnFinished(event ->  {
-
-            if (!modele.getPetitSec()) {
+        sequential2.setOnFinished(event ->
+        {
+            if (!modele.getPetitSec())
                 cacherBouton(bTrier, false);
-            }
             else
             {
                 cacherBouton(bQuitter, false);
                 petitSec(modele.getJoueurPetitSec());
             }
-
         });
-
-
 
         total.getChildren().addAll(sequential, sequential2);
         total.play();
+    }
 
+    public void AffichageChien()
+    {
+        SequentialTransition sequential = new SequentialTransition();
+        sequential.setCycleCount(1);
+        sequential.setDelay(Duration.millis(10));
+        for (int i =0; i<6; i++)
+        {
+            sequential = cartesChien.get(i).flip(sequential);
+        }
+        sequential.play();
+    }
 
+    public void AppelTri() {
+
+        SequentialTransition sequential = new SequentialTransition();
+        sequential.setCycleCount(1);
+        sequential.setDelay(Duration.millis(10));
+
+        int alignementXY = 0;
+
+        double finalx;
+        double finaly;
+        for (int i = 0; i < 18; i++) {
+            finalx = cartesJoueur.get(i).getModel().getPlaceX();
+            finaly = cartesJoueur.get(i).getModel().getPlaceY();
+
+            sequential = cartesJoueur.get(i).triGraphique(PositionXPaquet-150+169*finalx -( 0.1*alignementXY),PositionYPaquet+100+220*finaly - (0.1*alignementXY), sequential);
+            alignementXY++;
+            if (alignementXY %13 <= 10)
+            {alignementXY += 10;}
+
+        }
+        sequential.play();
     }
 
 
-
-            public void AppelTri() {
-
-                SequentialTransition sequential = new SequentialTransition();
-                sequential.setCycleCount(1);
-                sequential.setDelay(Duration.millis(10));
-
-                int alignementXY = 0;
-
-                double startx;
-                double starty;
-                double finalx;
-                double finaly;
-                for (int i = 0; i < 18; i++) {
-                    finalx = cartesJoueur.get(i).getModel().getPlaceX();
-                    finaly = cartesJoueur.get(i).getModel().getPlaceY();
-
-                    System.out.println(i);
-                    System.out.println( cartesJoueur.get(i).getTranslateX() + " / " +  cartesJoueur.get(i).getTranslateY());
-                    System.out.println( cartesJoueur.get(i).getModel().getPlaceX());
-                    System.out.println(cartesJoueur.get(i).getModel().getPlaceY()+ "---------\n" );
-                    sequential = cartesJoueur.get(i).triGraphique(PositionXPaquet-200+169*finalx -( 0.1*alignementXY),PositionYPaquet+100+220*finaly - (0.1*alignementXY), sequential);
-                    alignementXY++;
-                    if (alignementXY %13 <= 10)
-                    {alignementXY += 10;}
-
-            }
-            sequential.play();
-            }
-
-
-            public void cacherBouton(Button bouton, boolean disable) {
-                int opacity = 1;
-                if (disable) {
-                    opacity = 0;
-                }
-
-                bouton.setDisable(disable);
-                bouton.setOpacity(opacity);
-            }
-
-            public void cacherBoutonEnchere(boolean disable) {
-                cacherBouton(bPrise, disable);
-                cacherBouton(bGarde, disable);
-                cacherBouton(bGardeSansChien, disable);
-                cacherBouton(bGardeContreChien, disable);
-            }
-
-            public void petitSec(int joueur) {
-                Label affichage_petitSec = new Label("Le joueur " + joueur + " a le petit sec, donne annulée.\n Veuillez relancer l'application. Cliquez sur les cartes pour quitter");
-                affichage_petitSec.setTranslateX(SCREEN_W_VIEW / 12);
-                affichage_petitSec.setTranslateY(25);
-                affichage_petitSec.setFont(Font.font(50));
-                affichage_petitSec.setTextAlignment(TextAlignment.CENTER);
-                root.getChildren().add(affichage_petitSec);
-            }
-
-            public void createButton(Button buttonCreated, String title, double x, double y,int font, boolean disable)
-            {
-                buttonCreated.setText(title);
-                buttonCreated.setPrefSize(150, 50);
-                buttonCreated.setLayoutX(x);
-                buttonCreated.setLayoutY(y);
-                buttonCreated.setFont((Font.font(font)));
-
-                if(disable) {
-                    buttonCreated.setDisable(disable);
-                    buttonCreated.setOpacity(0);
-                }
-
-                root.getChildren().add(buttonCreated);
-            }
-
-            public ArrayList<CarteView> getCardsViews() {
-                return cardviews;
-            }
-
-            public Button getBoutonDistribuer() {
-                return bDistribution;
-            }
-
-            public Button getBoutonTrier() {
-                return bTrier;
-            }
-
-            public Button getBoutonGarde() {
-                return bGarde;
-            }
-
-            public Button getBoutonPrise() {
-                return bPrise;
-            }
-
-            public Button getBoutonGardeSansChien() {
-                return bGardeSansChien;
-            }
-
-            public Button getBoutonGardeContreChien() {
-                return bGardeContreChien;
-            }
-
-            public Button getBoutonQuitter() { return bQuitter; }
-
-            @Override
-            public void update(Observable o, Object arg) {
-
-            }
-
-            public Group getRoot() {
-                return root;
-            }
-
-            public Stage getStage()
-            {
-                return Fenetre;
-            }
+    public void cacherBouton(Button bouton, boolean disable) {
+        int opacity = 1;
+        if (disable) {
+            opacity = 0;
         }
+
+        bouton.setDisable(disable);
+        bouton.setOpacity(opacity);
+    }
+
+    public void cacherBoutonEnchere(boolean disable) {
+        cacherBouton(bPrise, disable);
+        cacherBouton(bGarde, disable);
+        cacherBouton(bGardeSansChien, disable);
+        cacherBouton(bGardeContreChien, disable);
+    }
+
+    public void petitSec(int joueur) {
+        Label affichage_petitSec = new Label("Le joueur " + joueur + " a le petit sec, donne annulée.\n Veuillez relancer l'application. Cliquez sur les cartes pour quitter");
+        affichage_petitSec.setTranslateX(SCREEN_W_VIEW / 12);
+        affichage_petitSec.setTranslateY(25);
+        affichage_petitSec.setFont(Font.font(50));
+        affichage_petitSec.setTextAlignment(TextAlignment.CENTER);
+        root.getChildren().add(affichage_petitSec);
+    }
+
+    public void createButton(Button buttonCreated, String title, double x, double y,int font, boolean disable)
+    {
+        buttonCreated.setText(title);
+        buttonCreated.setPrefSize(150, 50);
+        buttonCreated.setLayoutX(x);
+        buttonCreated.setLayoutY(y);
+        buttonCreated.setFont((Font.font(font)));
+
+        if(disable) {
+            buttonCreated.setDisable(disable);
+            buttonCreated.setOpacity(0);
+        }
+
+        root.getChildren().add(buttonCreated);
+    }
+
+    public ArrayList<CarteView> getCardsViews() {
+        return cardviews;
+    }
+
+    public Button getBoutonDistribuer() {
+        return bDistribution;
+    }
+
+    public Button getBoutonTrier() {
+        return bTrier;
+    }
+
+    public Button getBoutonGarde() {
+        return bGarde;
+    }
+
+    public Button getBoutonPrise() {
+        return bPrise;
+    }
+
+    public Button getBoutonGardeSansChien() {
+        return bGardeSansChien;
+    }
+
+    public Button getBoutonGardeContreChien() {
+        return bGardeContreChien;
+    }
+
+    public Button getBoutonQuitter() { return bQuitter; }
+
+    @Override
+    public void update(Observable o, Object arg) {}
+
+    public Stage getStage()
+    {
+        return Fenetre;
+    }
+}
 
 
 

@@ -162,7 +162,6 @@ public class Model extends Observable{
             {
                 ind_x++;
             }
-            System.out.println(cartes.get(i).getNumero()+" de " + cartes.get(i).getType() + " en " + (int)cartes.get(i).getPlaceX()+ "/" + (int)cartes.get(i).getPlaceY());
         }
     }
 

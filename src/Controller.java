@@ -38,7 +38,7 @@ public class Controller {
                 {
                     tri();
                     for (Carte c : modele.getCarteJoueur()) {
-                        System.out.println(c.getNumero() + " / " + c.getType());
+                       // System.out.println(c.getNumero() + " / " + c.getType());
                     }
                 }
             }
@@ -53,6 +53,8 @@ public class Controller {
             @Override
             public void handle(MouseEvent event) {
                 view.cacherBoutonEnchere(true);
+                view.AffichageChien();
+
                 //Enchere
             }
         });
