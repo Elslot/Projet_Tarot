@@ -18,7 +18,6 @@ public class Main extends Application{
 
         View viewtest = new View(modeltest);
         Controller control = new Controller(modeltest, viewtest);
-        viewtest.cacherBouton(viewtest.getBoutonOK(), false);
 
         control.lancerDistribution();
         control.enchere();

@@ -54,43 +54,16 @@ public class Controller {
             public void handle(MouseEvent event) {
                 view.cacherBoutonEnchere(true);
                 view.AffichageChien();
-
-                //Enchere
-                final int[] taille_ecart = {0};
-                int i =0;
-                while(i < view.getCartesJoueur().size()) {
-                    int finalI = i;
-                    view.getCartesJoueur().get(i).setOnMouseClicked(event1 -> {
-                        if (modele.licite(view.getCartesJoueur().get(finalI).getModel())) {
-                            if (!view.getCartesJoueur().get(finalI).getModel().getAjouteEcart()) {
-                                if(taille_ecart[0] < 6) {
-                                    view.getCartesJoueur().get(finalI).getModel().setAjouteEcart(true);
-                                    modele.getEcart().add(view.getCartesJoueur().get(finalI).getModel());
-                                    view.ChoixEcart(view.getCartesJoueur().get(finalI), view.getCartesJoueur().get(finalI).getModel().getAjouteEcart());
-                                    taille_ecart[0]++;
-                                }
-                            }
-                            else {
-                                modele.getEcart().remove(view.getCartesJoueur().get(finalI).getModel());
-                                view.getCartesJoueur().get(finalI).getModel().setAjouteEcart(false);
-                                view.ChoixEcart(view.getCartesJoueur().get(finalI), view.getCartesJoueur().get(finalI).getModel().getAjouteEcart());
-                                taille_ecart[0]--;
-                            }
-                        }
-                    });
-
-                    i++;
-                }
-                view.getBoutonOK().setOnMouseClicked(event1 -> {
-                    view.TransitionEcartChien();
-                });
+                ecart();
             }
         });
         view.getBoutonGarde().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 view.cacherBoutonEnchere(true);
-                //Enchere
+                view.AffichageChien();
+                view.cacherBouton(view.getBoutonOK(), false);
+                ecart();
             }
         });
         view.getBoutonGardeSansChien().setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -113,11 +86,53 @@ public class Controller {
 
     public void tri()
     {
-        modele.trierCartesAffichee();
+        modele.trier(modele.getCarteJoueur());
         view.getBoutonTrier().setOnMouseClicked(event -> {
             view.AppelTri();
             view.cacherBouton(view.getBoutonTrier(), true);
         });
+    }
+
+    public void ecart()
+    {
+        final int[] taille_ecart = {0};
+        int i =0;
+        while(i < view.getCartesJoueur().size()) {
+            int finalI = i;
+            view.getCartesJoueur().get(i).setOnMouseClicked(event1 -> {
+                if (modele.licite(view.getCartesJoueur().get(finalI).getModel())) {
+                    if (!view.getCartesJoueur().get(finalI).getModel().getAjouteEcart()) {
+                        if(taille_ecart[0] < 6) {
+                            view.getCartesJoueur().get(finalI).getModel().setAjouteEcart(true);
+                            modele.getEcart().add(view.getCartesJoueur().get(finalI).getModel());
+                            view.ChoixEcart(view.getCartesJoueur().get(finalI), view.getCartesJoueur().get(finalI).getModel().getAjouteEcart());
+                            taille_ecart[0]++;
+                        }
+                    }
+                    else {
+                        modele.getEcart().remove(view.getCartesJoueur().get(finalI).getModel());
+                        view.getCartesJoueur().get(finalI).getModel().setAjouteEcart(false);
+                        view.ChoixEcart(view.getCartesJoueur().get(finalI), view.getCartesJoueur().get(finalI).getModel().getAjouteEcart());
+                        taille_ecart[0]--;
+                    }
+                }
+
+                if(taille_ecart[0] == 6) {
+                    view.cacherBouton(view.getBoutonOK(), false);
+                }
+                else
+                {
+                    view.cacherBouton(view.getBoutonOK(), true);
+                }
+            });
+            i++;
+        }
+        view.getBoutonOK().setOnMouseClicked(event -> {
+            modele.Ecart();
+            view.TransitionEcartChien();
+            view.cacherBouton(view.getBoutonOK(), true);
+        });
+        tri();
     }
 
     public void quitter()

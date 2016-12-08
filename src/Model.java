@@ -166,12 +166,6 @@ public class Model extends Observable{
         }
     }
 
-    public void trierCartesAffichee()
-    {
-        trier(joueur);
-        trier(chien);
-    }
-
     public boolean aPetitSec(ArrayList<Carte> cartes)
     {
         int i = 0;
@@ -232,8 +226,17 @@ public class Model extends Observable{
 
     public boolean licite(Carte depot)
     {
+        boolean atoutAutorise = true;
+        for(int i = 0; i < joueur.size(); i++)
+        {
+            if(joueur.get(i).getType() != TypeCarte.ATOUT && joueur.get(i).getAjouteEcart() == false)
+            {
+                atoutAutorise = false;
+            }
+        }
         if((depot.getType() != TypeCarte.ATOUT && depot.getType() != TypeCarte.EXCUSE && depot.getNumero() == 14) ||
-                (depot.getType() == TypeCarte.ATOUT && (depot.getNumero() == 21 || depot.getNumero() == 1)))
+                (depot.getType() == TypeCarte.ATOUT && (depot.getNumero() == 21 || depot.getNumero() == 1)) ||
+                (depot.getType() == TypeCarte.ATOUT && atoutAutorise == false))
         {
             return false;
         }
@@ -245,8 +248,11 @@ public class Model extends Observable{
 
     public void Ecart()
     {
+        for(int i = 0; i < ecart.size(); i++)
+        {
+            joueur.remove(ecart.get(i));
+        }
         joueur.addAll(chien);
-        trier(joueur);
     }
 
     public ArrayList<Carte> getPaquetMelange() {
