@@ -171,7 +171,7 @@ public class View implements Observer {
 
         sequential2.setOnFinished(event ->  {
 
-            if (!modele.getPetitSec()) {
+            if (true) {
                 cacherBouton(bTrier, false);
             }
             else
@@ -266,9 +266,9 @@ public class View implements Observer {
             }
 
             public void petitSec(int joueur) {
-                Label affichage_petitSec = new Label("Le joueur " + joueur + " a le petit sec, donne annulée.\n Veuillez relancer l'application. Appuyer sur espace pour quitter");
-                affichage_petitSec.setTranslateX(SCREEN_W_VIEW / 10);
-                affichage_petitSec.setTranslateY(0);
+                Label affichage_petitSec = new Label("Le joueur " + joueur + " a le petit sec, donne annulée.\n Veuillez relancer l'application. Cliquez sur les cartes pour quitter");
+                affichage_petitSec.setTranslateX(SCREEN_W_VIEW / 12);
+                affichage_petitSec.setTranslateY(50);
                 affichage_petitSec.setFont(Font.font(50));
                 affichage_petitSec.setTextAlignment(TextAlignment.CENTER);
                 root.getChildren().add(affichage_petitSec);

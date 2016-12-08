@@ -28,16 +28,15 @@ public class Controller {
 
                 modele.distribution();
                 view.distribution(view.getCardsViews());
+                modele.trouverPetitSec();
 
-                if(modele.trouverPetitSec())
+                if(false)
                 {
                     petitSec();
                 }
                 else
                 {
                     tri();
-                    modele.trouverPetitSec();
-
                     for (Carte c : modele.getCarteJoueur()) {
                         System.out.println(c.getNumero() + " / " + c.getType());
                     }
@@ -95,13 +94,10 @@ public class Controller {
 
     public void petitSec()
     {
-        view.getRoot().setOnKeyPressed(new EventHandler<KeyEvent>() {
+        view.getRoot().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(KeyEvent event) {
-                if(event.getCode() == KeyCode.SPACE)
-                {
-                    view.getStage().close();
-                }
+            public void handle(MouseEvent event) {
+                view.getStage().close();
             }
         });
     }
