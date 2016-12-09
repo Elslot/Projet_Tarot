@@ -14,8 +14,8 @@ import java.util.*;
 public class View implements Observer {
 
     static Dimension DIMENSION_VIEW = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-    static double SCREEN_H_VIEW =  DIMENSION_VIEW.getHeight();
-    static double SCREEN_W_VIEW =  DIMENSION_VIEW.getWidth();
+    static int SCREEN_H_VIEW = (int)DIMENSION_VIEW.getHeight();
+    static int SCREEN_W_VIEW = (int)DIMENSION_VIEW.getWidth();
 
     protected Stage Fenetre;
     private Scene scene;
@@ -94,7 +94,7 @@ public class View implements Observer {
 
 
             cartePaquetView.setLayoutX(cartePaquetView.getX()-(0.1*i)-(CarteView.CARD_W+CarteView.SPACE_X_CARDS));
-            cartePaquetView.setLayoutY(cartePaquetView.getY()-(0.1*i)-(CarteView.CARD_H/4)/*50*/);
+            cartePaquetView.setLayoutY(cartePaquetView.getY()-(0.1*i)-(CarteView.CARD_H/4));
             cartePaquetView.setTranslateX(cartePaquetView.getX()-(0.1*i));
             cartePaquetView.setTranslateY(cartePaquetView.getY()-(0.1*i));
 
@@ -105,6 +105,7 @@ public class View implements Observer {
 
         PositionXPaquet = cardviews.get(1).getX();
         PositionYPaquet = cardviews.get(1).getY();
+
         Fenetre.show();
     }
 
@@ -128,25 +129,33 @@ public class View implements Observer {
         donner.setDelay(Duration.millis(10));
 
 
-        // Selon i, la transition ajouter dans la sequence 'donner' se fera dans une direction particulière, et avec ou non une rotation.
+        // Selon i, la transition qui est ajouté dans la sequence 'donner' se fera dans une direction particulière, et avec ou non une rotation (selon le booleen).
         for (int i = 77; i >= 0; i--) {
 
             if (i % 13 >= 0 && i % 13 <= 2)
-                donner = cards.get(i).TransitionJoueur(cards.get(i).getCarteModel().SCREEN_W_MODEL + cards.get(i).CARD_W, cards.get(i).getCarteModel().SCREEN_H_MODEL / 2 - cards.get(i).CARD_H, true, donner);
+                donner = cards.get(i).TransitionJoueur(SCREEN_W_VIEW + CarteView.CARD_W,SCREEN_H_VIEW / 2 - cards.get(i).CARD_H,
+                        true, donner);
 
             if (i % 13 >= 3 && i % 13 <= 5)
-                donner = cards.get(i).TransitionJoueur(cards.get(i).getCarteModel().SCREEN_W_MODEL / 2 - cards.get(i).CARD_H, -400, false, donner);
+                donner = cards.get(i).TransitionJoueur(SCREEN_W_VIEW / 2 - cards.get(i).CARD_H, -400,
+                        false, donner);
 
             if (i % 13 >= 6 && i % 13 <= 8)
-                donner = cards.get(i).TransitionJoueur(-400, cards.get(i).getCarteModel().SCREEN_H_MODEL / 2 - cards.get(i).CARD_H, true, donner);
+                donner = cards.get(i).TransitionJoueur(-400,SCREEN_H_VIEW / 2 - cards.get(i).CARD_H,
+                        true, donner);
 
             if (i % 13 == 9){
-                donner = cards.get(i).TransitionJoueur(PositionXPaquet + 149 + 12 * (78 - i), 100 + (0.1 * i), false, donner);
+                donner = cards.get(i).TransitionJoueur(PositionXPaquet + CarteView.CARD_W + 12 * (Model.NOMBRE_CARTE_JEU - i),
+                        PositionYPaquet + (0.1 * i), false, donner);
                 cartesChien.add(cards.get(i));
             }
             if (i%13 >=10)
             {
-                donner = cards.get(i).TransitionJoueur(PositionXPaquet-150+160*indx+(0.1*i), PositionYPaquet+100+220*indy+(0.1*i), false, donner);
+                donner = cards.get(i).TransitionJoueur(PositionXPaquet-CarteView.CARD_W +
+                                (CarteView.CARD_W + CarteView.SPACE_X_CARDS)*indx+(0.1*i),
+                                PositionYPaquet+ SCREEN_H_VIEW/14+ (CarteView.CARD_H+CarteView.SPACE_X_CARDS)*indy+(0.1*i),
+                                false, donner);
+
                 cartesJoueur.add(cards.get(i));
                 indx ++;
                 if ((indx==9) &&(indy!=2))
@@ -271,7 +280,8 @@ public class View implements Observer {
 
         for (int i=0; i<6; i++)
         {
-            abaissement = cartesChien.get(i).Transition(cartesChien.get(i).getTranslateX(), cartesChien.get(i).getTranslateY()+50, abaissement, Duration.millis(CarteView.TRANSITION_JOUEUR_DURATION));
+            abaissement = cartesChien.get(i).Transition(cartesChien.get(i).getTranslateX(), cartesChien.get(i).getTranslateY()+CarteView.CARD_H/4,
+                    abaissement, Duration.millis(CarteView.TRANSITION_JOUEUR_DURATION));
         }
 
         abaissement.setOnFinished(event -> {
@@ -288,7 +298,8 @@ public class View implements Observer {
 
         for (CarteView cvChien : cartesChien)
         {
-            depart = cvChien.Transition(cvChien.getTranslateX(), cvChien.getTranslateY()-400, depart, Duration.millis(CarteView.TRANSITION_JOUEUR_DURATION/2));
+            depart = cvChien.Transition(cvChien.getTranslateX(), cvChien.getTranslateY()-400, depart,
+                    Duration.millis(CarteView.TRANSITION_JOUEUR_DURATION/2));
         }
 
         depart.play();

@@ -9,9 +9,6 @@ public class Carte {
 	private boolean ajouteEcart; //définie si la variable est ajouté à l'écart ou non
 
 	//Permet de récupérer les dimensions de l'écran
-    static Dimension DIMENSION_MODEL = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-    static int SCREEN_H_MODEL = (int)DIMENSION_MODEL.getHeight();
-    static int SCREEN_W_MODEL  = (int)DIMENSION_MODEL.getWidth();
 
 	public Carte(TypeCarte type, int numero)
 	{

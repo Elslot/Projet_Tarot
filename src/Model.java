@@ -2,6 +2,9 @@ import java.lang.reflect.Type;
 import java.util.*;
 
 public class Model extends Observable{
+
+    final static int NOMBRE_CARTE_JEU = 78;
+
 	private ArrayList<Carte> paquet;
     private ArrayList<Carte> paquetMelange;
 	private ArrayList<Carte> chien;
