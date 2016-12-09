@@ -14,8 +14,8 @@ import java.util.*;
 public class View implements Observer {
 
     static Dimension DIMENSION_VIEW = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-    static int SCREEN_H_VIEW = (int) DIMENSION_VIEW.getHeight();
-    static int SCREEN_W_VIEW = (int) DIMENSION_VIEW.getWidth();
+    static double SCREEN_H_VIEW =  DIMENSION_VIEW.getHeight();
+    static double SCREEN_W_VIEW =  DIMENSION_VIEW.getWidth();
 
     protected Stage Fenetre;
     private Scene scene;
@@ -94,8 +94,8 @@ public class View implements Observer {
             CarteView cartePaquetView = new CarteView(modele.getPaquetMelange().get(i));
 
 
-            cartePaquetView.setLayoutX(cartePaquetView.getX()-(0.1*i)-169);
-            cartePaquetView.setLayoutY(cartePaquetView.getY()-(0.1*i)-50);
+            cartePaquetView.setLayoutX(cartePaquetView.getX()-(0.1*i)-(CarteView.CARD_W+CarteView.SPACE_X_CARDS));
+            cartePaquetView.setLayoutY(cartePaquetView.getY()-(0.1*i)-(CarteView.CARD_H/4)/*50*/);
             cartePaquetView.setTranslateX(cartePaquetView.getX()-(0.1*i));
             cartePaquetView.setTranslateY(cartePaquetView.getY()-(0.1*i));
 
@@ -109,40 +109,45 @@ public class View implements Observer {
         Fenetre.show();
     }
 
+	// Cette fonction distribue les cartes du paquet au 4 joueurs et au chien en commençant par le joueur.
+	// Les cartes sont envoyées une par une, trois fois à la suite pour chaque joueur à chaque tour de distribution.
+	// Le chien reçoit une carte à chaque tour et uniquement une ( cf : le sujet où il est précisé qu'elles étaient déposées 1 à 1)
     public void distribution(ArrayList<CarteView> cards) {
 
-        int indx = 1;
+        int indx = 1; // Deux indices de placements pour position les cartes du Joueur sur l'écran
         int indy = 1;
+
         SequentialTransition total = new SequentialTransition();
         total.setCycleCount(1);
 
-        SequentialTransition sequential2 = new SequentialTransition();
-        sequential2.setCycleCount(1);
-        sequential2.setDelay(Duration.millis(10));
+        SequentialTransition flipSequence = new SequentialTransition();
+        flipSequence.setCycleCount(1);
+        flipSequence.setDelay(Duration.millis(10));
 
-        SequentialTransition sequential = new SequentialTransition();
-        sequential.setCycleCount(1);
-        sequential.setDelay(Duration.millis(10));
+        SequentialTransition donner = new SequentialTransition();
+        donner.setCycleCount(1);
+        donner.setDelay(Duration.millis(10));
 
 
+        // Selon i, la transition ajouter dans la sequence 'donner' se fera dans une direction particulière, et avec ou non une rotation.
         for (int i = 77; i >= 0; i--) {
 
             if (i % 13 >= 0 && i % 13 <= 2)
-                sequential = cards.get(i).TransitionJoueur(cards.get(i).getModel().SCREEN_W_MODEL + cards.get(i).CARD_W, cards.get(i).getModel().SCREEN_H_MODEL / 2 - cards.get(i).CARD_H, true, sequential);
+                donner = cards.get(i).TransitionJoueur(cards.get(i).getModel().SCREEN_W_MODEL + cards.get(i).CARD_W, cards.get(i).getModel().SCREEN_H_MODEL / 2 - cards.get(i).CARD_H, true, donner);
 
             if (i % 13 >= 3 && i % 13 <= 5)
-                sequential = cards.get(i).TransitionJoueur(cards.get(i).getModel().SCREEN_W_MODEL / 2 - cards.get(i).CARD_H, -400, false, sequential);
+                donner = cards.get(i).TransitionJoueur(cards.get(i).getModel().SCREEN_W_MODEL / 2 - cards.get(i).CARD_H, -400, false, donner);
 
             if (i % 13 >= 6 && i % 13 <= 8)
-                sequential = cards.get(i).TransitionJoueur(-400, cards.get(i).getModel().SCREEN_H_MODEL / 2 - cards.get(i).CARD_H, true, sequential);
+                donner = cards.get(i).TransitionJoueur(-400, cards.get(i).getModel().SCREEN_H_MODEL / 2 - cards.get(i).CARD_H, true, donner);
 
             if (i % 13 == 9){
-                sequential = cards.get(i).TransitionJoueur(PositionXPaquet + 149 + 12 * (78 - i), 100 + (0.1 * i), false, sequential);
+                donner = cards.get(i).TransitionJoueur(PositionXPaquet + 149 + 12 * (78 - i), 100 + (0.1 * i), false, donner);
                 cartesChien.add(cards.get(i));
             }
             if (i%13 >=10)
             {
-                sequential = cards.get(i).TransitionJoueur(PositionXPaquet-150+160*indx+(0.1*i), PositionYPaquet+100+220*indy+(0.1*i), false, sequential);
+                donner = cards.get(i).TransitionJoueur(PositionXPaquet-150+160*indx+(0.1*i), PositionYPaquet+100+220*indy+(0.1*i), false, donner);
                 cartesJoueur.add(cards.get(i));
                 indx ++;
                 if ((indx==9) &&(indy!=2))
@@ -152,11 +157,14 @@ public class View implements Observer {
                 }
             }
         }
-
+        // On rempli notre sequence flip, avec une suite de sequence retournant chaque carte.
         for( int i = 0; i<18; i++)
-            sequential2 = cartesJoueur.get(i).flip(sequential2);
+            flipSequence = cartesJoueur.get(i).flip(flipSequence);
 
-        sequential2.setOnFinished(event ->
+
+        // Quand les cartes ont finies de toutes se retourner, on veut afficher le bouton qui lancera le tri si l'on clique dessus.
+        // On veut aussi afficher si le petitSec a été trouvé, et si c'est le cas, mettre fin grace au bouton Quitte qui apparaitra.
+        flipSequence.setOnFinished(event ->
         {
             if (!modele.getPetitSec())
                 cacherBouton(bTrier, false);
@@ -167,20 +175,22 @@ public class View implements Observer {
             }
         });
 
-        total.getChildren().addAll(sequential, sequential2);
+        // On réunit la distribution et le retournement des cartes dans une SequentialTransition pour les retourner à la suite.
+        total.getChildren().addAll( donner, flipSequence);
         total.play();
     }
 
+    // Cette fonction fera le retournement des cartes du chien
     public void AffichageChien()
     {
-        SequentialTransition sequential = new SequentialTransition();
-        sequential.setCycleCount(1);
-        sequential.setDelay(Duration.millis(10));
+        SequentialTransition retournerChien = new SequentialTransition();
+        retournerChien.setCycleCount(1);
+        retournerChien.setDelay(Duration.millis(10));
         for (int i =0; i<6; i++)
         {
-            sequential = cartesChien.get(i).flip(sequential);
+            retournerChien = cartesChien.get(i).flip(retournerChien);
         }
-        sequential.play();
+        retournerChien.play();
     }
 
     public void AppelTri(boolean triApresEcart) {
@@ -216,15 +226,19 @@ public class View implements Observer {
         sequential.setDelay(Duration.millis(10));
 
         if (test){
-            sequential = carte.Transition(carte.getTranslateX(), carte.getTranslateY()-50, sequential, Duration.millis(100));
+            sequential = carte.Transition(carte.getTranslateX(), carte.getTranslateY()-50, sequential, Duration.millis(CarteView.TRANSITION_JOUEUR_DURATION));
             if (!cartesEcart.contains(carte)) {
                 cartesEcart.add(carte);
             }
+            carte.setScaleX(1.1);
+            carte.setScaleY(1.1);
         }
 
         else {
-            sequential = carte.Transition(carte.getTranslateX(), carte.getTranslateY() + 50, sequential, Duration.millis(100));
+            sequential = carte.Transition(carte.getTranslateX(), carte.getTranslateY() + 50, sequential, Duration.millis(CarteView.TRANSITION_JOUEUR_DURATION));
             cartesEcart.remove(carte);
+            carte.setScaleX(1);
+            carte.setScaleY(1);
         }
 
         sequential.play();
@@ -235,16 +249,15 @@ public class View implements Observer {
         swap.setCycleCount(1);
         swap.setDelay(Duration.millis(10));
 
-
-
-        SequentialTransition totale = new SequentialTransition();
-        totale.setCycleCount(1);
-        totale.setDelay(Duration.millis(10));
-
         for (int i=0; i<6; i++)
         {
-            swap = cartesChien.get(i).Transition(cartesEcart.get(i).getTranslateX(), cartesEcart.get(i).getTranslateY(), swap, Duration.millis(1100));
-            swap = cartesEcart.get(i).Transition(cartesChien.get(i).getTranslateX(), cartesChien.get(i).getTranslateY(),swap, Duration.millis(1100));
+            cartesEcart.get(i).setScaleX(1);
+            cartesEcart.get(i).setScaleY(1);
+
+            swap = cartesChien.get(i).Transition(cartesEcart.get(i).getTranslateX(), cartesEcart.get(i).getTranslateY(), swap, Duration.millis(CarteView.TRANSITION_ECART_DURATION));
+            swap = cartesEcart.get(i).Transition(cartesChien.get(i).getTranslateX(), cartesChien.get(i).getTranslateY(),swap, Duration.millis(CarteView.TRANSITION_ECART_DURATION));
+            cartesJoueur.remove(cartesEcart.get(i));
+            cartesJoueur.add(cartesChien.get(i));
 
         }
         swap.setOnFinished(event -> {this.AbaissementChien();});
@@ -257,9 +270,10 @@ public class View implements Observer {
         abaissement.setCycleCount(1);
         abaissement.setDelay(Duration.millis(10));
 
+
         for (int i=0; i<6; i++)
         {
-            abaissement = cartesChien.get(i).Transition(cartesChien.get(i).getTranslateX(), cartesChien.get(i).getTranslateY()+50, abaissement, Duration.millis(100));
+            abaissement = cartesChien.get(i).Transition(cartesChien.get(i).getTranslateX(), cartesChien.get(i).getTranslateY()+50, abaissement, Duration.millis(CarteView.TRANSITION_JOUEUR_DURATION));
         }
 
         abaissement.setOnFinished(event -> {

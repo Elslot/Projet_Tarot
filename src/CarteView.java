@@ -15,6 +15,10 @@ public class CarteView extends Group {
     static int SPACE_Y_CARDS= 20;
     static int CARD_W= 149;
     static int CARD_H= 200;
+    static int HALF_DURATION_FLIP = 100;
+    static int TRANSITION_JOUEUR_DURATION = 200;
+    static int TRANSITION_ECART_DURATION = 400;
+    static int ROTATE_DURATION = 100;
 
     private double x, y;
     private ImageView face;
@@ -49,13 +53,13 @@ public class CarteView extends Group {
 
     SequentialTransition flip(SequentialTransition sequential) {
 
-        final RotateTransition rotateOutFront = new RotateTransition(Duration.millis(100), face);
+        final RotateTransition rotateOutFront = new RotateTransition(Duration.millis(HALF_DURATION_FLIP), face);
         rotateOutFront.setInterpolator(Interpolator.LINEAR);
         rotateOutFront.setAxis(Rotate.Y_AXIS);
         rotateOutFront.setFromAngle(90);
         rotateOutFront.setToAngle(0);
 
-        final RotateTransition rotateInBack = new RotateTransition(Duration.millis(100), dos);
+        final RotateTransition rotateInBack = new RotateTransition(Duration.millis(HALF_DURATION_FLIP), dos);
         rotateInBack.setInterpolator(Interpolator.LINEAR);
         rotateInBack.setAxis(Rotate.Y_AXIS);
         rotateInBack.setFromAngle(0);
@@ -77,9 +81,9 @@ public class CarteView extends Group {
     public SequentialTransition TransitionJoueur( double finalx, double finaly, boolean rotate, SequentialTransition sequential){
 
         if (rotate)
-            rotate(sequential, 90f, Duration.millis(100));
+            rotate(sequential, 90f, Duration.millis(ROTATE_DURATION));
 
-        sequential = Transition( finalx, finaly, sequential, Duration.millis(100));
+        sequential = Transition( finalx, finaly, sequential, Duration.millis(TRANSITION_JOUEUR_DURATION));
         return sequential;
     }
 
@@ -101,7 +105,7 @@ public class CarteView extends Group {
     public SequentialTransition triGraphique( double finalx, double finaly, SequentialTransition sequential){
 
         sequential = rotate(sequential, 360f, Duration.millis(1));
-        sequential = Transition( finalx, finaly, sequential,Duration.millis(100));
+        sequential = Transition( finalx, finaly, sequential,Duration.millis(TRANSITION_JOUEUR_DURATION));
 
         return sequential;
     }
