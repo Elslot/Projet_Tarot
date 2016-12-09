@@ -270,7 +270,6 @@ public class View implements Observer {
         abaissement.setCycleCount(1);
         abaissement.setDelay(Duration.millis(10));
 
-
         for (int i=0; i<6; i++)
         {
             abaissement = cartesChien.get(i).Transition(cartesChien.get(i).getTranslateX(), cartesChien.get(i).getTranslateY()+50, abaissement, Duration.millis(CarteView.TRANSITION_JOUEUR_DURATION));
@@ -284,6 +283,18 @@ public class View implements Observer {
         abaissement.play();
     }
 
+    public void DepartChien(){
+        SequentialTransition depart = new SequentialTransition();
+        depart.setCycleCount(1);
+        depart.setDelay(Duration.millis(10));
+
+        for (CarteView cvChien : cartesChien)
+        {
+            depart = cvChien.Transition(cvChien.getTranslateX(), cvChien.getTranslateY()-400, depart, Duration.millis(CarteView.TRANSITION_JOUEUR_DURATION/2));
+        }
+
+        depart.play();
+    }
 
     public void cacherBouton(Button bouton, boolean disable) {
         int opacity = 1;

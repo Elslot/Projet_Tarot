@@ -124,7 +124,7 @@ public class Controller {
             modele.Ecart();
             view.TransitionEcartChien();
             view.cacherBouton(view.getBoutonOK(), true);
-            tri();
+            tri(true);
             System.out.println("Va Bien Niquer ta mère la pute connard de merde de salope de fils de pute");
         });
 
