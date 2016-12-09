@@ -1,6 +1,5 @@
-import java.awt.*;
-
 public class Carte {
+
 	private TypeCarte type;
 	private int numero;
 	private boolean turned; //définie si la carte est tournée côté face ou non
@@ -24,12 +23,10 @@ public class Carte {
 	{
 		return type;
 	}
-
 	public int getNumero()
     {
         return numero;
     }
-
     public int getRankType() //Permet de récupérer le rang du type, en fonction de l'ordre dans lequel les cartes doivent apparaîtres triées.
                             //Sert principalement pour déplacer le rectangle de lecture, à la création d'un carte view.
 	{
@@ -55,8 +52,8 @@ public class Carte {
 	}
 
 	public double getPlaceX(){ return ind_place_x;}
-	public double getPlaceY(){ return ind_place_y;}
 	public void setPlaceX(int x){ ind_place_x=x;}
+	public double getPlaceY(){ return ind_place_y;}
 	public void setPlaceY(int y){ ind_place_y=y;}
 
 	public boolean  getAjouteEcart() { return ajouteEcart; }

@@ -14,7 +14,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
-
 public class CarteView extends Group {
 
     final static Image global = new Image("file:./SpriteCarteFace.png"); //Ensemble des sprites pour les faces des cartes

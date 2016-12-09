@@ -1,6 +1,3 @@
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
-
 public class Controller {
 
     //Le contrôleur possède un modèle et une vue car il prend en charge les évènements de la fenêtre, et en fonction des évènements effectue les fonctions de model en interne,

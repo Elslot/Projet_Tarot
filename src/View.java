@@ -127,7 +127,7 @@ public class View implements Observer {
         donner.setDelay(Duration.millis(10));
 
 
-        // Selon i, la transition qui est ajouté dans la sequence 'donner' se fera dans une direction particulière, et avec ou non une rotation (selon le booleen).
+        // Selon i, la transition qui est ajoutée dans la sequence 'donner' se fera dans une direction particulière, et avec ou non une rotation (selon le booleen).
         for (int i = 77; i >= 0; i--) {
 
             if (i % 13 >= 0 && i % 13 <= 2)
@@ -223,7 +223,8 @@ public class View implements Observer {
             finalx = cartesJoueur.get(i).getCarteModel().getPlaceX();
             finaly = cartesJoueur.get(i).getCarteModel().getPlaceY();
 
-            tri = cartesJoueur.get(i).triGraphique(PositionXPaquet-150+169*finalx ,PositionYPaquet+100+220*finaly - (0.1*alignementXY), tri);
+            tri = cartesJoueur.get(i).triGraphique(PositionXPaquet-CarteView.CARD_W+(CarteView.CARD_W+CarteView.SPACE_X_CARDS)*finalx ,
+                    PositionYPaquet+CarteView.CARD_H/2+(CarteView.CARD_H+CarteView.SPACE_Y_CARDS)*finaly - (0.1*alignementXY), tri);
 			// L'alignement correspondant au i qui s'incrémenter de 0 à 78 lors de l'initialisation de la position des cartes.
 			// On doit donc l'incrémenter de 1 en 1, mais l'incrémenter de 10 lorsque le nombre correspond à une carte qui n'a pas été donné au joueur
             alignementXY++;
@@ -252,7 +253,7 @@ public class View implements Observer {
         sequential.setDelay(Duration.millis(10));
 
         if (test){
-            sequential = carte.transition(carte.getTranslateX(), carte.getTranslateY()-50, sequential, Duration.millis(CarteView.TRANSITION_JOUEUR_DURATION));
+            sequential = carte.transition(carte.getTranslateX(), carte.getTranslateY()-CarteView.CARD_H/4, sequential, Duration.millis(CarteView.TRANSITION_JOUEUR_DURATION));
             if (!cartesEcart.contains(carte)) { // On ajoute dans cartesEcart à la CarteViews correspondante à la carte cliquée si elle n'est pas déjà ajoutée.
                 cartesEcart.add(carte);
             }
@@ -262,7 +263,7 @@ public class View implements Observer {
         }
 
         else {
-            sequential = carte.transition(carte.getTranslateX(), carte.getTranslateY() + 50, sequential, Duration.millis(CarteView.TRANSITION_JOUEUR_DURATION));
+            sequential = carte.transition(carte.getTranslateX(), carte.getTranslateY() + CarteView.CARD_H/4, sequential, Duration.millis(CarteView.TRANSITION_JOUEUR_DURATION));
             cartesEcart.remove(carte);
             carte.setScaleX(1);
             carte.setScaleY(1);
