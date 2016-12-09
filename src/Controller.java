@@ -93,19 +93,19 @@ public class Controller {
         while(i < view.getCartesJoueur().size()) {
             int finalI = i;
             view.getCartesJoueur().get(i).setOnMouseClicked(event1 -> {
-                if (modele.licite(view.getCartesJoueur().get(finalI).getModel())) {
-                    if (!view.getCartesJoueur().get(finalI).getModel().getAjouteEcart()) {
+                if (modele.licite(view.getCartesJoueur().get(finalI).getCarteModel())) {
+                    if (!view.getCartesJoueur().get(finalI).getCarteModel().getAjouteEcart()) {
                         if(taille_ecart[0] < 6) {
-                            view.getCartesJoueur().get(finalI).getModel().setAjouteEcart(true);
-                            modele.getEcart().add(view.getCartesJoueur().get(finalI).getModel());
-                            view.ChoixEcart(view.getCartesJoueur().get(finalI), view.getCartesJoueur().get(finalI).getModel().getAjouteEcart());
+                            view.getCartesJoueur().get(finalI).getCarteModel().setAjouteEcart(true);
+                            modele.getEcart().add(view.getCartesJoueur().get(finalI).getCarteModel());
+                            view.ChoixEcart(view.getCartesJoueur().get(finalI), view.getCartesJoueur().get(finalI).getCarteModel().getAjouteEcart());
                             taille_ecart[0]++;
                         }
                     }
                     else {
-                        modele.getEcart().remove(view.getCartesJoueur().get(finalI).getModel());
-                        view.getCartesJoueur().get(finalI).getModel().setAjouteEcart(false);
-                        view.ChoixEcart(view.getCartesJoueur().get(finalI), view.getCartesJoueur().get(finalI).getModel().getAjouteEcart());
+                        modele.getEcart().remove(view.getCartesJoueur().get(finalI).getCarteModel());
+                        view.getCartesJoueur().get(finalI).getCarteModel().setAjouteEcart(false);
+                        view.ChoixEcart(view.getCartesJoueur().get(finalI), view.getCartesJoueur().get(finalI).getCarteModel().getAjouteEcart());
                         taille_ecart[0]--;
                     }
                 }
@@ -125,7 +125,6 @@ public class Controller {
             view.TransitionEcartChien();
             view.cacherBouton(view.getBoutonOK(), true);
             tri(true);
-            System.out.println("Va Bien Niquer ta mère la pute connard de merde de salope de fils de pute");
         });
 
     }

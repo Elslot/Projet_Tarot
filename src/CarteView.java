@@ -1,3 +1,11 @@
+/*
+* Nom de classe : CarteView
+*
+* Description   : Classe implementant la parti graphique des cartes. Ce sont des groupes regroupant à chaque fois
+*                 deux ImageView (dos et face). On y définit les constantes graphiques associées aux cartes
+*                 ainsi que la durée des transitions qui leur sont affectées.
+*/
+
 import javafx.animation.*;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
@@ -9,43 +17,41 @@ import javafx.util.Duration;
 
 public class CarteView extends Group {
 
-    final static Image global = new Image("file:./cartesfinales2.png");
-    final static Image imagedos = new Image("file:./imagedos.png");
-    static int SPACE_X_CARDS= 20;
-    static int SPACE_Y_CARDS= 20;
-    static int CARD_W= 149;
-    static int CARD_H= 200;
-    static int HALF_DURATION_FLIP = 100;
-    static int TRANSITION_JOUEUR_DURATION = 200;
-    static int TRANSITION_ECART_DURATION = 400;
-    static int ROTATE_DURATION = 100;
+    final static Image global = new Image("file:./SpriteCarteFace.png");
+    final static Image imagedos = new Image("file:./SpriteCarteDos.png");
+    final static int SPACE_X_CARDS= 20;
+    final static int SPACE_Y_CARDS= 20;
+    final static int CARD_W= 149;
+    final static int CARD_H= 200;
+    final static int HALF_DURATION_FLIP = 100;
+    final static int TRANSITION_JOUEUR_DURATION = 200;
+    final static int TRANSITION_ECART_DURATION = 400;
+    final static int ROTATE_DURATION = 100;
 
     private double x, y;
     private ImageView face;
     private ImageView dos;
-    private Carte CardModel;
-
-
+    private Carte carteModel;
 
     public CarteView(Carte card) {
 
-        CardModel = card;
+        carteModel = card;
         face = new ImageView();
         dos = new ImageView();
 
-        x=CardModel.SCREEN_W_MODEL/10;
-        y=CardModel.SCREEN_H_MODEL/10;
+        x=carteModel.SCREEN_W_MODEL/10;
+        y=carteModel.SCREEN_H_MODEL/10;
 
         dos.setImage(imagedos);
         face.setImage(global);
         face.setOpacity(0);
 
-        if (CardModel.getNumero() <= 14) {
-            face.setViewport(new Rectangle2D(((CardModel.getNumero()) % 15) * (SPACE_X_CARDS + CARD_W), CardModel.getRankType() * (SPACE_Y_CARDS + CARD_H), CARD_W, 200));
-            face.setViewport(new Rectangle2D(((CardModel.getNumero()) % 15) * (SPACE_X_CARDS + CARD_W), CardModel.getRankType() * (SPACE_Y_CARDS + CARD_H), CARD_W, 200));
+        if (carteModel.getNumero() <= 14) {
+            face.setViewport(new Rectangle2D(((carteModel.getNumero()) % 15) * (SPACE_X_CARDS + CARD_W), carteModel.getRankType() * (SPACE_Y_CARDS + CARD_H), CARD_W, 200));
+            face.setViewport(new Rectangle2D(((carteModel.getNumero()) % 15) * (SPACE_X_CARDS + CARD_W), carteModel.getRankType() * (SPACE_Y_CARDS + CARD_H), CARD_W, 200));
         } else {
-            face.setViewport(new Rectangle2D(((CardModel.getNumero()) % 14) * (SPACE_X_CARDS + CARD_W), CardModel.getRankType() * (SPACE_Y_CARDS + CARD_H), CARD_W, 200));
-            face.setViewport(new Rectangle2D(((CardModel.getNumero()) % 14) * (SPACE_X_CARDS + CARD_W), CardModel.getRankType() * (SPACE_Y_CARDS + CARD_H), CARD_W, 200));
+            face.setViewport(new Rectangle2D(((carteModel.getNumero()) % 14) * (SPACE_X_CARDS + CARD_W), carteModel.getRankType() * (SPACE_Y_CARDS + CARD_H), CARD_W, 200));
+            face.setViewport(new Rectangle2D(((carteModel.getNumero()) % 14) * (SPACE_X_CARDS + CARD_W), carteModel.getRankType() * (SPACE_Y_CARDS + CARD_H), CARD_W, 200));
         }
         this.getChildren().addAll(dos, face);
     }
@@ -75,7 +81,7 @@ public class CarteView extends Group {
     }
 
 
-    public Carte getModel(){ return CardModel; }
+    public Carte getCarteModel(){ return carteModel; }
 
 
     public SequentialTransition TransitionJoueur( double finalx, double finaly, boolean rotate, SequentialTransition sequential){

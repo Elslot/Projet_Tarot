@@ -22,7 +22,6 @@ public class View implements Observer {
     private ArrayList<CarteView> cardviews;
     private ArrayList<CarteView> cartesJoueur;
     private ArrayList<CarteView> cartesChien;
-
     private ArrayList<CarteView> cartesEcart;
 
     private Group root;
@@ -133,13 +132,13 @@ public class View implements Observer {
         for (int i = 77; i >= 0; i--) {
 
             if (i % 13 >= 0 && i % 13 <= 2)
-                donner = cards.get(i).TransitionJoueur(cards.get(i).getModel().SCREEN_W_MODEL + cards.get(i).CARD_W, cards.get(i).getModel().SCREEN_H_MODEL / 2 - cards.get(i).CARD_H, true, donner);
+                donner = cards.get(i).TransitionJoueur(cards.get(i).getCarteModel().SCREEN_W_MODEL + cards.get(i).CARD_W, cards.get(i).getCarteModel().SCREEN_H_MODEL / 2 - cards.get(i).CARD_H, true, donner);
 
             if (i % 13 >= 3 && i % 13 <= 5)
-                donner = cards.get(i).TransitionJoueur(cards.get(i).getModel().SCREEN_W_MODEL / 2 - cards.get(i).CARD_H, -400, false, donner);
+                donner = cards.get(i).TransitionJoueur(cards.get(i).getCarteModel().SCREEN_W_MODEL / 2 - cards.get(i).CARD_H, -400, false, donner);
 
             if (i % 13 >= 6 && i % 13 <= 8)
-                donner = cards.get(i).TransitionJoueur(-400, cards.get(i).getModel().SCREEN_H_MODEL / 2 - cards.get(i).CARD_H, true, donner);
+                donner = cards.get(i).TransitionJoueur(-400, cards.get(i).getCarteModel().SCREEN_H_MODEL / 2 - cards.get(i).CARD_H, true, donner);
 
             if (i % 13 == 9){
                 donner = cards.get(i).TransitionJoueur(PositionXPaquet + 149 + 12 * (78 - i), 100 + (0.1 * i), false, donner);
@@ -204,8 +203,8 @@ public class View implements Observer {
         double finalx;
         double finaly;
         for (int i = 0; i < 18; i++) {
-            finalx = cartesJoueur.get(i).getModel().getPlaceX();
-            finaly = cartesJoueur.get(i).getModel().getPlaceY();
+            finalx = cartesJoueur.get(i).getCarteModel().getPlaceX();
+            finaly = cartesJoueur.get(i).getCarteModel().getPlaceY();
 
             tri = cartesJoueur.get(i).triGraphique(PositionXPaquet-150+169*finalx ,PositionYPaquet+100+220*finaly - (0.1*alignementXY), tri);
             alignementXY++;
@@ -277,7 +276,6 @@ public class View implements Observer {
 
         abaissement.setOnFinished(event -> {
             cacherBouton(bTrier, false);
-            cacherBouton(bOK, false);
 
         });
         abaissement.play();
