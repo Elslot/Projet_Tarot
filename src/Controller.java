@@ -126,6 +126,7 @@ public class Controller {
             view.TransitionEcartChien();
             tri(true); //On trie
             tailleEcart[0] = -1; //Et on met a -1 tailleEcart pour ne plus gérer le clic des cartes.
+            quitter(); //On permet de quitter après le tri
         });
 
     }

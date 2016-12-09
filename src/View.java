@@ -223,6 +223,7 @@ public class View implements Observer {
         }
         tri.setOnFinished(event -> {
             cacherBoutonEnchere(triApresEcart);
+            cacherBouton(bQuitter,!triApresEcart);
         });
         tri.play();
     }
@@ -268,7 +269,9 @@ public class View implements Observer {
             cartesJoueur.add(cartesChien.get(i));
 
         }
-        swap.setOnFinished(event -> {this.AbaissementChien();});
+        swap.setOnFinished(event -> {
+            this.AbaissementChien();
+        });
         swap.play();
 
     }
