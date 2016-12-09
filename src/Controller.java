@@ -38,47 +38,41 @@ public class Controller {
 
     }
 
-    /* Fonction qui effectue toutes les fonctions nécessaires à l'enchère */
+    /* Fonction qui effectue toutes les fonctions nécessaires à l'enchère, donc l'affichage du chien et l'écart, si il y en a un */
     public void enchere()
     {
-        //Comme prise
-        view.getBoutonPrise().setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                view.cacherBoutonEnchere(true);
-                view.AffichageChien();
-                ecart();
-            }
+        //Comme les enchères prise et garde sont les mêmes pour la constitution de l'écart, on réalise les mêmes fontions pour les deux lorsque l'on clique sur leur bouton respectif
+        view.getBoutonPrise().setOnMouseClicked(event -> {
+            view.cacherBoutonEnchere(true); //On cache les boutons d'enchères à chaque fois que l'on clique sur l'un deux, car on ne peut faire qu'une seule enchère dans une partie.
+            view.AffichageChien(); //C'est une prise, on affiche le chien.
+            ecart(); //On réalise l'écart ensuite, avec les évènements de clics et les changements des arrays.
         });
-        view.getBoutonGarde().setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                view.cacherBoutonEnchere(true);
-                view.AffichageChien();
-                view.cacherBouton(view.getBoutonOK(), false);
-                ecart();
-            }
+        view.getBoutonGarde().setOnMouseClicked(event -> {
+            view.cacherBoutonEnchere(true);
+            view.AffichageChien();
+            ecart();
         });
-        view.getBoutonGardeSansChien().setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                view.cacherBoutonEnchere(true);
-                view.cacherBouton(view.getBoutonQuitter(), false);
-                quitter();
-            }
+
+        //La garde sans chien et contre le chien sont des enchères qui ne nécessitent pas d'écart, et terminent la distribution, donc on quitte l'application après le clic sur les
+        //boutons respectifs.
+        view.getBoutonGardeSansChien().setOnMouseClicked(event -> {
+            view.cacherBoutonEnchere(true);
+            view.cacherBouton(view.getBoutonQuitter(), false); //On affiche le bouton quitter
+            view.DepartChien(); //On fait partir graphiquement le chien vu qu'ion ne l'intègre pas à son jeu.
+            quitter(); //On amorce la lecture de l'évènement du clic sur le bouton quitter.
         });
-        view.getBoutonGardeContreChien().setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                view.cacherBoutonEnchere(true);
-                view.cacherBouton(view.getBoutonQuitter(), false);
-                quitter();
-            }
+        view.getBoutonGardeContreChien().setOnMouseClicked(event -> {
+            view.cacherBoutonEnchere(true);
+            view.cacherBouton(view.getBoutonQuitter(), false);
+            view.DepartChien();
+            quitter();
         });
     }
 
-    public void tri(boolean triApresEcart)
-    {
+    /* Cette fonction fait toutes les fonctions et les lectures d'évènements nécessairent au déroulement du tri
+     * L'entrée booléenne "triApresEcart" permet de savoir si le tri est effectué avant ou après l'écart, afin de savoir si on doit ou non afficher les boutons des enchères
+     * juste après le tri */
+    public void tri(boolean triApresEcart) {
         modele.trier(modele.getCarteJoueur());
         view.getBoutonTrier().setOnMouseClicked(event -> {
             view.AppelTri(triApresEcart);
@@ -86,45 +80,43 @@ public class Controller {
         });
     }
 
-    public void ecart()
-    {
+    public void ecart() {
         final int[] taille_ecart = {0};
         int i =0;
         while(i < view.getCartesJoueur().size()) {
             int finalI = i;
-            view.getCartesJoueur().get(i).setOnMouseClicked(event1 -> {
-                if (modele.licite(view.getCartesJoueur().get(finalI).getCarteModel())) {
-                    if (!view.getCartesJoueur().get(finalI).getCarteModel().getAjouteEcart()) {
-                        if(taille_ecart[0] < 6) {
-                            view.getCartesJoueur().get(finalI).getCarteModel().setAjouteEcart(true);
-                            modele.getEcart().add(view.getCartesJoueur().get(finalI).getCarteModel());
+            if (taille_ecart[0] != -1) {
+                view.getCartesJoueur().get(i).setOnMouseClicked(event1 -> {
+                    if (modele.licite(view.getCartesJoueur().get(finalI).getCarteModel())) {
+                        if (!view.getCartesJoueur().get(finalI).getCarteModel().getAjouteEcart()) {
+                            if (taille_ecart[0] < 6) {
+                                view.getCartesJoueur().get(finalI).getCarteModel().setAjouteEcart(true);
+                                modele.getEcart().add(view.getCartesJoueur().get(finalI).getCarteModel());
+                                view.ChoixEcart(view.getCartesJoueur().get(finalI), view.getCartesJoueur().get(finalI).getCarteModel().getAjouteEcart());
+                                taille_ecart[0]++;
+                            }
+                        } else {
+                            modele.getEcart().remove(view.getCartesJoueur().get(finalI).getCarteModel());
+                            view.getCartesJoueur().get(finalI).getCarteModel().setAjouteEcart(false);
                             view.ChoixEcart(view.getCartesJoueur().get(finalI), view.getCartesJoueur().get(finalI).getCarteModel().getAjouteEcart());
-                            taille_ecart[0]++;
+                            taille_ecart[0]--;
                         }
                     }
-                    else {
-                        modele.getEcart().remove(view.getCartesJoueur().get(finalI).getCarteModel());
-                        view.getCartesJoueur().get(finalI).getCarteModel().setAjouteEcart(false);
-                        view.ChoixEcart(view.getCartesJoueur().get(finalI), view.getCartesJoueur().get(finalI).getCarteModel().getAjouteEcart());
-                        taille_ecart[0]--;
+                    if (taille_ecart[0] == 6) {
+                        view.cacherBouton(view.getBoutonOK(), false);
+                    } else {
+                        view.cacherBouton(view.getBoutonOK(), true);
                     }
-                }
-
-                if(taille_ecart[0] == 6) {
-                    view.cacherBouton(view.getBoutonOK(), false);
-                }
-                else
-                {
-                    view.cacherBouton(view.getBoutonOK(), true);
-                }
-            });
-            i++;
+                });
+                i++;
+            }
         }
         view.getBoutonOK().setOnMouseClicked(event -> {
+            view.cacherBouton(view.getBoutonOK(), true);
             modele.Ecart();
             view.TransitionEcartChien();
-            view.cacherBouton(view.getBoutonOK(), true);
             tri(true);
+            taille_ecart[0] = -1;
         });
 
     }
