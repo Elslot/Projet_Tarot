@@ -78,7 +78,7 @@ public class View implements Observer {
         createButton(bGardeSansChien, "Garde sans chien", 3.5*SCREEN_W_VIEW/7 - bGardeSansChien.getPrefWidth()/2, SCREEN_H_VIEW/12 - bGardeSansChien.getPrefHeight()/2, 12, true);
 
         bGardeContreChien = new Button();
-        createButton(bGardeContreChien, "Garde sans chien", 4.25*SCREEN_W_VIEW/7 - bGardeContreChien.getPrefWidth()/2, SCREEN_H_VIEW/12 - bGardeContreChien.getPrefHeight()/2, 12, true);
+        createButton(bGardeContreChien, "Garde contre chien", 4.25*SCREEN_W_VIEW/7 - bGardeContreChien.getPrefWidth()/2, SCREEN_H_VIEW/12 - bGardeContreChien.getPrefHeight()/2, 12, true);
 
         bOK = new Button();
         createButton(bOK, "OK", 6*SCREEN_W_VIEW/7 - bOK.getPrefWidth()/2, 5*SCREEN_H_VIEW/6 - bOK.getPrefHeight()/2, 20, true);
@@ -183,7 +183,7 @@ public class View implements Observer {
         sequential.play();
     }
 
-    public void AppelTri() {
+    public void AppelTri(boolean triApresEcart) {
 
         SequentialTransition tri = new SequentialTransition();
         tri.setCycleCount(1);
@@ -204,7 +204,7 @@ public class View implements Observer {
 
         }
         tri.setOnFinished(event -> {
-            cacherBoutonEnchere(false);
+            cacherBoutonEnchere(triApresEcart);
         });
         tri.play();
     }

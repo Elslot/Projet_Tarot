@@ -1,15 +1,11 @@
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
-import javafx.scene.control.Button;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-
-import java.util.Collections;
 
 public class Controller {
 
+    //Le contrôleur possède un modèle et une vue car il prend en charge les évènements de la fenêtre, et en fonction des évènements effectue les fonctions de model en interne,
+    // et les fonctions de view qui permet d'afficher les cartes et d'effectuer des animations. Nous avons choisis ce modèle de MVC car il est plus facile de réagir en fonction
+    //des évènements lorsque controlleur gère les deux traitement de données : affichage et calcul.
     private Model modele;
     private View view;
 
@@ -18,37 +14,34 @@ public class Controller {
         this.view = view;
     }
 
+    /* Foncton permettant d'effectuer divers contrôle d'évènement, et de gèrer toute la distribution de l'application derrière en fonction d'eux.
+    *  Elle lance séquentitellement ces éléments*/
     public void lancerDistribution()
     {
-        view.getBoutonDistribuer().setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                view.getBoutonDistribuer().setDisable(true);
-                view.getBoutonDistribuer().setOpacity(0);
+        view.getBoutonDistribuer().setOnMouseClicked(event -> { //Fait une série d'évènement lorsqu'on clique sur distribuer
+            view.cacherBouton(view.getBoutonDistribuer(), true); //Efface le bouton distribuer de la fenêtre
 
-                modele.distribution();
-                view.distribution(view.getCardsViews());
-                modele.trouverPetitSec();
+            modele.distribution(); //Distribue les cartes du modèle
+            view.distribution(view.getCardsViews()); //Distribue les cartes graphiquement
+            modele.trouverPetitSec(); //Recherche si le petit sec est présent dans les cartes du modèle ou non (pas nécessaire d'attendre la fin de la distribution graphique)
 
-                if(modele.getPetitSec())
-                {
-                    quitter();
-                }
-                else
-                {
-                    tri();
-                    for (Carte c : modele.getCarteJoueur()) {
-                        // System.out.println(c.getNumero() + " / " + c.getType());
-                    }
-                }
+            if(modele.getPetitSec()) //Si on a trouvé le petit sec
+            {
+                quitter(); //On initialise la lecture d'évènement qui permet de quitter
+            }
+            else
+            {
+                tri(false); //Sinon on permet de trier
             }
         });
 
 
     }
 
+    /* Fonction qui effectue toutes les fonctions nécessaires à l'enchère */
     public void enchere()
     {
+        //Comme prise
         view.getBoutonPrise().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -84,11 +77,11 @@ public class Controller {
         });
     }
 
-    public void tri()
+    public void tri(boolean triApresEcart)
     {
         modele.trier(modele.getCarteJoueur());
         view.getBoutonTrier().setOnMouseClicked(event -> {
-            view.AppelTri();
+            view.AppelTri(triApresEcart);
             view.cacherBouton(view.getBoutonTrier(), true);
         });
     }
@@ -132,7 +125,7 @@ public class Controller {
             view.TransitionEcartChien();
             view.cacherBouton(view.getBoutonOK(), true);
         });
-        tri();
+        tri(true);
     }
 
     public void quitter()
