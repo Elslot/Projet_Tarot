@@ -43,12 +43,12 @@ public class CarteView extends Group {
         y=View.SCREEN_H_VIEW/10;
 
         dos.setImage(imagedos);
-        dos.setScaleX(1920/View.SCREEN_W_VIEW);
-        dos.setScaleY(1080/View.SCREEN_H_VIEW);
+        dos.setScaleX(View.SCREEN_W_VIEW/1920);
+        dos.setScaleY(View.SCREEN_H_VIEW/1080);
 
         face.setImage(global);
-        face.setScaleX(1920/View.SCREEN_W_VIEW);
-        face.setScaleY(1080/View.SCREEN_H_VIEW);
+        face.setScaleX(View.SCREEN_W_VIEW/1920);
+        face.setScaleY(View.SCREEN_H_VIEW/1080);
         face.setOpacity(0);
 
         if (carteModel.getNumero() <= 14) {
