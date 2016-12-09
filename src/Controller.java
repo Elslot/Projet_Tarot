@@ -44,12 +44,12 @@ public class Controller {
         //Comme les enchères prise et garde sont les mêmes pour la constitution de l'écart, on réalise les mêmes fontions pour les deux lorsque l'on clique sur leur bouton respectif
         view.getBoutonPrise().setOnMouseClicked(event -> {
             view.cacherBoutonEnchere(true); //On cache les boutons d'enchères à chaque fois que l'on clique sur l'un deux, car on ne peut faire qu'une seule enchère dans une partie.
-            view.AffichageChien(); //C'est une prise, on affiche le chien.
+            view.affichageChien(); //C'est une prise, on affiche le chien.
             ecart(); //On réalise l'écart ensuite, avec les évènements de clics et les changements des arrays.
         });
         view.getBoutonGarde().setOnMouseClicked(event -> {
             view.cacherBoutonEnchere(true);
-            view.AffichageChien();
+            view.affichageChien();
             ecart();
         });
 
@@ -58,13 +58,13 @@ public class Controller {
         view.getBoutonGardeSansChien().setOnMouseClicked(event -> {
             view.cacherBoutonEnchere(true);
             view.cacherBouton(view.getBoutonQuitter(), false); //On affiche le bouton quitter
-            view.DepartChien(); //On fait partir graphiquement le chien vu qu'ion ne l'intègre pas à son jeu.
+            view.departChien(); //On fait partir graphiquement le chien vu qu'ion ne l'intègre pas à son jeu.
             quitter(); //On amorce la lecture de l'évènement du clic sur le bouton quitter.
         });
         view.getBoutonGardeContreChien().setOnMouseClicked(event -> {
             view.cacherBoutonEnchere(true);
             view.cacherBouton(view.getBoutonQuitter(), false);
-            view.DepartChien();
+            view.departChien();
             quitter();
         });
     }
@@ -75,7 +75,7 @@ public class Controller {
     public void tri(boolean triApresEcart) {
         modele.trier(modele.getCarteJoueur()); //On trie les cartes du joueur du modèle.
         view.getBoutonTrier().setOnMouseClicked(event -> { //On attend un clic sur le bouton trier
-            view.AppelTri(triApresEcart); //On trie graphiquement (le booléen est transferé, l'affichage ou non des boutons enchères ce fait dans cette fonction après le tri)
+            view.appelTri(triApresEcart); //On trie graphiquement (le booléen est transferé, l'affichage ou non des boutons enchères ce fait dans cette fonction après le tri)
             view.cacherBouton(view.getBoutonTrier(), true); //On cache le bouton trier.
         });
     }
@@ -96,7 +96,7 @@ public class Controller {
                             if (tailleEcart[0] < 6) { //On teste si on peut encore ajouter une carte à l'écart
                                 modele.getEcart().add(view.getCartesJoueur().get(finalI).getCarteModel()); //On l'ajoute dans le modèle
                                 view.getCartesJoueur().get(finalI).getCarteModel().setAjouteEcart(true); //On dit que la carte est ajouté
-                                view.ChoixEcart(view.getCartesJoueur().get(finalI), view.getCartesJoueur().get(finalI).getCarteModel().getAjouteEcart()); //On montre gaphiquement
+                                view.choixEcart(view.getCartesJoueur().get(finalI), view.getCartesJoueur().get(finalI).getCarteModel().getAjouteEcart()); //On montre gaphiquement
                                 //qu'elle est présélectionnée
                                 tailleEcart[0]++;
                             }
@@ -104,7 +104,7 @@ public class Controller {
                             //Si oui
                             modele.getEcart().remove(view.getCartesJoueur().get(finalI).getCarteModel());  //On la supprime du model
                             view.getCartesJoueur().get(finalI).getCarteModel().setAjouteEcart(false);  //On dit qu'elle n'est plus dans l'écart
-                            view.ChoixEcart(view.getCartesJoueur().get(finalI), view.getCartesJoueur().get(finalI).getCarteModel().getAjouteEcart()); //On montre graphiquement qu'elle
+                            view.choixEcart(view.getCartesJoueur().get(finalI), view.getCartesJoueur().get(finalI).getCarteModel().getAjouteEcart()); //On montre graphiquement qu'elle
                             //n'est plus présélectionnée.
                             tailleEcart[0]--;
                         }
@@ -123,7 +123,7 @@ public class Controller {
             view.cacherBouton(view.getBoutonOK(), true); //On le cache
             //On effectue l'écart dans le modèle et dans le view
             modele.Ecart();
-            view.TransitionEcartChien();
+            view.transitionEcartChien();
             tri(true); //On trie
             tailleEcart[0] = -1; //Et on met a -1 tailleEcart pour ne plus gérer le clic des cartes.
             quitter(); //On permet de quitter après le tri

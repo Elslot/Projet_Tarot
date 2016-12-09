@@ -189,7 +189,7 @@ public class View implements Observer {
     }
 
     // Cette fonction fera le retournement des cartes du chien
-    public void AffichageChien()
+    public void affichageChien()
     {
         SequentialTransition retournerChien = new SequentialTransition();
         retournerChien.setCycleCount(1);
@@ -201,7 +201,7 @@ public class View implements Observer {
         retournerChien.play();
     }
 
-    public void AppelTri(boolean triApresEcart) {
+    public void appelTri(boolean triApresEcart) {
 
         SequentialTransition tri = new SequentialTransition();
         tri.setCycleCount(1);
@@ -228,7 +228,7 @@ public class View implements Observer {
         tri.play();
     }
 
-    public void ChoixEcart(CarteView carte, boolean test)
+    public void choixEcart(CarteView carte, boolean test)
     {
         SequentialTransition sequential = new SequentialTransition();
         sequential.setCycleCount(1);
@@ -253,7 +253,7 @@ public class View implements Observer {
         sequential.play();
     }
 
-    public void TransitionEcartChien(){
+    public void transitionEcartChien(){
         SequentialTransition swap = new SequentialTransition();
         swap.setCycleCount(1);
         swap.setDelay(Duration.millis(10));
@@ -269,14 +269,12 @@ public class View implements Observer {
             cartesJoueur.add(cartesChien.get(i));
 
         }
-        swap.setOnFinished(event -> {
-            this.AbaissementChien();
-        });
+        swap.setOnFinished(event -> {this.abaissementChien();});
         swap.play();
 
     }
 
-    public void AbaissementChien(){
+    public void abaissementChien(){
         SequentialTransition abaissement = new SequentialTransition();
         abaissement.setCycleCount(1);
         abaissement.setDelay(Duration.millis(10));
@@ -294,7 +292,7 @@ public class View implements Observer {
         abaissement.play();
     }
 
-    public void DepartChien(){
+    public void departChien(){
         SequentialTransition depart = new SequentialTransition();
         depart.setCycleCount(1);
         depart.setDelay(Duration.millis(10));
