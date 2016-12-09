@@ -13,7 +13,7 @@ public class Main extends Application{
     @Override
     public void start(Stage viewTest) throws Exception {
 
-        /* Nous avons choisi le modèle MVC, mais où le controleur contient modèle et vue, c'est lui qui gère la maj
+        /* Nous avons choisi le modèle MVC, mais où le controleur contient modèle et vue, c'est lui qui gère la mise à jour
          * de ces deux élèments en fonction des évènements et de l'ordre pour que tout se synchronise, et la vue contient modèle, pour
          * mettre à jour le modèle en fonction de l'affichage. Tout cela pour faciliter notre programmation */
 
