@@ -13,14 +13,18 @@ public class Main extends Application{
     @Override
     public void start(Stage viewTest) throws Exception {
 
-        Model modeltest = new Model();
-        modeltest.melanger();
+        /* Nous avons choisi le modèle MVC, mais où le controleur contient modèle et vue, c'est lui qui gère la maj
+         * de ces deux élèments en fonction des évènements et de l'ordre pour que tout se synchronise, et la vue contient modèle, pour
+         * mettre à jour le modèle en fonction de l'affichage. Tout cela pour faciliter notre programmation */
 
-        View viewtest = new View(modeltest);
-        Controller control = new Controller(modeltest, viewtest);
+        Model modele = new Model();
+        modele.melanger(); //On mélange au tout début du jeu.
 
-        control.lancerDistribution();
-        control.enchere();
+        View vue = new View(modele);
+        Controller control = new Controller(modele, vue);
+
+        control.lancerDistribution(); //On lance en premier toute la distribution
+        control.enchere(); //Puis les enchère
 
     }
 }
